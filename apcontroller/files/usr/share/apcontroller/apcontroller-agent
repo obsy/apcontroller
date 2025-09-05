@@ -1,0 +1,40 @@
+#!/bin/sh
+
+. /lib/functions/system.sh
+. /usr/share/libubox/jshn.sh
+
+json_init
+json_add_string "model" "$(cat /tmp/sysinfo/model)"
+json_add_string "load" "$(awk '{printf "%s %s %s", $1, $2, $3}' /proc/loadavg)"
+json_add_int "uptime" "$(awk '{printf "%d", $1}' /proc/uptime)"
+MAC=$(get_mac_label)
+if [ -z "${MAC}" ]; then
+	grep -q br-lan /proc/net/dev && IF=br-lan || IF=eth0
+	MAC=$([ -e /sys/class/net/$IF/address ] && cat /sys/class/net/$IF/address || echo "")
+fi
+json_add_string "mac" "${MAC}"
+json_add_string "software" "$(awk -F= '/^OPENWRT_RELEASE=/ {print $2}' /etc/os-release 2>/dev/null | xargs)"
+
+if [ -e /etc/config/wireless ]; then
+	WIRELESSSTATUS=$(ubus call network.wireless status 2>/dev/null)
+	for BAND in 2g 5g 6g; do
+		CHANNELS=""
+		IFNAMES=""
+		eval $(echo "$WIRELESSSTATUS" | jsonfilter -q -e 'CHANNELS=@[@.config.band="'${BAND}'"].config.channel' -e 'IFNAMES=@[@.config.band="'${BAND}'"].interfaces[*].ifname')
+		if [ -n "${CHANNELS}" ]; then
+			json_add_string "channels${BAND}" "${CHANNELS}"
+		fi
+		if [ -n "${IFNAMES}" ]; then
+			ALL=0
+			for IFNAME in $IFNAMES; do
+				CNT=$(iw dev ${IFNAME} station dump | grep -c Station)
+				ALL=$((ALL + CNT))
+			done
+			json_add_int "clients${BAND}" "${ALL}"
+		fi
+	done
+fi
+
+json_dump
+
+exit 0

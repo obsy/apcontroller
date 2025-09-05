@@ -1,0 +1,122 @@
+#!/bin/sh
+
+FILE=$1
+[ -s "$FILE" ] || exit 1
+
+[ -e /etc/config/wireless ] || exit 1
+
+function wifi_add() {
+	local RADIO=$1
+	local NETWORK=$2
+	local ENABLED=$3
+	local SSID=$4
+	local ENCRYPTION=$5
+	local KEY=$6
+
+	CNT=$(uci show wireless | awk '/\.device=/ {count++} END {print count + 1}')
+	while [ -n "$(uci -q get wireless.wifinet"$CNT")" ]; do
+		CNT=$((CNT + 1))
+	done
+	SEC="wifinet${CNT}"
+
+	uci set wireless."$SEC"=wifi-iface
+	uci set wireless."$SEC".device=$RADIO
+	uci set wireless."$SEC".mode=ap
+	uci set wireless."$SEC".network="$NETWORK"
+	if [ "$ENABLED" -eq 0 ]; then
+		uci set wireless."$SEC".disabled=1
+	else
+		uci -q del wireless."$RADIO".disabled
+	fi
+	uci set wireless."$SEC".ssid="$SSID"
+	uci set wireless."$SEC".encryption="$ENCRYPTION"
+	uci set wireless."$SEC".key="$KEY"
+}
+
+function wifi_update() {
+	local SEC=$1
+	local RADIO=$2
+	local ENABLED=$3
+	local SSID=$4
+	local ENCRYPTION=$5
+	local KEY=$6
+
+	uci -q del wireless."$RADIO".disabled
+	if [ "$ENABLED" -eq 0 ]; then
+		uci set wireless."$SEC".disabled=1
+	else
+		uci -q del wireless."$RADIO".disabled
+		uci -q del wireless."$SEC".disabled
+	fi
+	uci set wireless."$SEC".ssid="$SSID"
+	uci set wireless."$SEC".encryption="$ENCRYPTION"
+	uci set wireless."$SEC".key="$KEY"
+}
+
+. /usr/share/libubox/jshn.sh
+
+NEEDCOMMIT=0
+
+json_load_file "$FILE"
+
+json_is_a wifis array || exit 2
+
+json_select "wifis"
+IDX=1
+while json_is_a $IDX object; do
+	json_select $IDX
+	json_get_vars enabled band network ssid encryption key
+
+	T=$(uci -q get network."$network")
+	if [ -z "$T" ]; then
+		IDX=$((IDX + 1))
+		json_select ..
+		continue
+	fi
+ 
+	RADIOS=$(uci show wireless | awk -F. '/\.band='\'''"$band"''\''$/{print $2}')
+	if [ -z "$RADIOS" ]; then
+		IDX=$((IDX + 1))
+		json_select ..
+		continue
+	fi
+
+	SECTIONS=$(uci -q show wireless | awk -F. '/\.ssid='\'''"$ssid"''\''$/{print $2}')
+	if [ -z "$SECTIONS" ]; then
+		for RADIO in $RADIOS; do
+			wifi_add "$RADIO" "$network" "$enabled" "$ssid" "$encryption" "$key"
+		done
+		NEEDCOMMIT=1
+	else
+		for RADIO in $RADIOS; do
+			FOUND=0
+			for SECTION in $SECTIONS; do
+				T1=$(uci get wireless."$SECTION".device)
+				if [ "$T1" = "$RADIO" ]; then
+					T2=$(uci get wireless."$SECTION".network)
+					if [ "$T2" = "$network" ]; then
+						wifi_update "$SECTION" "$RADIO" "$enabled" "$ssid" "$encryption" "$key"
+						NEEDCOMMIT=1
+						FOUND=1
+					fi
+				fi
+			done
+			if [ $FOUND -eq 0 ]; then
+				wifi_add "$RADIO" "$network" "$enabled" "$ssid" "$encryption" "$key"
+				NEEDCOMMIT=1
+			fi
+		done
+	fi
+
+	IDX=$((IDX + 1))
+	json_select ..
+done
+
+if [ $NEEDCOMMIT -eq 1 ]; then
+	uci commit wireless
+	wifi reload
+fi
+
+rm "$FILE"
+
+exit 0

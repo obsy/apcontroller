@@ -1,0 +1,28 @@
+{
+	"luci-app-apcontroller": {
+		"description": "Grant UCI access for luci-app-apcontroller",
+		"read": {
+			"file": {
+				"/etc/crontabs/root": [ "read" ]
+			},
+			"ubus": {
+				"apcontroller": [ "status" ],
+				"file": [ "read" ],
+				"luci-rpc": [ "getHostHints" ]
+			},
+			"uci": [ "apcontroller" ]
+		},
+		"write": {
+			"file": {
+				"/etc/crontabs/root": [ "write" ],
+				"/etc/init.d/cron reload": [ "exec" ],
+				"/usr/bin/apcontroller": [ "exec" ],
+				"/usr/bin/apcontroller-sendconfig": [ "exec" ]
+			},
+			"ubus": {
+				"file": [ "write" ]
+			},
+			"uci": [ "apcontroller" ]
+		}
+	}
+}

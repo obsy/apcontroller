@@ -1,0 +1,6 @@
+#!/bin/sh
+
+MIN=$(uci -q get apcontroller.@global[0].interval)
+grep -q apcontroller /etc/crontabs/root || echo "*/${MIN:-5} * * * * /usr/bin/apcontroller" >> /etc/crontabs/root
+
+exit 0

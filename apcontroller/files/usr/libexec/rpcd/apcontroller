@@ -1,0 +1,88 @@
+#!/bin/sh
+
+#
+# (c) 2025 Cezary Jackiewicz <cezary@eko.one.pl>
+#
+
+BASEPATH="/tmp/apcontroller"
+
+. /lib/functions.sh
+. /usr/share/libubox/jshn.sh
+
+show_data_from_host() {
+	local cfg="$1"
+	local oldns
+	local model load uptime mac software clients2g clients5g clients6g
+
+	config_get_bool enabled "$cfg" enabled 1
+	config_get name "$cfg" name
+	config_get ipaddr "$cfg" ipaddr
+	config_get port "$cfg" port 22
+	config_get username "$cfg" username
+	config_get password "$cfg" password
+
+	json_add_object
+	json_add_string "section" "$cfg"
+	json_add_boolean "enabled" "$enabled"
+	json_add_string "name" "$name"
+	json_add_string "ipaddr" "$ipaddr"
+	json_add_int "port" "$port"
+	json_add_string "username" "$username"
+	json_add_string "password" "$password"
+
+	LASTCONTACT=-1
+	if [ -s "${BASEPATH}/${ipaddr}-${cfg}" ]; then
+		FILEMODTIME=$(date +%s -r $BASEPATH/${ipaddr}-${cfg})
+		NOW=$(date +%s)
+		LASTCONTACT=$((NOW - FILEMODTIME))
+
+		json_set_namespace host oldns
+		json_init
+		json_load_file "${BASEPATH}/${ipaddr}-${cfg}"
+		json_get_vars model load uptime mac software clients2g clients5g clients6g channels2g channels5g channels6g
+		json_cleanup
+		json_set_namespace $oldns
+
+		json_add_string "model" "$model"
+		json_add_string "load" "$load"
+		json_add_int "uptime" "$uptime"
+		json_add_string "mac" "$mac"
+		json_add_string "software" "$software"
+		[ -n "$clients2g" ] && json_add_string "clients2g" "$clients2g"
+		[ -n "$clients5g" ] && json_add_string "clients5g" "$clients5g"
+		[ -n "$clients6g" ] && json_add_string "clients6g" "$clients6g"
+		[ -n "$channels2g" ] && json_add_string "channels2g" "$channels2g"
+		[ -n "$channels5g" ] && json_add_string "channels5g" "$channels5g"
+		[ -n "$channels6g" ] && json_add_string "channels6g" "$channels6g"
+	fi
+	json_add_int "lastcontact" "$LASTCONTACT"
+
+	json_close_object
+}
+
+show_status() {
+	config_load apcontroller
+	json_init
+	json_add_array "hosts"
+	config_foreach show_data_from_host host
+	json_close_array
+	json_dump
+}
+
+case "$1" in
+	list)
+		json_init
+		json_add_object "status"
+		json_close_object
+		json_dump
+	;;
+	call)
+		case "$2" in
+			status)
+				show_status
+				;;
+		esac
+	;;
+esac
+
+exit 0

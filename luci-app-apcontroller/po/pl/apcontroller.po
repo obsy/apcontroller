@@ -1,0 +1,352 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:627
+msgid "no Wi-Fi found"
+msgstr "nie znaleziono Wi-Fi"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:604
+msgid "no devices found"
+msgstr "nie znaleziono urządzeń"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:125
+msgid "2.4 GHz Channel(s)"
+msgstr "Kanał(y) 2.4 GHz"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:122
+msgid "2.4 GHz Clients"
+msgstr "Klientów 2.4 GHz"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:126
+msgid "5 GHz Channel(s)"
+msgstr "Kanał(y) 5 GHz"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:123
+msgid "5 GHz Clients"
+msgstr "Klientów 5 GHz"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:127
+msgid "6 GHz Channel(s)"
+msgstr "Kanał(y) 6 GHz"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:124
+msgid "6 GHz Clients"
+msgstr "Klientów 6 GHz"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:204
+#: root/usr/share/luci/menu.d/luci-app-apcontroller.json:3
+msgid "AP Controller"
+msgstr "AP Controller"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:528
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:591
+msgid "AP Group"
+msgstr "Grupa AP"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:408
+msgid "Add new Wi-Fi"
+msgstr "Dodaj nowe Wi-Fi"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:213
+msgid "Add new device"
+msgstr "Dodaj nowe urządzenie"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:531
+msgid "Add new group"
+msgstr "Dodaj nową grupę"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:335
+msgid "Close"
+msgstr "Zamknij"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:457
+msgid "Default Wi-Fi state"
+msgstr "Domyślny stan Wi-Fi"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:375
+msgid "Default: 22"
+msgstr "Domyślnie: 22"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:340
+msgid "Device"
+msgstr "Urządzenie"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:380
+msgid "Device Login"
+msgstr "Login do urządzenia"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:385
+msgid "Device Password"
+msgstr "Hasło do urządzenia"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:659
+msgid "Device Reading Interval"
+msgstr "Okres odczytu urządzenia"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:209
+msgid "Devices"
+msgstr "Urządzenia"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:577
+msgid "Dismiss"
+msgstr "Zamknij"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:662
+msgid "Displayed Column List"
+msgstr "Wyświetlana lista kolumn"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:232
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:549
+msgid "Edit"
+msgstr "Edytuj"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:298
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:344
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:457
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:663
+msgid "Enabled"
+msgstr "Włączone"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:491
+msgid "Encryption"
+msgstr "Szyfrowanie"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:583
+msgid "Error:"
+msgstr "Błąd:"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:310
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:356
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:665
+msgid "Host Address"
+msgstr "Adres urządzenia"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:356
+msgid "Hostname or IP Address"
+msgstr "Nazwa urządzenia lub adres IP"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:116
+msgid "Last Contact"
+msgstr "Ostatni kontakt"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:662
+msgid "List of columns to display in the devices list"
+msgstr "Lista kolumn do wyświetlenia na liście urządzeń"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:121
+msgid "Load Average"
+msgstr "Średnie obciążenie"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:117
+msgid "MAC Address"
+msgstr "Adres MAC"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:118
+msgid "Model"
+msgstr "Model"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:249
+msgid "More"
+msgstr "Więcej"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:337
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:236
+msgid "More Information"
+msgstr "Więcej informacji"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:304
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:351
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:454
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:593
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:664
+msgid "Name"
+msgstr "Nazwa"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:515
+msgid "Network"
+msgstr "Sieć"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:299
+msgid "No"
+msgstr "Nie"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:56
+msgid "Offline"
+msgstr "Nieaktywne"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:58
+msgid "Online"
+msgstr "Aktywne"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:385
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:507
+msgid "Password"
+msgstr "Hasło"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:375
+msgid "Port"
+msgstr "Port"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:204
+msgid "Router and AP Management"
+msgstr "Zarządzanie routerami i AP"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:375
+msgid "SSH Port"
+msgstr "Port SSH"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:488
+msgid "SSID"
+msgstr "SSID"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:596
+msgid "Selected Devices"
+msgstr "Wybrane urządzenia"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:621
+msgid "Selected Wi-Fi"
+msgstr "Wybrane Wi-Fi"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:556
+msgid "Send"
+msgstr "Wyślij"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:552
+msgid "Send config to devices"
+msgstr "Wyślij konfigurację do urządzeń"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:566
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:570
+msgid "Sending commands"
+msgstr "Wysyłanie poleceń"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:567
+msgid "Sending commands to devices..."
+msgstr "Wysyłanie poleceń do urządzeń..."
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:644
+msgid "Settings"
+msgstr "Ustawienia"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:119
+msgid "Software"
+msgstr "Oprogramowanie"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:115
+msgid "Status"
+msgstr "Status"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:521
+msgid "The interface name is too long"
+msgstr "Nazwa interfejsu jest zbyt długa"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:515
+msgid "The name of the network to which the Wi-Fi will belong"
+msgstr "Nazwa sieci do której będzie należeć Wi-Fi"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:488
+msgid "The name that the APs are to advertise"
+msgstr "Nazwa sieci którą AP mają rozgłaszać"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:53
+msgid "Unknown"
+msgstr "Nieznany"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:120
+msgid "Uptime"
+msgstr "Czas pracy"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:351
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:454
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:593
+msgid "User-readable description"
+msgstr "Opis czytelny dla użytkownika"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:380
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:498
+msgid "WPA Pers."
+msgstr "WPA Pers."
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:499
+msgid "WPA Pers. (CCMP)"
+msgstr "WPA Pers. (CCMP)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:500
+msgid "WPA Pers. (TKIP)"
+msgstr "WPA Pers. (CCMP)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:501
+msgid "WPA/WPA2 Pers. (CCMP)"
+msgstr "WPA/WPA2 Pers. (CCMP)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:502
+msgid "WPA/WPA2 Pers. (TKIP)"
+msgstr "WPA/WPA2 Pers. (TKIP)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:495
+msgid "WPA2 Pers."
+msgstr "WPA2 Pers."
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:496
+msgid "WPA2 Pers. (CCMP)"
+msgstr "WPA2 Pers. (CCMP)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:497
+msgid "WPA2 Pers. (TKIP)"
+msgstr "WPA2 Pers. (TKIP)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:494
+msgid "WPA2/WPA3 Pers. (CCMP)"
+msgstr "WPA2/WPA3 Pers. (CCMP)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:503
+msgid "WPA3 OWE (CCMP)"
+msgstr "WPA3 OWE (CCMP)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:493
+msgid "WPA3 Pers. (SAE)"
+msgstr "WPA3 Pers. (SAE)"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:344
+msgid "When enabled, the device will be polled periodically"
+msgstr "Po włączeniu urządzenie będzie okresowo sprawdzane"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:405
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:409
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:461
+msgid "Wi-Fi Band"
+msgstr "Pasmo Wi-Fi"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:299
+msgid "Yes"
+msgstr "Tak"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:659
+msgid "[minutes] The period in which devices will be periodically polled"
+msgstr "[minuty] Okres, w którym urządzenia będą okresowo sprawdzane"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:145
+msgid "days ago"
+msgstr "dni temu"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:147
+msgid "h ago"
+msgstr "g temu"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:149
+msgid "m ago"
+msgstr "m temu"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:504
+msgid "none"
+msgstr "bark"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:151
+msgid "s ago"
+msgstr "s temu"

@@ -1,0 +1,71 @@
+#!/bin/sh
+
+#
+# (c) 2025 Cezary Jackiewicz <cezary@eko.one.pl>
+#
+
+SEC=$1
+[ -z "$SEC" ] && exit 0
+
+VERBOSE=$2
+
+. /usr/share/libubox/jshn.sh
+
+BASEPATH="/tmp/apcontroller"
+
+mkdir -p ${BASEPATH}
+T=$(uci -q get apcontroller."$SEC")
+[ "x$T" = "xgroup" ] || exit 0
+
+HOSTS=$(uci -q get apcontroller."$SEC".host)
+[ -z "$HOSTS" ] && exit 0
+WIFIS=$(uci -q get apcontroller."$SEC".wifi)
+[ -z "$WIFIS" ] && exit 0
+
+json_init
+json_add_array "wifis"
+for WIFI in $WIFIS; do
+	BANDS="$(uci -q get apcontroller."$WIFI".band)"
+	for BAND in $BANDS; do
+		json_add_object
+		json_add_int "enabled" "$(uci -q get apcontroller."$WIFI".enabled)"
+		json_add_string "band" "$BAND"
+		json_add_string "ssid" "$(uci -q get apcontroller."$WIFI".ssid)"
+		json_add_string "encryption" "$(uci -q get apcontroller."$WIFI".encryption)"
+		json_add_string "key" "$(uci -q get apcontroller."$WIFI".key)"
+		json_add_string "network" "$(uci -q get apcontroller."$WIFI".network)"
+		json_close_object
+	done
+done
+
+json_dump > ${BASEPATH}/cmds-${SEC}
+
+for HOST in $HOSTS; do
+	enabled=$(uci -q get apcontroller."$HOST".enabled)
+	[ "$enabled" -eq 1 ] || continue
+
+	ipaddr=$(uci -q get apcontroller."$HOST".ipaddr)
+	[ -z "$ipaddr" ] && continue
+	port=$(uci -q get apcontroller."$HOST".port)
+	[ -z "$port" ] && port=22
+	username=$(uci -q get apcontroller."$HOST".username)
+	[ -z "$username" ] && continue
+	password=$(uci -q get apcontroller."$HOST".password)
+
+	sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} ${BASEPATH}/cmds-${SEC} ${username}@${ipaddr}:/tmp 2>/dev/null
+	[ $? -eq 0 ] && sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-setconfig ${username}@${ipaddr}:/tmp 2>/dev/null
+	[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent-setconfig /tmp/cmds-${SEC}" >/dev/null 2>&1
+	T=$?
+	rm ${BASEPATH}/cmds-${SEC}
+	if [ -n "$VERBOSE" ]; then
+		if [ "$T" -eq 0 ]; then
+			RET="OK"
+		else
+			RET="ERROR"
+		fi
+		NAME=$(uci -q get apcontroller."$HOST".name)
+		echo "${NAME} (${ipaddr}): ${RET}"
+	fi
+done
+
+exit 0

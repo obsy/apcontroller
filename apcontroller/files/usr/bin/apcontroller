@@ -1,0 +1,34 @@
+#!/bin/sh
+
+#
+# (c) 2025 Cezary Jackiewicz <cezary@eko.one.pl>
+#
+
+BASEPATH="/tmp/apcontroller"
+
+. /lib/functions.sh
+
+get_data_from_host() {
+	local cfg="$1"
+	local enabled ip username password
+
+	config_get_bool enabled "$cfg" enabled 1
+	[ "$enabled" -gt 0 ] || return 0
+
+	config_get ipaddr "$cfg" ipaddr
+	config_get username "$cfg" username
+	[ -z "$ipaddr" ] || [ -z "$username" ] && return 0
+
+	config_get password "$cfg" password
+	config_get port "$cfg" port 22
+
+	rm ${BASEPATH}/${ipaddr}-${cfg} 2>/dev/null
+	sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent ${username}@${ipaddr}:/tmp 2>/dev/null
+	[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent" > ${BASEPATH}/${ipaddr}-${cfg} 2>/dev/null
+}
+
+mkdir -p ${BASEPATH}
+config_load apcontroller
+config_foreach get_data_from_host host
+
+exit 0

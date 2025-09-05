@@ -1,0 +1,15 @@
+
+config global
+	option interval '5'
+	list column 'enabled'
+	list column 'name'
+	list column 'ipaddr'
+	list column 'lastcontact'
+
+config host 'host1'
+	option enabled '0'
+	option name 'OpenWrt'
+	option ipaddr '192.168.1.1'
+	option port '22'
+	option username 'root'
+	option password ''
