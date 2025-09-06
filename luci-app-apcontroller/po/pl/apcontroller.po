@@ -1,13 +1,5 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
-
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:627
-msgid "no Wi-Fi found"
-msgstr "nie znaleziono Wi-Fi"
-
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:604
-msgid "no devices found"
-msgstr "nie znaleziono urządzeń"
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
 
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:125
 msgid "2.4 GHz Channel(s)"
@@ -34,7 +26,6 @@ msgid "6 GHz Clients"
 msgstr "Klientów 6 GHz"
 
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:204
-#: root/usr/share/luci/menu.d/luci-app-apcontroller.json:3
 msgid "AP Controller"
 msgstr "AP Controller"
 
@@ -149,8 +140,8 @@ msgstr "Model"
 msgid "More"
 msgstr "Więcej"
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:337
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:236
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:337
 msgid "More Information"
 msgstr "Więcej informacji"
 
@@ -329,7 +320,7 @@ msgstr "Tak"
 
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:659
 msgid "[minutes] The period in which devices will be periodically polled"
-msgstr "[minuty] Okres, w którym urządzenia będą okresowo sprawdzane"
+msgstr "[minuty] Okres, w którym urządzenia będą cyklicznie sprawdzane"
 
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:145
 msgid "days ago"
@@ -343,9 +334,17 @@ msgstr "g temu"
 msgid "m ago"
 msgstr "m temu"
 
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:627
+msgid "no Wi-Fi found"
+msgstr "nie znaleziono Wi-Fi"
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:604
+msgid "no devices found"
+msgstr "nie znaleziono urządzeń"
+
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:504
 msgid "none"
-msgstr "bark"
+msgstr "brak"
 
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:151
 msgid "s ago"

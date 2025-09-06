@@ -1,14 +1,6 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:627
-msgid "no Wi-Fi found"
-msgstr ""
-
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:604
-msgid "no devices found"
-msgstr ""
-
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:125
 msgid "2.4 GHz Channel(s)"
 msgstr ""
@@ -34,7 +26,6 @@ msgid "6 GHz Clients"
 msgstr ""
 
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:204
-#: root/usr/share/luci/menu.d/luci-app-apcontroller.json:3
 msgid "AP Controller"
 msgstr ""
 
@@ -149,8 +140,8 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:337
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:236
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:337
 msgid "More Information"
 msgstr ""
 
@@ -341,6 +332,14 @@ msgstr ""
 
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:149
 msgid "m ago"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:627
+msgid "no Wi-Fi found"
+msgstr ""
+
+#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:604
+msgid "no devices found"
 msgstr ""
 
 #: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:504
