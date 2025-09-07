@@ -162,28 +162,25 @@ return view.extend({
 				} else
 					row['uptime'] = '-';
 			})
-		}
+		};
 
 		function refreshDeviceGrid() {
 			document.querySelectorAll('#cbi-apcontroller-host tr[data-section-id]').forEach(row => {
 				const section_id = row.dataset.sectionId;
 				const hostRecord = devicestatus.hosts.find(h => h.section === section_id);
-				const e = row.querySelector('button.cbi-button-more');
-
-				if (!hostRecord) {
-					if (e)
-						e.disabled = true;
-					return;
-				}
-
-				if (e) {
-					if (!hostRecord['.lastcontact'])
-						e.disabled = true;
-					else if (hostRecord['.lastcontact'] == -1)
-						e.disabled = true;
-					else
-						e.disabled = false;
-				}
+				const li = row.querySelector('li[data-value="more"]');
+				if (li)
+					if (typeof hostRecord === 'undefined' || !hostRecord || !hostRecord['.lastcontact'] || hostRecord['.lastcontact'] == -1) {
+						li.setAttribute('aria-disabled', 'true');
+						li.classList.add('disabled');
+						li.style.pointerEvents = 'none';
+						li.style.opacity = '0.5';
+					} else {
+						li.removeAttribute('aria-disabled');
+						li.classList.remove('disabled');
+						li.style.pointerEvents = '';
+						li.style.opacity = '';
+					}
 
 				Object.entries(morecolumns).forEach(([key, value]) => {
 					if (selectedcolumns.includes(key) || key == 'status') {
@@ -198,7 +195,9 @@ return view.extend({
 					}
 				});
 			});
-		}
+		};
+
+		const selectedcolumns = uci.get('apcontroller', '@global[0]', 'column') || [];
 
 		let m, s, o;
 		m = new form.Map('apcontroller', _('AP Controller'), _('Router and AP Management'));
@@ -209,17 +208,16 @@ return view.extend({
 		s = m.section(form.GridSection, 'host', _('Devices'));
 		s.anonymous = true;
 		s.addremove = true;
+		s.nodescriptions = true;
 		s.sortable  = false;
 		s.addbtntitle = _('Add new device');
+		s.tab('host', _('Device'));
 
 		s.renderContents = function(/* ... */) {
 			const renderTask = form.GridSection.prototype.renderContents.apply(this, arguments),
 			    sections = this.cfgsections();
 			return Promise.resolve(renderTask).then(function(nodes) {
 				let e = nodes.querySelector('#cbi-apcontroller-host > h3');
-				if (e)
-					e.remove();
-				e = nodes.querySelector('tr.cbi-section-table-descr');
 				if (e)
 					e.remove();
 				return nodes;
@@ -229,24 +227,44 @@ return view.extend({
 		s.renderRowActions = function(section_id) {
 			const host = devicestatus.hosts.find(item => item.section === section_id);
 
-			let tdEl = this.super('renderRowActions', [ section_id, _('Edit') ]),
-				moreinfo_opt = {
-					'class': 'btn cbi-button cbi-button-neutral cbi-button-more',
-					'click': ui.createHandlerFn(this, 'handleMoreInformation', section_id),
-					'title': _('More Information')
-				};
+			let tdEl = this.super('renderRowActions', [ section_id, _('Edit') ]);
 
-			if (typeof host !== 'undefined') {
-				if (!host['.lastcontact'])
-					moreinfo_opt['disabled'] = 'disabled';
-				else if (host['.lastcontact'] == -1)
-					moreinfo_opt['disabled'] = 'disabled';
-			} else {
-				moreinfo_opt['disabled'] = 'disabled';
+			const actionBtn = new ui.ComboButton('more', {
+				'more': [ _('More') ],
+				'ping': [ '%s %s'.format(_('IPv4'), _('Ping')) ]
+			}, {
+				classes: {
+					'more': 'btn cbi-button cbi-button-normal',
+					'ping': 'btn cbi-button cbi-button-normal'
+			},
+			click: null
+			}).render();
+
+			if (typeof host === 'undefined' || !host['.lastcontact'] || host['.lastcontact'] == -1) {
+				const li = actionBtn.querySelector('li[data-value="more"]');
+				if (li) {
+					li.setAttribute('aria-disabled', 'true');
+					li.classList.add('disabled');
+					li.style.pointerEvents = 'none';
+					li.style.opacity = '0.5';
+				}
 			}
+			actionBtn.querySelectorAll('li[data-value]').forEach(li => {
+				li.addEventListener('click', ev => {
+					if (li.getAttribute('aria-disabled') === 'true') return;
+					switch (li.dataset.value) {
+						case 'more':
+							this.actionMoreInformation(section_id, ev);
+							break;
+						case 'ping':
+							this.actionPing(section_id, ev);
+							break;
+					}
+				});
+			});
 
 			dom.content(tdEl.lastChild, [
-				E('button', moreinfo_opt, _('More')),
+				actionBtn,
 				tdEl.lastChild.childNodes[0],
 				tdEl.lastChild.childNodes[1]
 			]);
@@ -286,9 +304,44 @@ return view.extend({
 			});
 		};
 
-		s.handleMoreInformation = function (section_id, ev) {
-			ev?.preventDefault();
+		s.actionPing = function(section_id) {
+			const row = this.cfgvalue(section_id);
 
+			return this.map.save().then(() => {
+				ui.showModal(_('Ping'), [
+					E('p', { 'class': 'spinning' }, [ _('Pinging device...') ])
+				]);
+				return fs.exec('ping', [ '-4', '-c', '5', '-W', '1', row['ipaddr'] ]).then(function(res) {
+					ui.showModal(_('Ping'), [
+						res.stdout ? E('textarea', {
+							'spellcheck': 'false',
+							'wrap': 'off',
+							'rows': 25
+						}, [ res.stdout ]) : '',
+						res.stderr ? E('textarea', {
+							'spellcheck': 'false',
+							'wrap': 'off',
+							'rows': 25
+						}, [ res.stderr ]) : '',
+						E('div', { 'class': 'right' }, [
+							E('button', {
+								'class': 'cbi-button cbi-button-primary',
+								'click': ui.hideModal
+							}, [ _('Close') ])
+						])
+					]);
+				}).catch(function(err) {
+					ui.hideModal();
+					ui.addNotification(null, [
+						E('p', [ _('Error: '), err ])
+					]);
+				});
+			}).catch(err => {
+				ui.addNotification(null, E('p', err?.message || err), 'error');
+			});
+		};
+
+		s.actionMoreInformation = function(section_id) {
 			const host = devicestatus.hosts.find(item => item.section === section_id);
 			const row = this.cfgvalue(section_id);
 
@@ -329,17 +382,15 @@ return view.extend({
 
 			let child = [];
 			child.push(table);
-			child.push(E('button', {
+			child.push(E('div', { 'class': 'right' }, [
+						E('button', {
 							'class': 'cbi-button cbi-button-neutral',
 							'click': ui.hideModal
 						}, _('Close'))
+					])
 			);
 			ui.showModal(_("More Information"), child);
-		}
-
-		s.tab('host', _('Device'));
-
-		const selectedcolumns = uci.get('apcontroller', '@global[0]', 'column') || [];
+		};
 
 		o = s.taboption('host', form.Flag, 'enabled', _('Enabled'), _('When enabled, the device will be polled periodically'));
 		o.rmempty = false;
@@ -406,6 +457,7 @@ return view.extend({
 		s.addremove = true;
 		s.anonymous = true;
 		s.addbtntitle = _('Add new Wi-Fi');
+		s.nodescriptions = true;
 		s.tab('wifi', _('Wi-Fi'));
 
 		s.renderContents = function(/* ... */) {
@@ -414,9 +466,6 @@ return view.extend({
 
 			return Promise.resolve(renderTask).then(function(nodes) {
 				let e = nodes.querySelector('#cbi-apcontroller-wifi > h3')
-				if (e)
-					e.remove();
-				e = nodes.querySelector('tr.cbi-section-table-descr');
 				if (e)
 					e.remove();
 				return nodes;
@@ -529,6 +578,8 @@ return view.extend({
 		s.addremove = true;
 		s.anonymous = true;
 		s.addbtntitle = _('Add new group');
+		s.nodescriptions = true;
+		s.tab('group', _('AP Group'));
 
 		s.renderContents = function(/* ... */) {
 			const renderTask = form.GridSection.prototype.renderContents.apply(this, arguments),
@@ -536,9 +587,6 @@ return view.extend({
 
 			return Promise.resolve(renderTask).then(function(nodes) {
 				let e = nodes.querySelector('#cbi-apcontroller-group > h3')
-				if (e)
-					e.remove();
-				e = nodes.querySelector('tr.cbi-section-table-descr');
 				if (e)
 					e.remove();
 				return nodes;
@@ -560,7 +608,7 @@ return view.extend({
 
 			return tdEl;
 		};
-		
+
 		s.handleSendConfig = function (section_id, ev) {
 			return this.map.save().then(() => {
 				ui.showModal(_('Sending commands'), [
@@ -587,8 +635,6 @@ return view.extend({
 				ui.addNotification(null, E('p', err?.message || err), 'error');
 			});
 		};
-
-		s.tab('group', _('AP Group'));
 
 		o = s.taboption('group', form.Value, 'name', _('Name'), _('User-readable description'));
 		o.rmempty = false;
@@ -639,6 +685,7 @@ return view.extend({
 				names = cfgvalues;
 			return names.join(', ');
 		};
+
 
 		// Settings tab
 		s = m.section(form.TypedSection, 'global', _('Settings'));

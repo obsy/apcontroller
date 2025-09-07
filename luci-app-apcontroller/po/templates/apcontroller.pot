@@ -1,351 +1,257 @@
-msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
-
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:125
 msgid "2.4 GHz Channel(s)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:122
 msgid "2.4 GHz Clients"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:126
 msgid "5 GHz Channel(s)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:123
 msgid "5 GHz Clients"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:127
 msgid "6 GHz Channel(s)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:124
 msgid "6 GHz Clients"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:204
 msgid "AP Controller"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:528
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:591
 msgid "AP Group"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:408
 msgid "Add new Wi-Fi"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:213
 msgid "Add new device"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:531
 msgid "Add new group"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:335
 msgid "Close"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:457
 msgid "Default Wi-Fi state"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:375
 msgid "Default: 22"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:340
 msgid "Device"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:380
 msgid "Device Login"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:385
 msgid "Device Password"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:659
 msgid "Device Reading Interval"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:209
 msgid "Devices"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:577
 msgid "Dismiss"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:662
 msgid "Displayed Column List"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:232
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:549
 msgid "Edit"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:298
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:344
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:457
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:663
 msgid "Enabled"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:491
 msgid "Encryption"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:583
 msgid "Error:"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:310
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:356
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:665
 msgid "Host Address"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:356
 msgid "Hostname or IP Address"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:116
+msgid "IPv4"
+msgstr ""
+
 msgid "Last Contact"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:662
 msgid "List of columns to display in the devices list"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:121
 msgid "Load Average"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:117
 msgid "MAC Address"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:118
 msgid "Model"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:249
 msgid "More"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:236
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:337
 msgid "More Information"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:304
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:351
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:454
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:593
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:664
 msgid "Name"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:515
 msgid "Network"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:299
 msgid "No"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:56
 msgid "Offline"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:58
 msgid "Online"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:385
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:507
 msgid "Password"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:375
+msgid "Ping"
+msgstr ""
+
+msgid "Pinging device..."
+msgstr ""
+
 msgid "Port"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:204
 msgid "Router and AP Management"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:375
 msgid "SSH Port"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:488
 msgid "SSID"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:596
 msgid "Selected Devices"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:621
 msgid "Selected Wi-Fi"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:556
 msgid "Send"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:552
 msgid "Send config to devices"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:566
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:570
 msgid "Sending commands"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:567
 msgid "Sending commands to devices..."
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:644
 msgid "Settings"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:119
 msgid "Software"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:115
 msgid "Status"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:521
 msgid "The interface name is too long"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:515
 msgid "The name of the network to which the Wi-Fi will belong"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:488
 msgid "The name that the APs are to advertise"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:53
 msgid "Unknown"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:120
 msgid "Uptime"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:351
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:454
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:593
 msgid "User-readable description"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:380
 msgid "Username"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:498
 msgid "WPA Pers."
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:499
 msgid "WPA Pers. (CCMP)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:500
 msgid "WPA Pers. (TKIP)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:501
 msgid "WPA/WPA2 Pers. (CCMP)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:502
 msgid "WPA/WPA2 Pers. (TKIP)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:495
 msgid "WPA2 Pers."
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:496
 msgid "WPA2 Pers. (CCMP)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:497
 msgid "WPA2 Pers. (TKIP)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:494
 msgid "WPA2/WPA3 Pers. (CCMP)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:503
 msgid "WPA3 OWE (CCMP)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:493
 msgid "WPA3 Pers. (SAE)"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:344
 msgid "When enabled, the device will be polled periodically"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:405
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:409
 msgid "Wi-Fi"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:461
 msgid "Wi-Fi Band"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:299
 msgid "Yes"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:659
 msgid "[minutes] The period in which devices will be periodically polled"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:145
 msgid "days ago"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:147
 msgid "h ago"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:149
 msgid "m ago"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:627
 msgid "no Wi-Fi found"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:604
 msgid "no devices found"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:504
 msgid "none"
 msgstr ""
 
-#: htdocs/luci-static/resources/view/apcontroller/apcontroller.js:151
 msgid "s ago"
 msgstr ""
