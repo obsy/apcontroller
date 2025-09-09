@@ -1,3 +1,6 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
 msgid "2.4 GHz Channel(s)"
 msgstr "Kanał(y) 2.4 GHz"
 
@@ -31,8 +34,8 @@ msgstr "Dodaj nowe urządzenie"
 msgid "Add new group"
 msgstr "Dodaj nową grupę"
 
-msgid "Close"
-msgstr "Zamknij"
+msgid "Are you sure you want to reboot"
+msgstr "Czy na pewno chcesz ponownie uruchomić?"
 
 msgid "Default Wi-Fi state"
 msgstr "Domyślny stan Wi-Fi"
@@ -70,11 +73,17 @@ msgstr "Włączone"
 msgid "Encryption"
 msgstr "Szyfrowanie"
 
-msgid "Error:"
-msgstr "Błąd:"
+msgid "Error"
+msgstr "Błąd"
+
+msgid "Fetching log..."
+msgstr "Pobieranie dziennika..."
 
 msgid "Host Address"
 msgstr "Adres urządzenia"
+
+msgid "Hostname"
+msgstr "Nazwa hosta"
 
 msgid "Hostname or IP Address"
 msgstr "Nazwa urządzenia lub adres IP"
@@ -90,6 +99,12 @@ msgstr "Lista kolumn do wyświetlenia na liście urządzeń"
 
 msgid "Load Average"
 msgstr "Średnie obciążenie"
+
+msgid "Log"
+msgstr "Dziennik"
+
+msgid "Log from"
+msgstr "Dziennik z"
 
 msgid "MAC Address"
 msgstr "Adres MAC"
@@ -125,10 +140,16 @@ msgid "Ping"
 msgstr "Ping"
 
 msgid "Pinging device..."
-msgstr "Wysyłanie ping do urządzenia"
+msgstr "Pingowanie urządzenia..."
 
 msgid "Port"
 msgstr "Port"
+
+msgid "Reboot"
+msgstr "Restart urządzenia"
+
+msgid "Requesting reboot..."
+msgstr "Żądanie ponownego uruchomienia..."
 
 msgid "Router and AP Management"
 msgstr "Zarządzanie routerami i AP"
@@ -237,6 +258,9 @@ msgstr "[minuty] Okres, w którym urządzenia będą cyklicznie sprawdzane"
 
 msgid "days ago"
 msgstr "dni temu"
+
+msgid "done"
+msgstr "wykonane"
 
 msgid "h ago"
 msgstr "g temu"

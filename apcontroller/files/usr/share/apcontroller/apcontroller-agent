@@ -4,6 +4,7 @@
 . /usr/share/libubox/jshn.sh
 
 json_init
+json_add_string "hostname" "$(cat /proc/sys/kernel/hostname)"
 json_add_string "model" "$(cat /tmp/sysinfo/model)"
 json_add_string "load" "$(awk '{printf "%s %s %s", $1, $2, $3}' /proc/loadavg)"
 json_add_int "uptime" "$(awk '{printf "%d", $1}' /proc/uptime)"

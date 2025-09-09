@@ -1,3 +1,6 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
 msgid "2.4 GHz Channel(s)"
 msgstr ""
 
@@ -31,7 +34,7 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
-msgid "Close"
+msgid "Are you sure you want to reboot"
 msgstr ""
 
 msgid "Default Wi-Fi state"
@@ -70,10 +73,16 @@ msgstr ""
 msgid "Encryption"
 msgstr ""
 
-msgid "Error:"
+msgid "Error"
+msgstr ""
+
+msgid "Fetching log..."
 msgstr ""
 
 msgid "Host Address"
+msgstr ""
+
+msgid "Hostname"
 msgstr ""
 
 msgid "Hostname or IP Address"
@@ -89,6 +98,12 @@ msgid "List of columns to display in the devices list"
 msgstr ""
 
 msgid "Load Average"
+msgstr ""
+
+msgid "Log"
+msgstr ""
+
+msgid "Log from"
 msgstr ""
 
 msgid "MAC Address"
@@ -128,6 +143,12 @@ msgid "Pinging device..."
 msgstr ""
 
 msgid "Port"
+msgstr ""
+
+msgid "Reboot"
+msgstr ""
+
+msgid "Requesting reboot..."
 msgstr ""
 
 msgid "Router and AP Management"
@@ -236,6 +257,9 @@ msgid "[minutes] The period in which devices will be periodically polled"
 msgstr ""
 
 msgid "days ago"
+msgstr ""
+
+msgid "done"
 msgstr ""
 
 msgid "h ago"

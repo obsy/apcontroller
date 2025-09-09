@@ -12,7 +12,7 @@ BASEPATH="/tmp/apcontroller"
 show_data_from_host() {
 	local cfg="$1"
 	local oldns
-	local model load uptime mac software clients2g clients5g clients6g
+	local hostname model load uptime mac software clients2g clients5g clients6g
 
 	config_get_bool enabled "$cfg" enabled 1
 	config_get name "$cfg" name
@@ -39,10 +39,11 @@ show_data_from_host() {
 		json_set_namespace host oldns
 		json_init
 		json_load_file "${BASEPATH}/${ipaddr}-${cfg}"
-		json_get_vars model load uptime mac software clients2g clients5g clients6g channels2g channels5g channels6g
+		json_get_vars hostname model load uptime mac software clients2g clients5g clients6g channels2g channels5g channels6g
 		json_cleanup
 		json_set_namespace $oldns
 
+		json_add_string "hostname" "$hostname"
 		json_add_string "model" "$model"
 		json_add_string "load" "$load"
 		json_add_int "uptime" "$uptime"

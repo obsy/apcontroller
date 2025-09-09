@@ -17,7 +17,8 @@
 				"/etc/crontabs/root": [ "write" ],
 				"/etc/init.d/cron reload": [ "exec" ],
 				"/usr/bin/apcontroller": [ "exec" ],
-				"/usr/bin/apcontroller-sendconfig": [ "exec" ]
+				"/usr/bin/apcontroller-sendconfig": [ "exec" ],
+				"/usr/bin/sshpass": [ "exec" ]
 			},
 			"ubus": {
 				"file": [ "write" ]

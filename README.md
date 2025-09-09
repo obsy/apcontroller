@@ -7,15 +7,16 @@ The application is a lightweight Access Point (AP) management system, developed 
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-devices.png">
  
 The application provides the following features:
-- adding and defining devices (running on OpenWrt) and storing access credentials (such as IP address, port, username, and password).
-- dnabling/disabling device monitoring and presenting device operation parameters.
-- defining Wi-Fi networks.
-- creating AP groups by linking Wi-Fi networks and devices.
-- deploying network configurations to enabled devices.
+- adding and defining devices (running on OpenWrt) and storing access credentials (such as IP address, port, username, and password)
+- enabling/disabling device monitoring and presenting device operation parameters
+- downloading logs from the device, the ability to reboot and ping the device
+- defining Wi-Fi networks
+- creating AP groups by linking Wi-Fi networks and devices
+- deploying network configurations to enabled devices
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-devices-edit.png">
  
-Device monitoring is performed periodically by a cron-executed script. For a device to be monitored, it must be enabled (the “Enabled” option) and have valid access credentials provided. The system sends a script to the AP (via scp) and executes it through ssh, which allows retrieving operational data from the access point. A device will be displayed with Offline status if it fails to provide data within twice the defined polling interval (e.g., 10 minutes if the polling cycle is set to 5 minutes).
+Device monitoring is performed periodically by a cron-executed script. For a device to be monitored, it must be enabled (the “Enabled” option) and have valid access credentials provided. The system sends a script to the AP (via scp) and executes it through ssh, which allows retrieving operational data from the access point. A device will be displayed with Offline status if it fails to provide data within twice and half the defined polling interval (e.g., 12.5 minutes if the polling cycle is set to 5 minutes).
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-wifi.png">
  

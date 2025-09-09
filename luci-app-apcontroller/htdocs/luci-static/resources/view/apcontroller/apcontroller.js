@@ -52,7 +52,7 @@ function hoststatus(records, section_id) {
 		if (!interval)
 			return E('span', { 'style': 'color: gray' }, _('Unknown'));
 		else
-			if (timestamp - lastContact_ts > parseInt(interval) * 2 * 60)
+			if (timestamp - lastContact_ts > parseInt(interval) * 2.5 * 60)
 				return E('span', { 'style': 'color: red' }, '● ' + _('Offline'));
 			else
 				return E('span', { 'style': 'color: green' }, '● ' + _('Online'));
@@ -115,6 +115,7 @@ return view.extend({
 			'status': _('Status'),
 			'lastcontact': _('Last Contact'),
 			'mac': _('MAC Address'),
+			'hostname': _('Hostname'),
 			'model': _('Model'),
 			'software': _('Software'),
 			'uptime': _('Uptime'),
@@ -130,6 +131,13 @@ return view.extend({
 		function updateDeviceStatus(records) {
 			devicestatus = records;
 			(devicestatus.hosts).forEach(row => {
+				if (row['channels2g'])
+					row['channels2g'] = row['channels2g'].replaceAll(' ', ', ')
+				if (row['channels5g'])
+					row['channels5g'] = row['channels5g'].replaceAll(' ', ', ')
+				if (row['channels6g'])
+					row['channels6g'] = row['channels6g'].replaceAll(' ', ', ')
+
 				if (row['lastcontact']) {
 					row['.lastcontact'] = row['lastcontact'];
 
@@ -140,7 +148,7 @@ return view.extend({
 
 						let t = '' + d.getFullYear() + '-' + lz(d.getMonth() + 1) + '-' + lz(d.getDate()) + ' ' +
 							lz(d.getHours()) + ':' + lz(d.getMinutes()) + ':' + lz(d.getSeconds());
-						
+
 						if (row['.lastcontact'] > 86400)
 							t += ' (' + parseInt(row['.lastcontact']/86400) + _('days ago') + ')';
 						else if (row['.lastcontact'] > 3600)
@@ -168,19 +176,20 @@ return view.extend({
 			document.querySelectorAll('#cbi-apcontroller-host tr[data-section-id]').forEach(row => {
 				const section_id = row.dataset.sectionId;
 				const hostRecord = devicestatus.hosts.find(h => h.section === section_id);
-				const li = row.querySelector('li[data-value="more"]');
-				if (li)
+
+				row.querySelectorAll('li[data-state="disabled"]').forEach(e => {
 					if (typeof hostRecord === 'undefined' || !hostRecord || !hostRecord['.lastcontact'] || hostRecord['.lastcontact'] == -1) {
-						li.setAttribute('aria-disabled', 'true');
-						li.classList.add('disabled');
-						li.style.pointerEvents = 'none';
-						li.style.opacity = '0.5';
+						e.setAttribute('aria-disabled', 'true');
+						e.classList.add('disabled');
+						e.style.pointerEvents = 'none';
+						e.style.opacity = '0.5';
 					} else {
-						li.removeAttribute('aria-disabled');
-						li.classList.remove('disabled');
-						li.style.pointerEvents = '';
-						li.style.opacity = '';
+						e.removeAttribute('aria-disabled');
+						e.classList.remove('disabled');
+						e.style.pointerEvents = '';
+						e.style.opacity = '';
 					}
+				})
 
 				Object.entries(morecolumns).forEach(([key, value]) => {
 					if (selectedcolumns.includes(key) || key == 'status') {
@@ -231,23 +240,30 @@ return view.extend({
 
 			const actionBtn = new ui.ComboButton('more', {
 				'more': [ _('More') ],
-				'ping': [ '%s %s'.format(_('IPv4'), _('Ping')) ]
+				'ping': [ '%s %s'.format(_('IPv4'), _('Ping')) ],
+				'log': [ _('Log') ],
+				'reboot': [ _('Reboot') ]
 			}, {
 				classes: {
 					'more': 'btn cbi-button cbi-button-normal',
-					'ping': 'btn cbi-button cbi-button-normal'
-			},
-			click: null
+					'ping': 'btn cbi-button cbi-button-normal',
+					'log': 'btn cbi-button cbi-button-normal',
+					'reboot': 'btn cbi-button cbi-button-normal'
+				},
+				click: null,
+				sort: false
 			}).render();
+			actionBtn.querySelector('li[data-value="more"]').setAttribute('data-state', 'disabled');
+			actionBtn.querySelector('li[data-value="log"]').setAttribute('data-state', 'disabled');
+			actionBtn.querySelector('li[data-value="reboot"]').setAttribute('data-state', 'disabled');
 
 			if (typeof host === 'undefined' || !host['.lastcontact'] || host['.lastcontact'] == -1) {
-				const li = actionBtn.querySelector('li[data-value="more"]');
-				if (li) {
-					li.setAttribute('aria-disabled', 'true');
-					li.classList.add('disabled');
-					li.style.pointerEvents = 'none';
-					li.style.opacity = '0.5';
-				}
+				actionBtn.querySelectorAll('li[data-state="disabled"]').forEach(e => {
+					e.setAttribute('aria-disabled', 'true');
+					e.classList.add('disabled');
+					e.style.pointerEvents = 'none';
+					e.style.opacity = '0.5';
+				})
 			}
 			actionBtn.querySelectorAll('li[data-value]').forEach(li => {
 				li.addEventListener('click', ev => {
@@ -259,10 +275,26 @@ return view.extend({
 						case 'ping':
 							this.actionPing(section_id, ev);
 							break;
+						case 'log':
+							this.actionLog(section_id, ev);
+							break;
+						case 'reboot':
+							this.actionReboot(section_id, ev);
+							break;
 					}
+					setTimeout(() => {
+						const defaultLi = actionBtn.querySelector('li[data-value="more"]');
+						if (defaultLi) {
+							actionBtn.querySelectorAll('li[data-value]').forEach(e => {
+								e.removeAttribute('selected');
+								e.removeAttribute('display');
+							});
+							defaultLi.setAttribute('selected', '');
+							defaultLi.setAttribute('display', 0);
+						}
+					}, 50);
 				});
 			});
-
 			dom.content(tdEl.lastChild, [
 				actionBtn,
 				tdEl.lastChild.childNodes[0],
@@ -301,43 +333,6 @@ return view.extend({
 						}
 					}, 50);
 				}
-			});
-		};
-
-		s.actionPing = function(section_id) {
-			const row = this.cfgvalue(section_id);
-
-			return this.map.save().then(() => {
-				ui.showModal(_('Ping'), [
-					E('p', { 'class': 'spinning' }, [ _('Pinging device...') ])
-				]);
-				return fs.exec('ping', [ '-4', '-c', '5', '-W', '1', row['ipaddr'] ]).then(function(res) {
-					ui.showModal(_('Ping'), [
-						res.stdout ? E('textarea', {
-							'spellcheck': 'false',
-							'wrap': 'off',
-							'rows': 25
-						}, [ res.stdout ]) : '',
-						res.stderr ? E('textarea', {
-							'spellcheck': 'false',
-							'wrap': 'off',
-							'rows': 25
-						}, [ res.stderr ]) : '',
-						E('div', { 'class': 'right' }, [
-							E('button', {
-								'class': 'cbi-button cbi-button-primary',
-								'click': ui.hideModal
-							}, [ _('Close') ])
-						])
-					]);
-				}).catch(function(err) {
-					ui.hideModal();
-					ui.addNotification(null, [
-						E('p', [ _('Error: '), err ])
-					]);
-				});
-			}).catch(err => {
-				ui.addNotification(null, E('p', err?.message || err), 'error');
 			});
 		};
 
@@ -386,10 +381,121 @@ return view.extend({
 						E('button', {
 							'class': 'cbi-button cbi-button-neutral',
 							'click': ui.hideModal
-						}, _('Close'))
+						}, _('Dismiss'))
 					])
 			);
 			ui.showModal(_("More Information"), child);
+		};
+
+		s.actionPing = function(section_id) {
+			const row = this.cfgvalue(section_id);
+
+			ui.showModal(_('Ping'), [
+				E('p', { 'class': 'spinning' }, [ _('Pinging device...') ])
+			]);
+			return fs.exec('ping', [ '-4', '-c', '5', '-W', '1', row['ipaddr'] ]).then(function(res) {
+				ui.showModal(_('Ping'), [
+					res.stdout ? E('textarea', {
+						'spellcheck': 'false',
+						'wrap': 'off',
+						'rows': 25
+					}, [ res.stdout ]) : '',
+					res.stderr ? E('textarea', {
+						'spellcheck': 'false',
+						'wrap': 'off',
+						'rows': 25
+					}, [ res.stderr ]) : '',
+					E('div', { 'class': 'right' }, [
+						E('button', {
+							'class': 'cbi-button cbi-button-primary',
+							'click': ui.hideModal
+						}, [ _('Dismiss') ])
+					])
+				]);
+			}).catch(function(err) {
+				ui.hideModal();
+				ui.addNotification(null, [
+					E('p', [ _('Error') + ': ', err ])
+				]);
+			});
+		};
+
+		s.actionLog = function(section_id) {
+			const row = this.cfgvalue(section_id);
+
+			ui.showModal(_('Log'), [
+				E('p', { 'class': 'spinning' }, [ _('Fetching log...') ])
+			]);
+			return fs.exec('sshpass', [
+				'-p',
+				typeof row['password'] !== 'undefined' ? row['password']: '""',
+				'ssh',
+				'-q',
+				'-o',
+				'StrictHostKeyChecking=no',
+				'-p',
+				row['port'],
+				row['username'] + '@' + row['ipaddr'],
+				'logread',
+				'-l',
+				'100']).then(function(res) {
+				ui.showModal(_('Log from') + ' ' + row['name'] + ' (' + row['ipaddr'] + ')', [
+					res.stdout ? E('textarea', {
+						'spellcheck': 'false',
+						'wrap': 'off',
+						'rows': 40,
+						'style': 'white-space: nowrap',
+					}, [ res.stdout ]) : '',
+					E('div', { 'class': 'right' }, [
+						E('button', {
+							'class': 'cbi-button cbi-button-primary',
+							'click': ui.hideModal
+						}, [ _('Dismiss') ])
+					])
+				]);
+			}).catch(function(err) {
+				ui.hideModal();
+				ui.addNotification(null, [
+					E('p', [ _('Error') + ': ', err ])
+				]);
+			});
+		};
+
+		s.actionReboot = function(section_id) {
+			const row = this.cfgvalue(section_id);
+
+			if (!confirm(_('Are you sure you want to reboot ' + row['name'] + ' (' + row['ipaddr'] + ')' + '?'))) {
+				return;
+			}
+			ui.showModal(_('Reboot'), [
+				E('p', { 'class': 'spinning' }, [ _('Requesting reboot...') ])
+			]);
+			return fs.exec('sshpass', [
+				'-p',
+				typeof row['password'] !== 'undefined' ? row['password']: '""',
+				'ssh',
+				'-q',
+				'-o',
+				'StrictHostKeyChecking=no',
+				'-p',
+				row['port'],
+				row['username'] + '@' + row['ipaddr'],
+				'reboot']).then(function(res) {
+				ui.showModal(_('Reboot'), [
+					E('p', { }, [ _('Requesting reboot...') + ' ' + _('done') ]),
+					E('div', { 'class': 'right' }, [
+						E('button', {
+							'class': 'cbi-button cbi-button-primary',
+							'click': ui.hideModal
+						}, [ _('Dismiss') ])
+					])
+				]);
+			}).catch(function(err) {
+				ui.hideModal();
+				ui.addNotification(null, [
+					E('p', [ _('Error') + ': ', err ])
+				]);
+			});
 		};
 
 		o = s.taboption('host', form.Flag, 'enabled', _('Enabled'), _('When enabled, the device will be polled periodically'));
@@ -439,7 +545,7 @@ return view.extend({
 
 		Object.entries(morecolumns).forEach(([key, value]) => {
 			if (selectedcolumns.includes(key) || key == 'status') {
-				o = s.taboption('host', form.Value, '_' + key, value);
+				o = s.taboption('host', form.DummyValue, '_' + key, value);
 				o.rawhtml = true;
 				o.write = function() {};
 				o.remove = function() {};
@@ -598,6 +704,7 @@ return view.extend({
 				send_opt = {
 					'class': 'btn cbi-button cbi-button-neutral',
 					'title': _('Send config to devices'),
+					'click': ui.createHandlerFn(this, 'handleSendConfig', section_id)
 				};
 
 			dom.content(tdEl.lastChild, [
@@ -628,7 +735,7 @@ return view.extend({
 				}).catch(function(err) {
 					ui.hideModal();
 					ui.addNotification(null, [
-						E('p', [ _('Error: '), err ])
+						E('p', [ _('Error') + ': ', err ])
 					]);
 				});
 			}).catch(err => {
@@ -721,7 +828,7 @@ return view.extend({
 				updateDeviceStatus(livestatus);
 				refreshDeviceGrid();
 			});
-		}, 60);
+		}, 63);
 
 		return m.render();
 	}

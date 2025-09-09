@@ -7,16 +7,16 @@ Aplikacja to lekki system zarządzania punktami dostępowymi (Access Points), zb
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-devices.png">
  
 Aplikacja umożliwia:
-- dodawanie i definiowania urządzeń (pracujących pod kontrolą OpenWrt) oraz wprowadzenie danych dostępnych (takich jak adres IP, port, login i hasło użytkownika).
+- dodawanie i definiowania urządzeń (pracujących pod kontrolą OpenWrt) oraz wprowadzenie danych dostępnych (takich jak adres IP, port, login i hasło użytkownika)
 - włączenie/wyłącenie monitorowania urządzeń oraz prezentacja parametrów ich pracy
+- pobieranie logów z urządzenia, możliwość rebootu i pingowania urządzenia
 - definiowanie sieci Wi-Fi
 - definiowanie grup AP przez powiązanie sieci Wi-Fi oraz urządzeń
 - wysyłanie konfiguracji sieci do włączonych urządzeń
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-devices-edit.png">
  
-Monitoring urządzeń odbywa się cyklicznie przez skrypt wykonywany w cronie. Aby urządzenie było monitorowane wymagane jest jego włączenie (opcja "Enabled") oraz podanie danych dostępowych. System wysyła do AP skrypt (wykorzystując scp) a następnie uruchamia go przez ssh, co pozwala na uzyskanie danych o pracy punktu dostępowego.
-Status Offline urządzenia zostanie wyświetlony jeżeli urządzenie nie dostarczy danych w ciągu czasu zdefiniowanego jako 2 x interwał odpytywania (np. 10 minut jeżeli cykl został zdefiniowany na 5 minut).
+Monitoring urządzeń odbywa się cyklicznie przez skrypt wykonywany w cronie. Aby urządzenie było monitorowane wymagane jest jego włączenie (opcja "Enabled") oraz podanie danych dostępowych. System wysyła do AP skrypt (wykorzystując scp) a następnie uruchamia go przez ssh, co pozwala na uzyskanie danych o pracy punktu dostępowego. Status Offline urządzenia zostanie wyświetlony jeżeli urządzenie nie dostarczy danych w ciągu czasu zdefiniowanego jako 2.5 x interwał odpytywania (np. 12.5 minuty jeżeli cykl został zdefiniowany na 5 minut).
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-wifi.png">
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-wifi-edit.png">
