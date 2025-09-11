@@ -37,6 +37,7 @@ for WIFI in $WIFIS; do
 		json_close_object
 	done
 done
+json_close_array
 
 json_dump > ${BASEPATH}/cmds-${SEC}
 
@@ -56,7 +57,6 @@ for HOST in $HOSTS; do
 	[ $? -eq 0 ] && sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-setconfig ${username}@${ipaddr}:/tmp 2>/dev/null
 	[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent-setconfig /tmp/cmds-${SEC}" >/dev/null 2>&1
 	T=$?
-	rm ${BASEPATH}/cmds-${SEC}
 	if [ -n "$VERBOSE" ]; then
 		if [ "$T" -eq 0 ]; then
 			RET="OK"
@@ -67,5 +67,7 @@ for HOST in $HOSTS; do
 		echo "${NAME} (${ipaddr}): ${RET}"
 	fi
 done
+
+rm ${BASEPATH}/cmds-${SEC} 2>/dev/null
 
 exit 0

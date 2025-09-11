@@ -9,6 +9,7 @@ The application is a lightweight Access Point (AP) management system, developed 
 The application provides the following features:
 - adding and defining devices (running on OpenWrt) and storing access credentials (such as IP address, port, username, and password)
 - enabling/disabling device monitoring and presenting device operation parameters
+- list of wireless clients connected to monitored devices with Wi-Fi
 - downloading logs from the device, the ability to reboot and ping the device
 - defining Wi-Fi networks
 - creating AP groups by linking Wi-Fi networks and devices

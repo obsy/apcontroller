@@ -37,6 +37,24 @@ msgstr ""
 msgid "Are you sure you want to reboot"
 msgstr ""
 
+msgid "Band"
+msgstr ""
+
+msgid "Clients List Columns"
+msgstr ""
+
+msgid "Connected"
+msgstr ""
+
+msgid "Connected clients"
+msgstr ""
+
+msgid "Connected to"
+msgstr ""
+
+msgid "Connected to SSID"
+msgstr ""
+
 msgid "Default Wi-Fi state"
 msgstr ""
 
@@ -58,10 +76,10 @@ msgstr ""
 msgid "Devices"
 msgstr ""
 
-msgid "Dismiss"
+msgid "Devices List Columns"
 msgstr ""
 
-msgid "Displayed Column List"
+msgid "Dismiss"
 msgstr ""
 
 msgid "Edit"
@@ -88,10 +106,16 @@ msgstr ""
 msgid "Hostname or IP Address"
 msgstr ""
 
+msgid "IP Address"
+msgstr ""
+
 msgid "IPv4"
 msgstr ""
 
 msgid "Last Contact"
+msgstr ""
+
+msgid "List of columns to display in the clients list"
 msgstr ""
 
 msgid "List of columns to display in the devices list"
@@ -127,6 +151,9 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+msgid "No wireless clients connected"
+msgstr ""
+
 msgid "Offline"
 msgstr ""
 
@@ -143,6 +170,9 @@ msgid "Pinging device..."
 msgstr ""
 
 msgid "Port"
+msgstr ""
+
+msgid "RX"
 msgstr ""
 
 msgid "Reboot"
@@ -181,10 +211,19 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+msgid "Signal"
+msgstr ""
+
 msgid "Software"
 msgstr ""
 
 msgid "Status"
+msgstr ""
+
+msgid "TX"
+msgstr ""
+
+msgid "Tech."
 msgstr ""
 
 msgid "The interface name is too long"

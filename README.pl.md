@@ -9,6 +9,7 @@ Aplikacja to lekki system zarządzania punktami dostępowymi (Access Points), zb
 Aplikacja umożliwia:
 - dodawanie i definiowania urządzeń (pracujących pod kontrolą OpenWrt) oraz wprowadzenie danych dostępnych (takich jak adres IP, port, login i hasło użytkownika)
 - włączenie/wyłącenie monitorowania urządzeń oraz prezentacja parametrów ich pracy
+- lista klientów bezprzewodowych połączonych do monitorowanych urządzeń z Wi-Fi
 - pobieranie logów z urządzenia, możliwość rebootu i pingowania urządzenia
 - definiowanie sieci Wi-Fi
 - definiowanie grup AP przez powiązanie sieci Wi-Fi oraz urządzeń

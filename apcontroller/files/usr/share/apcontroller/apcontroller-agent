@@ -21,17 +21,45 @@ if [ -e /etc/config/wireless ]; then
 	for BAND in 2g 5g 6g; do
 		CHANNELS=""
 		IFNAMES=""
-		eval $(echo "$WIRELESSSTATUS" | jsonfilter -q -e 'CHANNELS=@[@.config.band="'${BAND}'"].config.channel' -e 'IFNAMES=@[@.config.band="'${BAND}'"].interfaces[*].ifname')
+		eval $(echo "$WIRELESSSTATUS" | jsonfilter -q -e 'CHANNELS=@[@.up=true && @.config.band="'${BAND}'"].config.channel' -e 'IFNAMES=@[@.up=true && @.config.band="'${BAND}'"].interfaces[*].ifname')
 		if [ -n "${CHANNELS}" ]; then
 			json_add_string "channels${BAND}" "${CHANNELS}"
 		fi
 		if [ -n "${IFNAMES}" ]; then
-			ALL=0
+			json_add_array "clientslist${BAND}"
 			for IFNAME in $IFNAMES; do
-				CNT=$(iw dev ${IFNAME} station dump | grep -c Station)
-				ALL=$((ALL + CNT))
+				SSID=""
+				eval $(echo "$WIRELESSSTATUS" | jsonfilter -q -e 'SSID=@.*.interfaces[@.ifname="'${IFNAME}'"].config.ssid')
+				for STATION in $(iw dev "$IFNAME" station dump 2>/dev/null | awk '{if($1 == "Station") {MAC=$2; station[MAC]=1} if($0 ~ /rx bytes:/) {rx[MAC]=$3} if($0 ~ /tx bytes:/) {tx[MAC]=$3} if($0 ~ /^\s*signal:/) {signal[MAC]=$2} if($0 ~ /connected time:/) {connected[MAC]=$3}} END {for (s in station) {printf "%s,%s,%s,%d,%d ", s, rx[s], tx[s], signal[s], connected[s]}}'); do
+					set -- $(echo "$STATION" | tr ',' ' ')
+					_MAC="$1"
+					json_add_object
+					json_add_string "ssid" "$SSID"
+					json_add_string "mac" "$_MAC"
+					json_add_int "rx" "$2"
+					json_add_int "tx" "$3"
+					json_add_int "signal" "$4"
+					json_add_int "connected" "$5"
+					T="0"
+					grep -qi "^ht supported" /sys/kernel/debug/ieee80211/*/*/stations/${_MAC}/ht_capa 2>/dev/null && T="4"
+					grep -qi "^vht supported" /sys/kernel/debug/ieee80211/*/*/stations/${_MAC}/vht_capa 2>/dev/null && T="5"
+					grep -qi "^he supported" /sys/kernel/debug/ieee80211/*/*/stations/${_MAC}/he_capa 2>/dev/null && T="6"
+					grep -qi "^eht supported" /sys/kernel/debug/ieee80211/*/*/stations/${_MAC}/eht_capa 2>/dev/null && T="7"
+					json_add_int "wifi" "$T"
+					T=$(awk '/'${_MAC}'/{printf "%s %s", $3, $4}' /tmp/dhcp.leases)
+					if [ -n "$T" ]; then
+						set -- $(echo "$T")
+						json_add_string "ipaddr" "$1"
+						json_add_string "name" "$2"
+					else
+						T=$(awk '/0x[26]\s*'${_MAC}'/{printf "%s", $1; exit}' /proc/net/arp)
+						json_add_string "ipaddr" "$T"
+						json_add_string "name" ""
+					fi
+					json_close_object
+				done
 			done
-			json_add_int "clients${BAND}" "${ALL}"
+			json_close_array
 		fi
 	done
 fi

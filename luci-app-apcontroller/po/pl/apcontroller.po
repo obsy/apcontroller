@@ -37,6 +37,24 @@ msgstr "Dodaj nową grupę"
 msgid "Are you sure you want to reboot"
 msgstr "Czy na pewno chcesz ponownie uruchomić?"
 
+msgid "Band"
+msgstr "Pasmo"
+
+msgid "Clients List Columns"
+msgstr "Lista kolumn dla klientów"
+
+msgid "Connected"
+msgstr "Połączony"
+
+msgid "Connected clients"
+msgstr "Połączeni klienci"
+
+msgid "Connected to"
+msgstr "Połączony do"
+
+msgid "Connected to SSID"
+msgstr "Połączony do SSID"
+
 msgid "Default Wi-Fi state"
 msgstr "Domyślny stan Wi-Fi"
 
@@ -58,11 +76,11 @@ msgstr "Okres odczytu urządzenia"
 msgid "Devices"
 msgstr "Urządzenia"
 
+msgid "Devices List Columns"
+msgstr "Lista kolumn dla urządzeń"
+
 msgid "Dismiss"
 msgstr "Zamknij"
-
-msgid "Displayed Column List"
-msgstr "Wyświetlana lista kolumn"
 
 msgid "Edit"
 msgstr "Edytuj"
@@ -88,11 +106,17 @@ msgstr "Nazwa hosta"
 msgid "Hostname or IP Address"
 msgstr "Nazwa urządzenia lub adres IP"
 
+msgid "IP Address"
+msgstr "Adres IP"
+
 msgid "IPv4"
 msgstr "IPv4"
 
 msgid "Last Contact"
 msgstr "Ostatni kontakt"
+
+msgid "List of columns to display in the clients list"
+msgstr "Lista kolumn do wyświetlenia na liście klientów"
 
 msgid "List of columns to display in the devices list"
 msgstr "Lista kolumn do wyświetlenia na liście urządzeń"
@@ -127,6 +151,9 @@ msgstr "Sieć"
 msgid "No"
 msgstr "Nie"
 
+msgid "No wireless clients connected"
+msgstr "Brak połączonych klinetów bezprzewodowych"
+
 msgid "Offline"
 msgstr "Nieaktywne"
 
@@ -144,6 +171,9 @@ msgstr "Pingowanie urządzenia..."
 
 msgid "Port"
 msgstr "Port"
+
+msgid "RX"
+msgstr "Pobrano"
 
 msgid "Reboot"
 msgstr "Restart urządzenia"
@@ -181,11 +211,20 @@ msgstr "Wysyłanie poleceń do urządzeń..."
 msgid "Settings"
 msgstr "Ustawienia"
 
+msgid "Signal"
+msgstr "Sygnał"
+
 msgid "Software"
 msgstr "Oprogramowanie"
 
 msgid "Status"
 msgstr "Status"
+
+msgid "TX"
+msgstr "Wysłano"
+
+msgid "Tech."
+msgstr "Tech."
 
 msgid "The interface name is too long"
 msgstr "Nazwa interfejsu jest zbyt długa"

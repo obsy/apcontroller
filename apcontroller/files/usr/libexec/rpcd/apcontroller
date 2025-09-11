@@ -12,7 +12,7 @@ BASEPATH="/tmp/apcontroller"
 show_data_from_host() {
 	local cfg="$1"
 	local oldns
-	local hostname model load uptime mac software clients2g clients5g clients6g
+	local hostname model load uptime mac software ssid
 
 	config_get_bool enabled "$cfg" enabled 1
 	config_get name "$cfg" name
@@ -39,7 +39,55 @@ show_data_from_host() {
 		json_set_namespace host oldns
 		json_init
 		json_load_file "${BASEPATH}/${ipaddr}-${cfg}"
-		json_get_vars hostname model load uptime mac software clients2g clients5g clients6g channels2g channels5g channels6g
+		json_get_vars hostname model load uptime mac software ssid channels2g channels5g channels6g
+
+		for BAND in 2g 5g 6g; do
+			if json_is_a "clientslist${BAND}" array; then
+				json_set_namespace $oldns
+				json_add_array "clientslist${BAND}"
+				json_set_namespace host oldns
+
+				json_select "clientslist${BAND}"
+
+				idx=1
+				while json_is_a $idx object; do
+					json_select $idx
+					json_get_var _ssid "ssid"
+					json_get_var _mac "mac"
+					json_get_var _rx "rx"
+					json_get_var _tx "tx"
+					json_get_var _signal "signal"
+					json_get_var _connected "connected"
+					json_get_var _wifi "wifi"
+					json_get_var _ipaddr "ipaddr"
+					json_get_var _name "name"
+
+					json_set_namespace $oldns
+					json_add_object
+					json_add_string "ssid" "$_ssid"
+					json_add_string "mac" "$_mac"
+					json_add_int "rx" "$_rx"
+					json_add_int "tx" "$_tx"
+					json_add_int "signal" "$_signal"
+					json_add_int "connected" "$_connected"
+					json_add_int "wifi" "$_wifi"
+					json_add_string "ipaddr" "$_ipaddr"
+					json_add_string "name" "$_name"
+					json_close_object
+					json_set_namespace host oldns
+
+					json_select ..
+					idx=$(( idx + 1 ))
+				done
+
+				json_set_namespace $oldns
+				json_close_array
+				json_set_namespace host oldns
+
+				json_select ..
+			fi
+		done
+
 		json_cleanup
 		json_set_namespace $oldns
 
@@ -49,9 +97,6 @@ show_data_from_host() {
 		json_add_int "uptime" "$uptime"
 		json_add_string "mac" "$mac"
 		json_add_string "software" "$software"
-		[ -n "$clients2g" ] && json_add_string "clients2g" "$clients2g"
-		[ -n "$clients5g" ] && json_add_string "clients5g" "$clients5g"
-		[ -n "$clients6g" ] && json_add_string "clients6g" "$clients6g"
 		[ -n "$channels2g" ] && json_add_string "channels2g" "$channels2g"
 		[ -n "$channels5g" ] && json_add_string "channels5g" "$channels5g"
 		[ -n "$channels6g" ] && json_add_string "channels6g" "$channels6g"

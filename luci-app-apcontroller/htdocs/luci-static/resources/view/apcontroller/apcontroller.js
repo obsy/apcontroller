@@ -109,9 +109,10 @@ return view.extend({
 	render: function(data) {
 		const hosts = data[0];
 		let devicestatus = {};
+		let clients = [];
 		updateDeviceStatus(data[1]);
 
-		const morecolumns = {
+		const devicesmorecolumns = {
 			'status': _('Status'),
 			'lastcontact': _('Last Contact'),
 			'mac': _('MAC Address'),
@@ -128,9 +129,29 @@ return view.extend({
 			'channels6g': _('6 GHz Channel(s)')
 		};
 
+		const clientscolumns = {
+			'ap': _('Connected to'),
+			'ssid': _('Connected to SSID'),
+			'name': _('Name'),
+			'mac': _('MAC Address'),
+			'ipaddr': _('IP Address'),
+			'band':	_('Band'),
+			'wifi': _('Tech.'),
+			'signal': _('Signal'),
+			'connected': _('Connected'),
+			'rx': _('RX'),
+			'tx': _('TX')
+		};
+
 		function updateDeviceStatus(records) {
 			devicestatus = records;
+			clients.length = 0;
 			(devicestatus.hosts).forEach(row => {
+				const ap = uci.get('apcontroller', row['section'], 'name');
+
+				if (row['mac'])
+					row['mac'] = row['mac'].toUpperCase();
+
 				if (row['channels2g'])
 					row['channels2g'] = row['channels2g'].replaceAll(' ', ', ')
 				if (row['channels5g'])
@@ -169,8 +190,121 @@ return view.extend({
 					row['uptime'] = '%t'.format(row['.uptime']);
 				} else
 					row['uptime'] = '-';
+
+				if (row['clientslist2g']) {
+					row['clients2g'] = String(row['clientslist2g'].length);
+					let t = row['clientslist2g'].map(obj => ({
+						...obj,
+						ap: ap,
+						band: 2
+					}));
+					clients = clients.concat(t);
+				}
+				if (row['clientslist5g']) {
+					row['clients5g'] = String(row['clientslist5g'].length);
+					let t = row['clientslist5g'].map(obj => ({
+						...obj,
+						ap: ap,
+						band: 5
+					}));
+					clients = clients.concat(t);
+				}
+				if (row['clientslist6g']) {
+					row['clients6g'] = String(row['clientslist6g'].length);
+					let t = row['clientslist6g'].map(obj => ({
+						...obj,
+						ap: ap,
+						band: 6
+					}));
+					clients = clients.concat(t);
+				}
 			})
-		};
+			clients.forEach(c => {
+				const mac = c.mac.toUpperCase();
+				c.mac = mac;
+				if (c.name == '' || c.name == '*') {
+					if (hosts[mac] && hosts[mac].name)
+						c.name = (hosts[mac].name).replace('.lan', '');
+				}
+				if (c.ipaddr == '') {
+					if (hosts[mac] && hosts[mac].ipaddrs)
+						c.ipaddr = (hosts[mac].ipaddrs).join('<br>');
+				}
+			});
+
+			// Refresh clients table
+			const tablediv = document.querySelector('#clients-container');
+			if (tablediv) {
+				let table = tablediv.querySelector('table');
+				if (table) {
+					let t = L.dom.findClassInstance(table);
+					let sort = null;
+					if (typeof t.getActiveSortState === 'function')
+						sort = t.getActiveSortState();
+					tablediv.innerHTML = '';
+					tablediv.appendChild(renderClientsTable(clients));
+					if (sort !== null) {
+						table = tablediv.querySelector('table');
+						if (table) {
+							t = L.dom.findClassInstance(table);
+							if (typeof t.setActiveSortState === 'function') {
+								t.setActiveSortState(sort[0], sort[1]);
+								t.update(t.data, t.placeholder);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		function renderClientsTable(clients) {
+			if (!clients || clients.length === 0)
+				return E('table', { 'class': 'table table-striped cbi-section-table' }, [
+						E('tr', { 'class': 'tr cbi-section-table-row placeholder' }, [
+							E('td', { 'class': 'td' }, E('em', _('No wireless clients connected')))
+						])
+					]);
+
+			const selectedclientscolumns = uci.get('apcontroller', '@global[0]', 'clientcolumn') || [];
+			let displayColumns = selectedclientscolumns.length > 0 ? selectedclientscolumns : Object.keys(clientscolumns);
+
+			let headerRow = E('tr', { 'class': 'tr table-titles' },
+				displayColumns.map(key =>
+					E('th', { 'class': 'th' }, [ clientscolumns[key] ])
+				)
+			);
+			let table = E('table', { 'class': 'table table-striped' }, [ headerRow ]);
+
+			function formatCell(key, client) {
+				switch (key) {
+					case 'band':
+						if (client.band == 2) return '2.4 GHz';
+						if (client.band == 5) return '5 GHz';
+						if (client.band == 6) return '6 GHz';
+						return '-';
+					case 'wifi':
+						return client.wifi > 0 ? 'Wi-Fi ' + client.wifi : '-';
+					case 'signal':
+						return (client.signal != null) ? client.signal + ' dBm' : '-';
+					case 'connected':
+						return [ client.connected, '%t'.format(client.connected) || '-' ];
+					case 'rx':
+						return [ client.rx, '%.2mB'.format(client.rx) || '-' ];
+					case 'tx':
+						return [ client.tx, '%.2mB'.format(client.tx) || '-' ];
+					default:
+						return client[key] || '-';
+				}
+			}
+
+			let rows = clients.map(client =>
+				displayColumns.map(key => formatCell(key, client))
+			);
+
+			cbi_update_table(table, rows);
+
+			return E('div', [ E('h3', _('Connected clients')), table ]);
+		}
 
 		function refreshDeviceGrid() {
 			document.querySelectorAll('#cbi-apcontroller-host tr[data-section-id]').forEach(row => {
@@ -191,7 +325,7 @@ return view.extend({
 					}
 				})
 
-				Object.entries(morecolumns).forEach(([key, value]) => {
+				Object.entries(devicesmorecolumns).forEach(([key, value]) => {
 					if (selectedcolumns.includes(key) || key == 'status') {
 						const cell = row.querySelector('[data-name="_' + key + '"]');
 						if (!cell) return;
@@ -229,6 +363,11 @@ return view.extend({
 				let e = nodes.querySelector('#cbi-apcontroller-host > h3');
 				if (e)
 					e.remove();
+
+				let clientsContainer = E('div', { id: 'clients-container', style: 'margin-top: 20px;' });
+				clientsContainer.appendChild(renderClientsTable(clients));
+				nodes.appendChild(clientsContainer);
+
 				return nodes;
 			});
 		};
@@ -361,7 +500,7 @@ return view.extend({
 			);
 
 			if (typeof host !== 'undefined') {
-				Object.entries(morecolumns).forEach(([key, value]) => {
+				Object.entries(devicesmorecolumns).forEach(([key, value]) => {
 					let val = host[key] ? host[key] : '-';
 					if (key == 'status')
 						val = hoststatus([host], section_id);
@@ -543,7 +682,7 @@ return view.extend({
 		o.modalonly = true;
 		o.password = true;
 
-		Object.entries(morecolumns).forEach(([key, value]) => {
+		Object.entries(devicesmorecolumns).forEach(([key, value]) => {
 			if (selectedcolumns.includes(key) || key == 'status') {
 				o = s.taboption('host', form.DummyValue, '_' + key, value);
 				o.rawhtml = true;
@@ -620,8 +759,8 @@ return view.extend({
 		o.value('6g', '6 GHz');
 		o.default = '2g';
 		o.textvalue = function (section_id) {
-			var cfgvalues = this.map.data.get('apcontroller', section_id, 'band') || [];
-			var names = [];
+			const cfgvalues = this.map.data.get('apcontroller', section_id, 'band') || [];
+			let names = [];
 			cfgvalues.forEach(band => {
 				switch (band) {
 					case '2g':
@@ -721,9 +860,9 @@ return view.extend({
 				ui.showModal(_('Sending commands'), [
 					E('p', { 'class': 'spinning' }, [ _('Sending commands to devices...') ])
 				]);
-				return fs.exec('/usr/bin/apcontroller-sendconfig', [section_id, 'verbose']).then(function(res) {
+				return fs.exec('/usr/bin/apcontroller-sendconfig', [ section_id, 'verbose' ]).then(function(res) {
 					ui.showModal(_('Sending commands'), [
-						res.stdout ? E('p', [ res.stdout ]) : '',
+						res.stdout ? E('pre', [ res.stdout ]) : '',
 						res.stderr ? E('pre', [ res.stderr ]) : '',
 						E('div', { 'class': 'right' }, [
 							E('button', {
@@ -813,13 +952,18 @@ return view.extend({
 		o = s.option(form.Value, 'interval', _('Device Reading Interval'), _('[minutes] The period in which devices will be periodically polled'));
 		o.datatype = 'and(uinteger,min(1),max(9999))';
 
-		o = s.option(form.MultiValue, 'column', _('Displayed Column List'), _('List of columns to display in the devices list'));
+		o = s.option(form.MultiValue, 'column', _('Devices List Columns'), _('List of columns to display in the devices list'));
 		o.value('enabled', _('Enabled'));
 		o.value('name', _('Name'));
 		o.value('ipaddr', _('Host Address'));
-		Object.entries(morecolumns).forEach(([key, value]) => {
+		Object.entries(devicesmorecolumns).forEach(([key, value]) => {
 			if (key != 'status')
 				o.value(key, value);
+		});
+
+		o = s.option(form.MultiValue, 'clientcolumn', _('Clients List Columns'), _('List of columns to display in the clients list'));
+		Object.entries(clientscolumns).forEach(([key, value]) => {
+			o.value(key, value);
 		});
 
 		// Refresh data on Devices tab
