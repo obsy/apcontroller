@@ -136,7 +136,7 @@ return view.extend({
 			'mac': _('MAC Address'),
 			'ipaddr': _('IP Address'),
 			'band':	_('Band'),
-			'wifi': _('Tech.'),
+			'wifi': _('Std'),
 			'signal': _('Signal'),
 			'connected': _('Connected'),
 			'rx': _('RX'),
@@ -566,18 +566,14 @@ return view.extend({
 				E('p', { 'class': 'spinning' }, [ _('Fetching log...') ])
 			]);
 			return fs.exec('sshpass', [
-				'-p',
-				typeof row['password'] !== 'undefined' ? row['password']: '""',
+				'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
 				'ssh',
 				'-q',
-				'-o',
-				'StrictHostKeyChecking=no',
-				'-p',
-				row['port'],
+				'-o', 'StrictHostKeyChecking=no',
+				'-p', row['port'],
 				row['username'] + '@' + row['ipaddr'],
-				'logread',
-				'-l',
-				'100']).then(function(res) {
+				'logread', '-l', '100'
+			]).then(function(res) {
 				ui.showModal(_('Log from') + ' ' + row['name'] + ' (' + row['ipaddr'] + ')', [
 					res.stdout ? E('textarea', {
 						'spellcheck': 'false',
@@ -610,16 +606,14 @@ return view.extend({
 				E('p', { 'class': 'spinning' }, [ _('Requesting reboot...') ])
 			]);
 			return fs.exec('sshpass', [
-				'-p',
-				typeof row['password'] !== 'undefined' ? row['password']: '""',
+				'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
 				'ssh',
 				'-q',
-				'-o',
-				'StrictHostKeyChecking=no',
-				'-p',
-				row['port'],
+				'-o', 'StrictHostKeyChecking=no',
+				'-p', row['port'],
 				row['username'] + '@' + row['ipaddr'],
-				'reboot']).then(function(res) {
+				'reboot'
+			]).then(function(res) {
 				ui.showModal(_('Reboot'), [
 					E('p', { }, [ _('Requesting reboot...') + ' ' + _('done') ]),
 					E('div', { 'class': 'right' }, [
@@ -648,6 +642,19 @@ return view.extend({
 		o.rmempty = false;
 		if (!selectedcolumns.includes('name'))
 			o.modalonly = true;
+		o.textvalue = function (section_id) {
+			const name = this.map.data.get('apcontroller', section_id, 'name');
+			const url = this.map.data.get('apcontroller', section_id, 'url');
+
+			if (url && url.trim() !== '') {
+				return E('a', {
+				'href': url,
+				'target': '_blank',
+				'rel': 'noopener noreferrer'
+				}, name);
+			}
+			return name;
+		};
 
 		o = s.taboption('host', form.Value, 'ipaddr', _('Host Address'), _('Hostname or IP Address'));
 		o.rmempty = false;
@@ -695,6 +702,19 @@ return view.extend({
 					o.textvalue = hostinfo.bind(o, key, devicestatus.hosts);
 			}
 		});
+
+		o = s.taboption('host', form.Value, 'url', _('GUI URL'), _('Link to device GUI address'));
+		o.modalonly = true;
+		o.datatype = 'string';
+		o.validate = function (section_id, value) {
+			if (value == "") {
+				return true;
+			}
+			if (!value.match(/^(http|https):\/\//)) {
+				return _("URL format error, format: http:// or https://");
+			}
+			return true;
+		}
 
 
 		// Wi-Fi tab

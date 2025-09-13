@@ -21,7 +21,19 @@ if [ -e /etc/config/wireless ]; then
 	for BAND in 2g 5g 6g; do
 		CHANNELS=""
 		IFNAMES=""
-		eval $(echo "$WIRELESSSTATUS" | jsonfilter -q -e 'CHANNELS=@[@.up=true && @.config.band="'${BAND}'"].config.channel' -e 'IFNAMES=@[@.up=true && @.config.band="'${BAND}'"].interfaces[*].ifname')
+		FILTER=""
+		case "$BAND" in
+			"2g")
+				FILTER='@.config.band="2g" || @.config.hwmode="11g"'
+				;;
+			"5g")
+				FILTER='@.config.band="5g" || @.config.hwmode="11a"'
+				;;
+			"6g")
+				FILTER='@.config.band="6g"'
+				;;
+		esac
+		eval $(echo "$WIRELESSSTATUS" | jsonfilter -q -e 'CHANNELS=@[@.up=true && ('"$FILTER"')].config.channel' -e 'IFNAMES=@[@.up=true && ('"$FILTER"')].interfaces[*].ifname')
 		if [ -n "${CHANNELS}" ]; then
 			json_add_string "channels${BAND}" "${CHANNELS}"
 		fi
@@ -36,8 +48,8 @@ if [ -e /etc/config/wireless ]; then
 					json_add_object
 					json_add_string "ssid" "$SSID"
 					json_add_string "mac" "$_MAC"
-					json_add_int "rx" "$2"
-					json_add_int "tx" "$3"
+					json_add_int "tx" "$2"
+					json_add_int "rx" "$3"
 					json_add_int "signal" "$4"
 					json_add_int "connected" "$5"
 					T="0"
@@ -46,7 +58,7 @@ if [ -e /etc/config/wireless ]; then
 					grep -qi "^he supported" /sys/kernel/debug/ieee80211/*/*/stations/${_MAC}/he_capa 2>/dev/null && T="6"
 					grep -qi "^eht supported" /sys/kernel/debug/ieee80211/*/*/stations/${_MAC}/eht_capa 2>/dev/null && T="7"
 					json_add_int "wifi" "$T"
-					T=$(awk '/'${_MAC}'/{printf "%s %s", $3, $4}' /tmp/dhcp.leases)
+					T=$(awk '/'${_MAC}'/{if($4 == "*"){$4=""};printf "%s %s", $3, $4}' /tmp/dhcp.leases)
 					if [ -n "$T" ]; then
 						set -- $(echo "$T")
 						json_add_string "ipaddr" "$1"

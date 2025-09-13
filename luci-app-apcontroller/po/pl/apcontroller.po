@@ -97,6 +97,9 @@ msgstr "Błąd"
 msgid "Fetching log..."
 msgstr "Pobieranie dziennika..."
 
+msgid "GUI URL"
+msgstr "Adres URL GUI"
+
 msgid "Host Address"
 msgstr "Adres urządzenia"
 
@@ -114,6 +117,9 @@ msgstr "IPv4"
 
 msgid "Last Contact"
 msgstr "Ostatni kontakt"
+
+msgid "Link to device GUI address"
+msgstr "Link do adresu interfejsu graficznego"
 
 msgid "List of columns to display in the clients list"
 msgstr "Lista kolumn do wyświetlenia na liście klientów"
@@ -220,11 +226,11 @@ msgstr "Oprogramowanie"
 msgid "Status"
 msgstr "Status"
 
+msgid "Std"
+msgstr "Std"
+
 msgid "TX"
 msgstr "Wysłano"
-
-msgid "Tech."
-msgstr "Tech."
 
 msgid "The interface name is too long"
 msgstr "Nazwa interfejsu jest zbyt długa"
@@ -234,6 +240,9 @@ msgstr "Nazwa sieci do której będzie należeć Wi-Fi"
 
 msgid "The name that the APs are to advertise"
 msgstr "Nazwa sieci którą AP mają rozgłaszać"
+
+msgid "URL format error, format: http:// or https://"
+msgstr "Błąd formatu adresu URL, poprawny: http:// lub https://"
 
 msgid "Unknown"
 msgstr "Nieznany"

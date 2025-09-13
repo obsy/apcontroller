@@ -97,6 +97,9 @@ msgstr ""
 msgid "Fetching log..."
 msgstr ""
 
+msgid "GUI URL"
+msgstr ""
+
 msgid "Host Address"
 msgstr ""
 
@@ -113,6 +116,9 @@ msgid "IPv4"
 msgstr ""
 
 msgid "Last Contact"
+msgstr ""
+
+msgid "Link to device GUI address"
 msgstr ""
 
 msgid "List of columns to display in the clients list"
@@ -220,10 +226,10 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-msgid "TX"
+msgid "Std"
 msgstr ""
 
-msgid "Tech."
+msgid "TX"
 msgstr ""
 
 msgid "The interface name is too long"
@@ -233,6 +239,9 @@ msgid "The name of the network to which the Wi-Fi will belong"
 msgstr ""
 
 msgid "The name that the APs are to advertise"
+msgstr ""
+
+msgid "URL format error, format: http:// or https://"
 msgstr ""
 
 msgid "Unknown"

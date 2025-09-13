@@ -73,8 +73,19 @@ while json_is_a $IDX object; do
 		json_select ..
 		continue
 	fi
- 
-	RADIOS=$(uci show wireless | awk -F. '/\.band='\'''"$band"''\''$/{print $2}')
+
+	RADIOS=""
+	case "$band"
+		"2g")
+			RADIOS=$(uci show wireless | awk -F. '/\.hwmode='\''11g'\''$|\.band='\''2g'\''/{print $2}'
+			;;
+		"5g")
+			RADIOS=$(uci show wireless | awk -F. '/\.hwmode='\''11a'\''$|\.band='\''5g'\''/{print $2}'
+			;;
+		"6g")
+			RADIOS=$(uci show wireless | awk -F. '/\.band='\''6g'\''/{print $2}'
+			;;
+	esac
 	if [ -z "$RADIOS" ]; then
 		IDX=$((IDX + 1))
 		json_select ..
