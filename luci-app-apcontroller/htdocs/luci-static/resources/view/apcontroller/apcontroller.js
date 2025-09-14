@@ -159,29 +159,25 @@ return view.extend({
 				if (row['channels6g'])
 					row['channels6g'] = row['channels6g'].replaceAll(' ', ', ')
 
-				if (row['lastcontact']) {
-					row['.lastcontact'] = row['lastcontact'];
+				row['.lastcontact'] = row['lastcontact'];
+				if (row['.lastcontact'] > -1) {
+					const d = new Date(new Date().getTime() - row['.lastcontact'] * 1000);
 
-					if (row['.lastcontact'] > -1) {
-						const d = new Date(new Date().getTime() - row['.lastcontact'] * 1000);
+					row['lastcontact_ts'] = d.getTime() / 1000;
 
-						row['lastcontact_ts'] = d.getTime() / 1000;
+					let t = '' + d.getFullYear() + '-' + lz(d.getMonth() + 1) + '-' + lz(d.getDate()) + ' ' +
+						lz(d.getHours()) + ':' + lz(d.getMinutes()) + ':' + lz(d.getSeconds());
 
-						let t = '' + d.getFullYear() + '-' + lz(d.getMonth() + 1) + '-' + lz(d.getDate()) + ' ' +
-							lz(d.getHours()) + ':' + lz(d.getMinutes()) + ':' + lz(d.getSeconds());
+					if (row['.lastcontact'] > 86400)
+						t += ' (' + parseInt(row['.lastcontact']/86400) + _('days ago') + ')';
+					else if (row['.lastcontact'] > 3600)
+						t += ' (' + parseInt(row['.lastcontact']/3600) + _('h ago') + ')';
+					else if (row['.lastcontact'] > 60)
+						t += ' (' + parseInt(row['.lastcontact']/60) + _('m ago') + ')';
+					else
+						t += ' (' + row['.lastcontact'] + _('s ago') + ')';
 
-						if (row['.lastcontact'] > 86400)
-							t += ' (' + parseInt(row['.lastcontact']/86400) + _('days ago') + ')';
-						else if (row['.lastcontact'] > 3600)
-							t += ' (' + parseInt(row['.lastcontact']/3600) + _('h ago') + ')';
-						else if (row['.lastcontact'] > 60)
-							t += ' (' + parseInt(row['.lastcontact']/60) + _('m ago') + ')';
-						else
-							t += ' (' + row['.lastcontact'] + _('s ago') + ')';
-
-						row['lastcontact'] = t;
-					} else
-						row['lastcontact'] = '-';
+					row['lastcontact'] = t;
 				} else
 					row['lastcontact'] = '-';
 
@@ -289,9 +285,9 @@ return view.extend({
 					case 'connected':
 						return [ client.connected, '%t'.format(client.connected) || '-' ];
 					case 'rx':
-						return [ client.rx, '%.2mB'.format(client.rx) || '-' ];
+						return [ client.rx, '%1024.2mB'.format(client.rx) || '-' ];
 					case 'tx':
-						return [ client.tx, '%.2mB'.format(client.tx) || '-' ];
+						return [ client.tx, '%1024.2mB'.format(client.tx) || '-' ];
 					default:
 						return client[key] || '-';
 				}
@@ -995,5 +991,34 @@ return view.extend({
 		}, 63);
 
 		return m.render();
+	},
+
+	addFooter: function() {
+		var footer = view.prototype.addFooter.apply(this, arguments);
+
+		var actions = footer.querySelector('.cbi-page-actions');
+		if (!actions)
+			return footer;
+
+		var refreshBtn = E('button', {
+			'class': 'cbi-button',
+			'click': ui.createHandlerFn(this, async function() {
+				return fs.exec('/usr/bin/apcontroller')
+					.then(
+						ui.showModal(_('Refresh'), [
+							E('p', { 'class': 'spinning' }, [ _('Please wait...') ])
+						])
+					).then(
+						setTimeout(() => {
+							ui.hideModal();
+							window.location.reload();
+						}, 2000)
+					)
+			})
+		}, [ _('Refresh') ]);
+
+		actions.appendChild(refreshBtn);
+
+		return footer;
 	}
 });

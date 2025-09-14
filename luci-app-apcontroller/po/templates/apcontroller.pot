@@ -175,6 +175,9 @@ msgstr ""
 msgid "Pinging device..."
 msgstr ""
 
+msgid "Please wait..."
+msgstr ""
+
 msgid "Port"
 msgstr ""
 
@@ -182,6 +185,9 @@ msgid "RX"
 msgstr ""
 
 msgid "Reboot"
+msgstr ""
+
+msgid "Refresh"
 msgstr ""
 
 msgid "Requesting reboot..."

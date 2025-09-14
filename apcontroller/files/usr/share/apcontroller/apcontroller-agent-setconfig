@@ -75,15 +75,15 @@ while json_is_a $IDX object; do
 	fi
 
 	RADIOS=""
-	case "$band"
+	case "$band" in
 		"2g")
-			RADIOS=$(uci show wireless | awk -F. '/\.hwmode='\''11g'\''$|\.band='\''2g'\''/{print $2}'
+			RADIOS=$(uci show wireless | awk -F. '/\.hwmode='\''11g'\''$|\.band='\''2g'\''/{print $2}')
 			;;
 		"5g")
-			RADIOS=$(uci show wireless | awk -F. '/\.hwmode='\''11a'\''$|\.band='\''5g'\''/{print $2}'
+			RADIOS=$(uci show wireless | awk -F. '/\.hwmode='\''11a'\''$|\.band='\''5g'\''/{print $2}')
 			;;
 		"6g")
-			RADIOS=$(uci show wireless | awk -F. '/\.band='\''6g'\''/{print $2}'
+			RADIOS=$(uci show wireless | awk -F. '/\.band='\''6g'\''/{print $2}')
 			;;
 	esac
 	if [ -z "$RADIOS" ]; then

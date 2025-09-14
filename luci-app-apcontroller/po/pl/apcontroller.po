@@ -175,6 +175,9 @@ msgstr "Ping"
 msgid "Pinging device..."
 msgstr "Pingowanie urządzenia..."
 
+msgid "Please wait..."
+msgstr "Proszę czekać..."
+
 msgid "Port"
 msgstr "Port"
 
@@ -183,6 +186,9 @@ msgstr "Pobrano"
 
 msgid "Reboot"
 msgstr "Restart urządzenia"
+
+msgid "Refresh"
+msgstr "Odśwież"
 
 msgid "Requesting reboot..."
 msgstr "Żądanie ponownego uruchomienia..."

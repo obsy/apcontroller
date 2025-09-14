@@ -7,7 +7,7 @@ Aplikacja to lekki system zarządzania punktami dostępowymi (Access Points), zb
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-devices.png">
  
 Aplikacja umożliwia:
-- dodawanie i definiowania urządzeń (pracujących pod kontrolą OpenWrt) oraz wprowadzenie danych dostępnych (takich jak adres IP, port, login i hasło użytkownika)
+- dodawanie i definiowania urządzeń (pracujących pod kontrolą OpenWrt) oraz wprowadzenie danych dostępnych (takich jak adres IP, port, login i hasło użytkownika, adres URL do GUI)
 - włączenie/wyłącenie monitorowania urządzeń oraz prezentacja parametrów ich pracy
 - lista klientów bezprzewodowych połączonych do monitorowanych urządzeń z Wi-Fi
 - pobieranie logów z urządzenia, możliwość rebootu i pingowania urządzenia

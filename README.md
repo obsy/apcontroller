@@ -7,7 +7,7 @@ The application is a lightweight Access Point (AP) management system, developed 
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-devices.png">
  
 The application provides the following features:
-- adding and defining devices (running on OpenWrt) and storing access credentials (such as IP address, port, username, and password)
+- adding and defining devices (running on OpenWrt) and storing access credentials (such as IP address, port, username, and password, URL to the GUI)
 - enabling/disabling device monitoring and presenting device operation parameters
 - list of wireless clients connected to monitored devices with Wi-Fi
 - downloading logs from the device, the ability to reboot and ping the device
