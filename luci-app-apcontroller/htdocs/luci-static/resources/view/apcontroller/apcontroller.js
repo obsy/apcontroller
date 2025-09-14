@@ -308,7 +308,7 @@ return view.extend({
 				const hostRecord = devicestatus.hosts.find(h => h.section === section_id);
 
 				row.querySelectorAll('li[data-state="disabled"]').forEach(e => {
-					if (typeof hostRecord === 'undefined' || !hostRecord || !hostRecord['.lastcontact'] || hostRecord['.lastcontact'] == -1) {
+					if (typeof hostRecord === 'undefined' || !hostRecord || hostRecord['.lastcontact'] == -1) {
 						e.setAttribute('aria-disabled', 'true');
 						e.classList.add('disabled');
 						e.style.pointerEvents = 'none';
@@ -392,7 +392,7 @@ return view.extend({
 			actionBtn.querySelector('li[data-value="log"]').setAttribute('data-state', 'disabled');
 			actionBtn.querySelector('li[data-value="reboot"]').setAttribute('data-state', 'disabled');
 
-			if (typeof host === 'undefined' || !host['.lastcontact'] || host['.lastcontact'] == -1) {
+			if (typeof host === 'undefined' || host['.lastcontact'] == -1) {
 				actionBtn.querySelectorAll('li[data-state="disabled"]').forEach(e => {
 					e.setAttribute('aria-disabled', 'true');
 					e.classList.add('disabled');
