@@ -25,6 +25,9 @@ msgstr ""
 msgid "AP Group"
 msgstr ""
 
+msgid "Activity"
+msgstr ""
+
 msgid "Add new Wi-Fi"
 msgstr ""
 
@@ -32,6 +35,9 @@ msgid "Add new device"
 msgstr ""
 
 msgid "Add new group"
+msgstr ""
+
+msgid "All"
 msgstr ""
 
 msgid "Are you sure you want to reboot"
@@ -59,6 +65,12 @@ msgid "Default Wi-Fi state"
 msgstr ""
 
 msgid "Default: 22"
+msgstr ""
+
+msgid "Delete all"
+msgstr ""
+
+msgid "Delete all Wi-Fi before setting up new ones"
 msgstr ""
 
 msgid "Device"

@@ -25,6 +25,9 @@ msgstr "AP Controller"
 msgid "AP Group"
 msgstr "Grupa AP"
 
+msgid "Activity"
+msgstr "Aktywność"
+
 msgid "Add new Wi-Fi"
 msgstr "Dodaj nowe Wi-Fi"
 
@@ -33,6 +36,9 @@ msgstr "Dodaj nowe urządzenie"
 
 msgid "Add new group"
 msgstr "Dodaj nową grupę"
+
+msgid "All"
+msgstr "Wszystkie"
 
 msgid "Are you sure you want to reboot"
 msgstr "Czy na pewno chcesz ponownie uruchomić?"
@@ -60,6 +66,12 @@ msgstr "Domyślny stan Wi-Fi"
 
 msgid "Default: 22"
 msgstr "Domyślnie: 22"
+
+msgid "Delete all"
+msgstr "Usuń wszystko"
+
+msgid "Delete all Wi-Fi before setting up new ones"
+msgstr "Usuń wszystkie Wi-Fi przed założeniem nowych"
 
 msgid "Device"
 msgstr "Urządzenie"

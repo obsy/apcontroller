@@ -24,6 +24,16 @@ get_data_from_host() {
 
 	sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent ${username}@${ipaddr}:/tmp 2>/dev/null
 	[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent" > ${BASEPATH}/${ipaddr}-${cfg} 2>/dev/null
+	NOW=$(date "+%s")
+	VAL=0
+	if [ -s "${BASEPATH}/${ipaddr}-${cfg}" ]; then
+		TIMESTAMP=$(date +%s -r ${BASEPATH}/${ipaddr}-${cfg})
+		D=$((NOW - TIMESTAMP))
+		[ $D -le 60 ] && VAL=1
+	fi
+	# log only day/hour
+	NOW=$(date +%s -d "$(date -d @"$NOW" "+%Y-%m-%d %H:00")")
+	grep -q "$NOW $VAL" "${BASEPATH}/${ipaddr}.txt" || echo "$NOW $VAL" >> "${BASEPATH}/${ipaddr}.txt"
 }
 
 mkdir -p ${BASEPATH}

@@ -61,6 +61,15 @@ json_load_file "$FILE"
 
 json_is_a wifis array || exit 2
 
+json_get_var delete delete
+if [ "x$delete" = "x1" ]; then
+	EXISTING=$(uci show wireless | awk -F[.=] '/=wifi-iface$/{print $2}')
+	for SECTION in $EXISTING; do
+		uci -q del wireless."$SECTION"
+	done
+	NEEDCOMMIT=1
+fi
+
 json_select "wifis"
 IDX=1
 while json_is_a $IDX object; do

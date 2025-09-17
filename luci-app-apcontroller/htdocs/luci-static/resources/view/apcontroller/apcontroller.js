@@ -303,6 +303,12 @@ return view.extend({
 		}
 
 		function refreshDeviceGrid() {
+
+			let devicesall = 0;
+			let devicesonline = 0;
+			let devicesoffline = 0;
+			let devicesunknown = 0;
+
 			document.querySelectorAll('#cbi-apcontroller-host tr[data-section-id]').forEach(row => {
 				const section_id = row.dataset.sectionId;
 				const hostRecord = devicestatus.hosts.find(h => h.section === section_id);
@@ -327,13 +333,25 @@ return view.extend({
 						if (!cell) return;
 
 						cell.innerHTML = '';
-						if (key == 'status')
-							cell.appendChild(hoststatus([hostRecord], section_id));
-						else
+						if (key == 'status') {
+							let status = hoststatus([hostRecord], section_id)
+							if (status.textContent.includes(_('Online'))) devicesonline++;
+							if (status.textContent.includes(_('Offline'))) devicesoffline++;
+							cell.appendChild(status);
+						} else
 							cell.appendChild(hostinfo(key, [hostRecord], section_id));
 					}
 				});
+				devicesall ++;
 			});
+			let e = document.querySelector('#devicesall');
+			if (e) e.textContent = devicesall;
+			e = document.querySelector('#devicesonline');
+			if (e) e.textContent = devicesonline;
+			e = document.querySelector('#devicesoffline');
+			if (e) e.textContent = devicesoffline;
+			e = document.querySelector('#devicesunknown');
+			if (e) e.textContent = devicesall - devicesonline - devicesoffline;
 		};
 
 		const selectedcolumns = uci.get('apcontroller', '@global[0]', 'column') || [];
@@ -356,9 +374,50 @@ return view.extend({
 			const renderTask = form.GridSection.prototype.renderContents.apply(this, arguments),
 			    sections = this.cfgsections();
 			return Promise.resolve(renderTask).then(function(nodes) {
+
+				let devicesall = 0;
+				let devicesonline = 0;
+				let devicesoffline = 0;
+				let devicesunknown = 0;
+				nodes.querySelectorAll('#cbi-apcontroller-host tr[data-section-id]').forEach(row => {
+					const cell = row.querySelector('td[data-name="_status"]');
+					if (cell) {
+						if (cell.textContent.includes(_('Online'))) devicesonline ++;
+						if (cell.textContent.includes(_('Offline'))) devicesoffline ++;
+					}
+					devicesall ++;
+				});
+				devicesunknown = devicesall - devicesonline - devicesoffline;
+
+				const css = 'flex: 1 1 25%;background: var(--border-color-low);border: 1.5px solid var(--border-color-medium); box-sizing: border-box;display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;padding: 15px 0;border-radius: 8px;';
+				const info = E('div', { 'style': 'display: flex; margin-bottom: 20px; gap: 5px;' }, [
+					E('div', { 'style': css }, [
+						_('All'),
+						E('br'),
+						E('br'),
+						E('span', { 'id': 'devicesall', 'style': 'font-size:1.5em;' }, devicesall)
+					]),
+					E('div', { 'style': css + 'color: green;' }, [
+						_('Online'),
+						E('br'),
+						E('br'),
+						E('span', { 'id': 'devicesonline', 'style': 'font-size:1.5em;' }, devicesonline)
+					]),
+					E('div', { 'style': css + 'color: red;' }, [
+						_('Offline'),
+						E('br'),
+						E('br'),
+						E('span', { 'id': 'devicesoffline', 'style': 'font-size:1.5em;' }, devicesoffline)
+					]),
+					E('div', { 'style': css + 'color: gray;' }, [
+						_('Unknown'),
+						E('br'),
+						E('br'),
+						E('span', { 'id': 'devicesunknown', 'style': 'font-size:1.5em;' }, devicesunknown)
+					])
+				]);
 				let e = nodes.querySelector('#cbi-apcontroller-host > h3');
-				if (e)
-					e.remove();
+				if (e) e.parentNode.replaceChild(info, e);
 
 				let clientsContainer = E('div', { id: 'clients-container', style: 'margin-top: 20px;' });
 				clientsContainer.appendChild(renderClientsTable(clients));
@@ -370,17 +429,18 @@ return view.extend({
 
 		s.renderRowActions = function(section_id) {
 			const host = devicestatus.hosts.find(item => item.section === section_id);
-
 			let tdEl = this.super('renderRowActions', [ section_id, _('Edit') ]);
 
 			const actionBtn = new ui.ComboButton('more', {
 				'more': [ _('More') ],
+				'activity': [ _('Activity') ],
 				'ping': [ '%s %s'.format(_('IPv4'), _('Ping')) ],
 				'log': [ _('Log') ],
 				'reboot': [ _('Reboot') ]
 			}, {
 				classes: {
 					'more': 'btn cbi-button cbi-button-normal',
+					'activity': 'btn cbi-button cbi-button-normal',
 					'ping': 'btn cbi-button cbi-button-normal',
 					'log': 'btn cbi-button cbi-button-normal',
 					'reboot': 'btn cbi-button cbi-button-normal'
@@ -389,6 +449,7 @@ return view.extend({
 				sort: false
 			}).render();
 			actionBtn.querySelector('li[data-value="more"]').setAttribute('data-state', 'disabled');
+			actionBtn.querySelector('li[data-value="activity"]').setAttribute('data-state', 'disabled');
 			actionBtn.querySelector('li[data-value="log"]').setAttribute('data-state', 'disabled');
 			actionBtn.querySelector('li[data-value="reboot"]').setAttribute('data-state', 'disabled');
 
@@ -406,6 +467,9 @@ return view.extend({
 					switch (li.dataset.value) {
 						case 'more':
 							this.actionMoreInformation(section_id, ev);
+							break;
+						case 'activity':
+							this.actionActivity(section_id, ev);
 							break;
 						case 'ping':
 							this.actionPing(section_id, ev);
@@ -520,6 +584,80 @@ return view.extend({
 					])
 			);
 			ui.showModal(_("More Information"), child);
+		};
+
+		s.actionActivity = function(section_id) {
+			const host = devicestatus.hosts.find(item => item.section === section_id);
+			const row = this.cfgvalue(section_id);
+
+			function formatDate(date) {
+				return date.toISOString().split('T')[0];
+			}
+
+			const now = new Date();
+			const days = [];
+			for (let i = 0; i < 14; i++) {
+				let d = new Date(now);
+				d.setDate(now.getDate() - i);
+				days.push(formatDate(d));
+			}
+
+			const heatmap = {};
+			days.forEach(day => {
+				heatmap[day] = {};
+				for (let h = 0; h < 24; h++)
+					heatmap[day][h] = -1;
+			});
+
+			host.activity.forEach(entry => {
+				const dt = new Date(entry.timestamp * 1000);
+				const day = formatDate(dt);
+				const hour = dt.getHours();
+
+				if (heatmap[day] !== undefined) {
+					if (entry.value === 0) {
+						heatmap[day][hour] = 0;
+					} else if (entry.value === 1) {
+						if (heatmap[day][hour] !== 0) {
+							heatmap[day][hour] = 1;
+						}
+					}
+				}
+			});
+
+			let table = [];
+
+			table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ '' ]));
+			for (let h = 0; h < 24; h++)
+				table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ h ]));
+
+			days.forEach(day => {
+				table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ day ]));
+				for (let h = 0; h < 24; h++) {
+
+					let css = 'position: absolute;top: 0; left: 0; right: 0; bottom: 0;display: flex;align-items: center;justify-content: center;color: var(--border-color-low);';
+					const val = heatmap[day][h];
+					if(val === 1) css += 'background-color: #4caf50;color: white;';
+					else if(val === 0) css += 'background-color: #e53935; color: white;';
+
+					table.push(
+						E('div', { 'style': 'position: relative;width: 14px;background: var(--border-color-low);border-radius: 2px;box-shadow: 0 1px 2px #0001;box-sizing: border-box;' }, [
+							E('div', { 'style': css }, [ ' ' ])
+						])
+					);
+				}
+			});
+
+			let child = [];
+			child.push(E('div', { 'style': 'display: grid;grid-template-columns: 100px repeat(24, 14px);grid-gap: 4px;margin: 10px;' }, table ));
+			child.push(E('div', { 'class': 'right' }, [
+						E('button', {
+							'class': 'cbi-button cbi-button-neutral',
+							'click': ui.hideModal
+						}, _('Dismiss'))
+					])
+			);
+			ui.showModal(_("Activity"), child);
 		};
 
 		s.actionPing = function(section_id) {
@@ -924,6 +1062,10 @@ return view.extend({
 				names = cfgvalues;
 			return names.join(', ');
 		};
+
+		o = s.taboption('group', form.Flag, 'delete', _('Delete all'), _('Delete all Wi-Fi before setting up new ones'));
+		o.rmempty = false;
+		o.default = '0';
 
 		any = false;
 		o = s.taboption('group', form.MultiValue, 'wifi', _('Selected Wi-Fi'));

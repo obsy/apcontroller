@@ -23,6 +23,10 @@ WIFIS=$(uci -q get apcontroller."$SEC".wifi)
 [ -z "$WIFIS" ] && exit 0
 
 json_init
+
+DELETE=$(uci -q get apcontroller."$SEC".delete)
+[ "x$DELETE" = "x1" ] && json_add_int "delete" 1
+
 json_add_array "wifis"
 for WIFI in $WIFIS; do
 	BANDS="$(uci -q get apcontroller."$WIFI".band)"

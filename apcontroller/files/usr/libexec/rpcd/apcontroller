@@ -103,6 +103,12 @@ show_data_from_host() {
 	fi
 	json_add_int "lastcontact" "$LASTCONTACT"
 
+	json_add_array "activity"
+	if [ -s "${BASEPATH}/${ipaddr}.txt" ]; then
+		eval $(awk '{printf "json_add_object; json_add_int \"timestamp\" %d; json_add_int \"value\" %d; json_close_object;", $1, $2}' "${BASEPATH}/${ipaddr}.txt")
+	fi
+	json_close_array
+
 	json_close_object
 }
 
