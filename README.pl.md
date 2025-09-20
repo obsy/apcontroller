@@ -33,3 +33,14 @@ Powiązanie w grupy umożliwia przypisane określonych sieci Wi-Fi do określony
 Aplikacja umożliwia prostą konfigurację okresu odpytywania urządzenia oraz wybór wyświetlanych kolumn. W celu zapewnienia przejrzystości konfiguracji należy wbrac do wyświetlania tylko niezbędne kolumny.
  
 System zapewnia uproszczone ale centralne zarządzanie punktami dostępowymi pracującymi z OpenWrt. Dzięki cyklicznemu monitoringowi można szybko reagować na problemy w sieci, a funkcja grupowania i automatycznej konfiguracji Wi-Fi pozwala na efektywne zarządzanie większą liczbą urządzeń jednocześnie. Aplikacja została zaprojektowana jako rozwiązanie lekkie, niewymagające skomplikowanych zależności i działające przy minimalnej ingerencji w same punkty dostępowe.
+
+## Użycie kluczy autoryzacyjnych
+
+Autoryzacja w AP domyślnie odbywa się za pomocą pary nazwa użytkownika/hasło. Jeżeli używana jest autoryzacja z wykorzystaniem kluczy to należy nie uzupełniać pola "Hasło" (zostawić je puste). Klucze można wygenerować poleceniem (na routerze że jest zainstalowany apcontroller):
+```
+mkdir /root/.ssh
+dropbearkey  -f /root/.ssh/id_dropbear
+ssh root@192.168.1.2 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_dropbear.pub
+ssh root@192.168.1.5 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_dropbear.pub
+itd...
+```

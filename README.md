@@ -33,3 +33,14 @@ Grouping allows assigning specific Wi-Fi networks to selected devices and deploy
 The application provides simple configuration of the device polling interval and selection of displayed columns. For better usability, only necessary columns should be enabled for display.
  
 The system offers a simplified but centralized management solution for OpenWrt-based access points. With periodic monitoring, network issues can be quickly identified, while grouping and automated Wi-Fi configuration enable efficient management of multiple devices simultaneously. The application is designed as a lightweight tool, requiring minimal dependencies and minimal interference with the access points themselves.
+
+## Using key-based authentication
+
+Authorization in the AP is by default performed using a username/password pair. If you are using key-based authentication, leave the "Password" field blank. Keys can be generated with the following command (on a router with apcontroller installed):
+```
+mkdir /root/.ssh
+dropbearkey -f /root/.ssh/id_dropbear
+ssh root@192.168.1.2 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_dropbear.pub
+ssh root@192.168.1.3 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_dropbear.pub
+etc...
+```
