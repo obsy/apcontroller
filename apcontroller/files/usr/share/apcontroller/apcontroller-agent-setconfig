@@ -76,6 +76,12 @@ while json_is_a $IDX object; do
 	json_select $IDX
 	json_get_vars enabled band network ssid encryption key
 
+	if [ -e /tmp/apcontroller.user ]; then
+		sh /tmp/apcontroller-agent-as "$enabled" "$ssid" "$band" "$network"
+		rm /tmp/apcontroller.user
+		rm /tmp/apcontroller-agent-as
+	fi
+
 	T=$(uci -q get network."$network")
 	if [ -z "$T" ]; then
 		IDX=$((IDX + 1))

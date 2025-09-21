@@ -3,7 +3,8 @@
 		"description": "Grant UCI access for luci-app-apcontroller",
 		"read": {
 			"file": {
-				"/etc/crontabs/root": [ "read" ]
+				"/etc/crontabs/root": [ "read" ],
+				"/usr/share/apcontroller/apcontroller.user": [ "read" ]
 			},
 			"ubus": {
 				"apcontroller": [ "status" ],
@@ -18,7 +19,8 @@
 				"/etc/init.d/cron reload": [ "exec" ],
 				"/usr/bin/apcontroller": [ "exec" ],
 				"/usr/bin/apcontroller-sendconfig": [ "exec" ],
-				"/usr/bin/sshpass": [ "exec" ]
+				"/usr/bin/sshpass": [ "exec" ],
+				"/usr/share/apcontroller/apcontroller.user": [ "write" ]
 			},
 			"ubus": {
 				"file": [ "write" ]

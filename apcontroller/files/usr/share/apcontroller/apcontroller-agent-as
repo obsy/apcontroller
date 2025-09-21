@@ -1,0 +1,10 @@
+#!/bin/sh
+
+_ENABLED=$1
+_SSID=$2
+_BAND=$3
+_NETWORK=$4
+
+[ -e /tmp/apcontroller.user ] && . /tmp/apcontroller.user
+
+exit 0

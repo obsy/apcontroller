@@ -37,6 +37,9 @@ msgstr ""
 msgid "Add new group"
 msgstr ""
 
+msgid "Additional script"
+msgstr ""
+
 msgid "All"
 msgstr ""
 
@@ -125,6 +128,15 @@ msgid "IP Address"
 msgstr ""
 
 msgid "IPv4"
+msgstr ""
+
+msgid ""
+"If \"Use additional script\" is selected in the AP Group tab, the following "
+"content will be treated as a shell script and executed be executed before "
+"each defined Wi-Fi is created. You can use the following variables: "
+"<b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. These "
+"variables will be replaced with the appropriate values from the Wi-Fi. "
+"<b>Verify script before saving and using!</b>"
 msgstr ""
 
 msgid "Last Contact"
@@ -262,10 +274,19 @@ msgstr ""
 msgid "URL format error, format: http:// or https://"
 msgstr ""
 
+msgid "Unable to save additional script"
+msgstr ""
+
 msgid "Unknown"
 msgstr ""
 
 msgid "Uptime"
+msgstr ""
+
+msgid "Use additional script"
+msgstr ""
+
+msgid "Use additional script before setting up a Wi-Fi"
 msgstr ""
 
 msgid "User-readable description"

@@ -37,8 +37,11 @@ msgstr "Dodaj nowe urządzenie"
 msgid "Add new group"
 msgstr "Dodaj nową grupę"
 
+msgid "Additional script"
+msgstr "Dodatkowy skrypt"
+
 msgid "All"
-msgstr "Wszystkie"
+msgstr "Wszystkich"
 
 msgid "Are you sure you want to reboot"
 msgstr "Czy na pewno chcesz ponownie uruchomić?"
@@ -126,6 +129,21 @@ msgstr "Adres IP"
 
 msgid "IPv4"
 msgstr "IPv4"
+
+msgid ""
+"If \"Use additional script\" is selected in the AP Group tab, the following "
+"content will be treated as a shell script and executed be executed before "
+"each defined Wi-Fi is created. You can use the following variables: "
+"<b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. These "
+"variables will be replaced with the appropriate values from the Wi-Fi. "
+"<b>Verify script before saving and using!</b>"
+msgstr ""
+"Jeżeli zaznaczone jest \"Używaj dodatkowego skryptu\" w zakładce Grupa AP, "
+"to poniższa zawartość będzie traktowana jako skrypt powłoki i wykonywana "
+"przed utworzeniem każdej sieci Wi-Fi. Można używać następujących zmiennych: "
+"<b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. Te "
+"zmienne zostaną zastąpione odpowiednimi wartościami z Wi-Fi. "
+"<b>Zweryfikuj skrypt przed zapisaniem i użyciem!</b>"
 
 msgid "Last Contact"
 msgstr "Ostatni kontakt"
@@ -262,11 +280,20 @@ msgstr "Nazwa sieci którą AP mają rozgłaszać"
 msgid "URL format error, format: http:// or https://"
 msgstr "Błąd formatu adresu URL, poprawny: http:// lub https://"
 
+msgid "Unable to save additional script"
+msgstr "Nie można zapisać dodatkowego skryptu"
+
 msgid "Unknown"
 msgstr "Nieznany"
 
 msgid "Uptime"
 msgstr "Czas pracy"
+
+msgid "Use additional script"
+msgstr "Używaj dodatkowego skryptu"
+
+msgid "Use additional script before setting up a Wi-Fi"
+msgstr "Używaj dodatkowego skryptu przed ustawieniem Wi-Fi"
 
 msgid "User-readable description"
 msgstr "Opis czytelny dla użytkownika"

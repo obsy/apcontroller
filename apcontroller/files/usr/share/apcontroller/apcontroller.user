@@ -1,0 +1,11 @@
+logger -t apcontroller "-- executing an additional script --"
+
+logger -t apcontroller "enabled: $_ENABLED"
+logger -t apcontroller "   ssid: $_SSID"
+logger -t apcontroller "   band: $_BAND"
+logger -t apcontroller "network: $_NETWORK"
+
+EXIST=$(uci -q get network."$_NETWORK")
+if [ -z "$EXIST" ]; then
+  logger -t apcontroller "Warning: network $_NETWORK does not exist"
+fi

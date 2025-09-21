@@ -9,6 +9,8 @@
 'require view';
 
 let callHostHints, callAPController;
+const additionalScriptFile = '/usr/share/apcontroller/apcontroller.user';
+let additionalScript = '';
 
 callHostHints = rpc.declare({
 	object: 'luci-rpc',
@@ -35,7 +37,7 @@ function lz(n) {
 	return (n < 10 ? '0' : '') + n;
 }
 
-function hoststatus(records, section_id) {
+function hostStatus(records, section_id) {
 	let lastContact = -1;
 	let lastContact_ts = -1;
 	const obj = records.find(item => item.section === section_id);
@@ -59,7 +61,7 @@ function hoststatus(records, section_id) {
 	}
 }
 
-function hostinfo(key, records, section_id) {
+function hostInfo(key, records, section_id) {
 	const obj = records.find(item => item.section === section_id);
 	const data = obj ? (obj[key] ? obj[key] : '-') : '-';
 	return E('span', data);
@@ -70,11 +72,23 @@ return view.extend({
 		return Promise.all([
 			callHostHints(),
 			callAPController(),
+			L.resolveDefault(fs.read_direct(additionalScriptFile), ""),
 			uci.load('apcontroller')
 		]);
 	},
 
 	handleSaveApply: function(ev, mode) {
+		let value = ((document.querySelector('#apcontrolleradditionalscript').value || '').trim().replace(/\r\n/g, '\n')) + '\n';
+		fs.write(additionalScriptFile, value)
+			.then(function () {
+				additionalScript = value;
+				document.querySelector('#apcontrolleradditionalscript').value = additionalScript;
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+			}).catch(function (e) {
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				ui.addNotification(null, E('p', (_('Unable to save additional script') + ': %s').format(e.message)), 'error');
+			});
+
 		return this.super('handleSaveApply', [ev, mode]).then(() => {
 			const container = document.querySelector('.cbi-value[data-name="interval"]');
 			if (!container) return;
@@ -90,7 +104,9 @@ return view.extend({
 
 				let needUpdate = false;
 				if (!regLine.test(crontabsroot)) {
-					crontabsroot += '\n' + wanted;
+					if (!crontabsroot.endsWith('\n'))
+						crontabsroot += '\n';
+					crontabsroot += wanted + '\n';
 					needUpdate = true;
 				} else if (!crontabsroot.includes(wanted)) {
 					crontabsroot = crontabsroot.replace(regLine, wanted);
@@ -111,6 +127,7 @@ return view.extend({
 		let devicestatus = {};
 		let clients = [];
 		updateDeviceStatus(data[1]);
+		additionalScript = data[2];
 
 		const devicesmorecolumns = {
 			'status': _('Status'),
@@ -307,8 +324,6 @@ return view.extend({
 			let devicesall = 0;
 			let devicesonline = 0;
 			let devicesoffline = 0;
-			let devicesunknown = 0;
-
 			document.querySelectorAll('#cbi-apcontroller-host tr[data-section-id]').forEach(row => {
 				const section_id = row.dataset.sectionId;
 				const hostRecord = devicestatus.hosts.find(h => h.section === section_id);
@@ -334,12 +349,12 @@ return view.extend({
 
 						cell.innerHTML = '';
 						if (key == 'status') {
-							let status = hoststatus([hostRecord], section_id)
+							let status = hostStatus([hostRecord], section_id)
 							if (status.textContent.includes(_('Online'))) devicesonline++;
 							if (status.textContent.includes(_('Offline'))) devicesoffline++;
 							cell.appendChild(status);
 						} else
-							cell.appendChild(hostinfo(key, [hostRecord], section_id));
+							cell.appendChild(hostInfo(key, [hostRecord], section_id));
 					}
 				});
 				devicesall ++;
@@ -378,7 +393,6 @@ return view.extend({
 				let devicesall = 0;
 				let devicesonline = 0;
 				let devicesoffline = 0;
-				let devicesunknown = 0;
 				nodes.querySelectorAll('#cbi-apcontroller-host tr[data-section-id]').forEach(row => {
 					const cell = row.querySelector('td[data-name="_status"]');
 					if (cell) {
@@ -387,7 +401,6 @@ return view.extend({
 					}
 					devicesall ++;
 				});
-				devicesunknown = devicesall - devicesonline - devicesoffline;
 
 				const css = 'flex: 1 1 25%;background: var(--border-color-low);border: 1.5px solid var(--border-color-medium); box-sizing: border-box;display: flex;flex-direction: column;justify-content: center;align-items: center;text-align: center;padding: 15px 0;border-radius: 8px;';
 				const info = E('div', { 'style': 'display: flex; margin-bottom: 20px; gap: 5px;' }, [
@@ -413,7 +426,7 @@ return view.extend({
 						_('Unknown'),
 						E('br'),
 						E('br'),
-						E('span', { 'id': 'devicesunknown', 'style': 'font-size:1.5em;' }, devicesunknown)
+						E('span', { 'id': 'devicesunknown', 'style': 'font-size:1.5em;' }, devicesall - devicesonline - devicesoffline)
 					])
 				]);
 				let e = nodes.querySelector('#cbi-apcontroller-host > h3');
@@ -563,7 +576,7 @@ return view.extend({
 				Object.entries(devicesmorecolumns).forEach(([key, value]) => {
 					let val = host[key] ? host[key] : '-';
 					if (key == 'status')
-						val = hoststatus([host], section_id);
+						val = hostStatus([host], section_id);
 					if (typeof host[key] !== 'undefined' || key == 'status')
 						table.append(
 							E('tr', { 'class': 'tr' }, [
@@ -831,9 +844,9 @@ return view.extend({
 				o.remove = function() {};
 				o.modalonly = false;
 				if (key == 'status')
-					o.textvalue = hoststatus.bind(o, devicestatus.hosts);
+					o.textvalue = hostStatus.bind(o, devicestatus.hosts);
 				else
-					o.textvalue = hostinfo.bind(o, key, devicestatus.hosts);
+					o.textvalue = hostInfo.bind(o, key, devicestatus.hosts);
 			}
 		});
 
@@ -911,7 +924,7 @@ return view.extend({
 		o.value('2g', '2.4 GHz');
 		o.value('5g', '5 GHz');
 		o.value('6g', '6 GHz');
-		o.default = '2g';
+		o.default = [ '2g', '5g' ];
 		o.textvalue = function (section_id) {
 			const cfgvalues = this.map.data.get('apcontroller', section_id, 'band') || [];
 			let names = [];
@@ -1064,6 +1077,12 @@ return view.extend({
 		};
 
 		o = s.taboption('group', form.Flag, 'delete', _('Delete all'), _('Delete all Wi-Fi before setting up new ones'));
+		o.modalonly = true;
+		o.rmempty = false;
+		o.default = '0';
+
+		o = s.taboption('group', form.Flag, 'useadditionalscript', _('Use additional script'), _('Use additional script before setting up a Wi-Fi'));
+		o.modalonly = true;
 		o.rmempty = false;
 		o.default = '0';
 
@@ -1123,6 +1142,41 @@ return view.extend({
 		Object.entries(clientscolumns).forEach(([key, value]) => {
 			o.value(key, value);
 		});
+
+
+		// Custom script
+		s = m.section(form.NamedSection, 'additionalscript', 'additionalscript', _('Additional script'));
+		s.anonymous = true;
+		s.addremove = false;
+		s.tab('additionalscript', _('Additional script'));
+		s.renderContents = function(/* ... */) {
+			const renderTask = form.NamedSection.prototype.renderContents.apply(this, arguments);
+			return Promise.resolve(renderTask).then(function(nodes) {
+				const scripteditor = E('div', { 'class': 'cbi-section cbi-section-descr' }, [
+					E('p', _('If "Use additional script" is selected in the AP Group tab, the following content will be treated \
+						as a shell script and executed be executed before each defined Wi-Fi is created. \
+						You can use the following variables: <b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. \
+						These variables will be replaced with the appropriate values from the Wi-Fi. \
+						<b>Verify script before saving and using!</b>')),
+					E('textarea', {
+						'id': 'apcontrolleradditionalscript',
+						'style': 'width: 100% !important; padding: 5px; font-family: monospace; margin-top: .4em',
+						'spellcheck': 'false',
+						'wrap': 'off',
+						'rows': 25
+					}, [additionalScript != null ? additionalScript : ''])
+				]);
+				let e = nodes.querySelector('#cbi-apcontroller-additionalscript > h3');
+				if (e) e.parentNode.replaceChild(scripteditor, e);
+				return nodes;
+			});
+		};
+
+		o = s.taboption('additionalscript', form.DummyValue, '_script', '');
+		o.cfgvalue = function() {
+			return;
+		};
+
 
 		// Refresh data on Devices tab
 		poll.add(() => {

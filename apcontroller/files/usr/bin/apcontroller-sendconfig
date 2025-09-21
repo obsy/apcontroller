@@ -45,6 +45,8 @@ json_close_array
 
 json_dump > ${BASEPATH}/cmds-${SEC}
 
+USEAS=$(uci -q get apcontroller."$SEC".useadditionalscript)
+
 for HOST in $HOSTS; do
 	enabled=$(uci -q get apcontroller."$HOST".enabled)
 	[ "$enabled" -eq 1 ] || continue
@@ -57,6 +59,10 @@ for HOST in $HOSTS; do
 	[ -z "$username" ] && continue
 	password=$(uci -q get apcontroller."$HOST".password)
 
+	if [ "x$USEAS" = "x1" ]; then
+		sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller.user ${username}@${ipaddr}:/tmp 2>/dev/null
+		sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-as ${username}@${ipaddr}:/tmp 2>/dev/null
+	fi
 	sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} ${BASEPATH}/cmds-${SEC} ${username}@${ipaddr}:/tmp 2>/dev/null
 	[ $? -eq 0 ] && sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-setconfig ${username}@${ipaddr}:/tmp 2>/dev/null
 	[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent-setconfig /tmp/cmds-${SEC}" >/dev/null 2>&1

@@ -13,7 +13,8 @@ The application provides the following features:
 - downloading logs from the device, the ability to reboot and ping the device
 - defining Wi-Fi networks
 - creating AP groups by linking Wi-Fi networks and devices
-- deploying network configurations to enabled devices
+- deploying Wi-Fi configurations to devices in groups
+- defining a user script executed before setting up or updating Wi-Fi parameters
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-devices-edit.png">
  
@@ -32,6 +33,8 @@ Grouping allows assigning specific Wi-Fi networks to selected devices and deploy
  
 The application provides simple configuration of the device polling interval and selection of displayed columns. For better usability, only necessary columns should be enabled for display.
  
+<img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-settings.png">
+ 
 The system offers a simplified but centralized management solution for OpenWrt-based access points. With periodic monitoring, network issues can be quickly identified, while grouping and automated Wi-Fi configuration enable efficient management of multiple devices simultaneously. The application is designed as a lightweight tool, requiring minimal dependencies and minimal interference with the access points themselves.
 
 ## Using key-based authentication
@@ -44,3 +47,21 @@ ssh root@192.168.1.2 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_drop
 ssh root@192.168.1.3 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_dropbear.pub
 etc...
 ```
+## Sending Configuration to Devices
+The system does not read the current configuration from devices. It only allows you to define the Wi-Fi network being broadcast and then send Wi-Fi parameters to the device. Example configuration for a network named "OpenWrt":
+- In the "Devices" tab, add all devices in the network. After saving changes, select the "Refresh" button to view the device's current operating parameters.
+- In the "Wi-Fi" tab, define a network with any name, enter "OpenWrt" as the "SSID," specify the bands on which it will broadcast, as well as the encryption type and key. For "Network," enter "lan"—this is the default logical name of the local network.
+- In the "AP Group" tab, name the group as desired, select the devices to be included in the group from the list, and select the list of Wi-Fi networks these devices will advertise.
+ 
+<img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup-edit.png">
+ 
+The "Delete all" option allows you to completely delete existing Wi-Fi networks before making changes to the device. Only the configuration sections for the wireless interfaces are deleted. 
+The "Use additional script" option allows you to use a custom script that will be executed before attempting to set up or modify any defined Wi-Fi network on any band.
+ 
+<img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-additionalscript.png">
+ 
+This allows users to independently configure wired networks, bridges, and create their own VLANs. The script must be a valid shell script. The script can use several variables ("$_ENABLED", "$_SSID", "$_BAND", "$_NETWORK") that will contain the appropriate parameters for the Wi-Fi network being forwarded.
+- After saving the changes, select the "Send" button, which will send and execute the configuration on all enabled devices defined in this group.
+ 
+<img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup.png">
+ 
