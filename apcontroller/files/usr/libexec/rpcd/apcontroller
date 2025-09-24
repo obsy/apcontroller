@@ -102,14 +102,36 @@ show_data_from_host() {
 		[ -n "$channels6g" ] && json_add_string "channels6g" "$channels6g"
 	fi
 	json_add_int "lastcontact" "$LASTCONTACT"
-
 	json_add_array "activity"
 	if [ -s "${BASEPATH}/${ipaddr}.txt" ]; then
-		eval $(awk '{printf "json_add_object; json_add_int \"timestamp\" %d; json_add_int \"value\" %d; json_close_object;", $1, $2}' "${BASEPATH}/${ipaddr}.txt")
+		while read -r LINE; do
+			set -- $LINE
+			json_add_object
+			json_add_int "timestamp" $1
+			json_add_int "value" $2
+			json_close_object
+		done < "${BASEPATH}/${ipaddr}.txt"
 	fi
 	json_close_array
 
 	json_close_object
+}
+
+show_scripts() {
+	json_init
+	json_add_array "scripts"
+	for FILE in $(find /usr/share/apcontroller/scripts -type f); do
+		DESC=$(awk '/^#desc:/{gsub("#desc:", "");print $0}' "$FILE" | head -n1)
+		grep -q "^#warn" "$FILE" && WARN=1 || WARN=0
+		T=$(basename "$FILE")
+		json_add_object
+		json_add_string "file" "$T"
+		json_add_string "description" "${DESC:-$T}"
+		json_add_int "warn" $WARN
+		json_close_object
+	done
+	json_close_array
+	json_dump
 }
 
 show_status() {
@@ -124,17 +146,25 @@ show_status() {
 case "$1" in
 	list)
 		json_init
+
+		json_add_object "scripts"
+		json_close_object
+
 		json_add_object "status"
 		json_close_object
+
 		json_dump
-	;;
+		;;
 	call)
 		case "$2" in
+			scripts)
+				show_scripts
+				;;
 			status)
 				show_status
 				;;
 		esac
-	;;
+		;;
 esac
 
 exit 0

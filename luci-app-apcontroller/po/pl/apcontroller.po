@@ -43,8 +43,8 @@ msgstr "Dodatkowy skrypt"
 msgid "All"
 msgstr "Wszystkich"
 
-msgid "Are you sure you want to reboot"
-msgstr "Czy na pewno chcesz ponownie uruchomić?"
+msgid "Are you sure you want to execute the \"%s\" script?"
+msgstr "Jesteś pewien że chcesz wykonać skrypt \"%s\"?"
 
 msgid "Band"
 msgstr "Pasmo"
@@ -109,8 +109,14 @@ msgstr "Szyfrowanie"
 msgid "Error"
 msgstr "Błąd"
 
-msgid "Fetching log..."
-msgstr "Pobieranie dziennika..."
+msgid "Errors"
+msgstr "Błędy"
+
+msgid "Execute"
+msgstr "Wykonaj"
+
+msgid "Execute script"
+msgstr "Wykonaj skrypt"
 
 msgid "GUI URL"
 msgstr "Adres URL GUI"
@@ -141,9 +147,9 @@ msgstr ""
 "Jeżeli zaznaczone jest \"Używaj dodatkowego skryptu\" w zakładce Grupa AP, "
 "to poniższa zawartość będzie traktowana jako skrypt powłoki i wykonywana "
 "przed utworzeniem każdej sieci Wi-Fi. Można używać następujących zmiennych: "
-"<b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. Te "
-"zmienne zostaną zastąpione odpowiednimi wartościami z Wi-Fi. "
-"<b>Zweryfikuj skrypt przed zapisaniem i użyciem!</b>"
+"<b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. Te zmienne "
+"zostaną zastąpione odpowiednimi wartościami z Wi-Fi. <b>Zweryfikuj skrypt "
+"przed zapisaniem i użyciem!</b>"
 
 msgid "Last Contact"
 msgstr "Ostatni kontakt"
@@ -159,12 +165,6 @@ msgstr "Lista kolumn do wyświetlenia na liście urządzeń"
 
 msgid "Load Average"
 msgstr "Średnie obciążenie"
-
-msgid "Log"
-msgstr "Dziennik"
-
-msgid "Log from"
-msgstr "Dziennik z"
 
 msgid "MAC Address"
 msgstr "Adres MAC"
@@ -214,14 +214,11 @@ msgstr "Port"
 msgid "RX"
 msgstr "Pobrano"
 
-msgid "Reboot"
-msgstr "Restart urządzenia"
-
 msgid "Refresh"
 msgstr "Odśwież"
 
-msgid "Requesting reboot..."
-msgstr "Żądanie ponownego uruchomienia..."
+msgid "Result"
+msgstr "Wynik"
 
 msgid "Router and AP Management"
 msgstr "Zarządzanie routerami i AP"
@@ -351,9 +348,6 @@ msgstr "[minuty] Okres, w którym urządzenia będą cyklicznie sprawdzane"
 
 msgid "days ago"
 msgstr "dni temu"
-
-msgid "done"
-msgstr "wykonane"
 
 msgid "h ago"
 msgstr "g temu"

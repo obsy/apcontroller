@@ -43,7 +43,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-msgid "Are you sure you want to reboot"
+msgid "Are you sure you want to execute the \"%s\" script?"
 msgstr ""
 
 msgid "Band"
@@ -109,7 +109,13 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-msgid "Fetching log..."
+msgid "Errors"
+msgstr ""
+
+msgid "Execute"
+msgstr ""
+
+msgid "Execute script"
 msgstr ""
 
 msgid "GUI URL"
@@ -152,12 +158,6 @@ msgid "List of columns to display in the devices list"
 msgstr ""
 
 msgid "Load Average"
-msgstr ""
-
-msgid "Log"
-msgstr ""
-
-msgid "Log from"
 msgstr ""
 
 msgid "MAC Address"
@@ -208,13 +208,10 @@ msgstr ""
 msgid "RX"
 msgstr ""
 
-msgid "Reboot"
-msgstr ""
-
 msgid "Refresh"
 msgstr ""
 
-msgid "Requesting reboot..."
+msgid "Result"
 msgstr ""
 
 msgid "Router and AP Management"
@@ -344,9 +341,6 @@ msgid "[minutes] The period in which devices will be periodically polled"
 msgstr ""
 
 msgid "days ago"
-msgstr ""
-
-msgid "done"
 msgstr ""
 
 msgid "h ago"

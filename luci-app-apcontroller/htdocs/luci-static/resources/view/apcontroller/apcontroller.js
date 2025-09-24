@@ -8,13 +8,19 @@
 'require ui';
 'require view';
 
-let callHostHints, callAPController;
+let callHostHints, callAPControllerScripts, callAPController;
 const additionalScriptFile = '/usr/share/apcontroller/apcontroller.user';
 let additionalScript = '';
 
 callHostHints = rpc.declare({
 	object: 'luci-rpc',
 	method: 'getHostHints',
+	expect: { '': {} }
+});
+
+callAPControllerScripts = rpc.declare({
+	object: 'apcontroller',
+	method: 'scripts',
 	expect: { '': {} }
 });
 
@@ -448,23 +454,20 @@ return view.extend({
 				'more': [ _('More') ],
 				'activity': [ _('Activity') ],
 				'ping': [ '%s %s'.format(_('IPv4'), _('Ping')) ],
-				'log': [ _('Log') ],
-				'reboot': [ _('Reboot') ]
+				'exec': [ _('Execute') ]
 			}, {
-				classes: {
+				'classes': {
 					'more': 'btn cbi-button cbi-button-normal',
 					'activity': 'btn cbi-button cbi-button-normal',
 					'ping': 'btn cbi-button cbi-button-normal',
-					'log': 'btn cbi-button cbi-button-normal',
-					'reboot': 'btn cbi-button cbi-button-normal'
+					'exec': 'btn cbi-button cbi-button-normal'
 				},
-				click: null,
-				sort: false
+				'click': null,
+				'sort': false
 			}).render();
 			actionBtn.querySelector('li[data-value="more"]').setAttribute('data-state', 'disabled');
 			actionBtn.querySelector('li[data-value="activity"]').setAttribute('data-state', 'disabled');
-			actionBtn.querySelector('li[data-value="log"]').setAttribute('data-state', 'disabled');
-			actionBtn.querySelector('li[data-value="reboot"]').setAttribute('data-state', 'disabled');
+			actionBtn.querySelector('li[data-value="exec"]').setAttribute('data-state', 'disabled');
 
 			if (typeof host === 'undefined' || host['.lastcontact'] == -1) {
 				actionBtn.querySelectorAll('li[data-state="disabled"]').forEach(e => {
@@ -487,11 +490,8 @@ return view.extend({
 						case 'ping':
 							this.actionPing(section_id, ev);
 							break;
-						case 'log':
-							this.actionLog(section_id, ev);
-							break;
-						case 'reboot':
-							this.actionReboot(section_id, ev);
+						case 'exec':
+							this.actionExec(section_id, ev);
 							break;
 					}
 					setTimeout(() => {
@@ -706,74 +706,88 @@ return view.extend({
 			});
 		};
 
-		s.actionLog = function(section_id) {
+		s.actionExec = function(section_id) {
 			const row = this.cfgvalue(section_id);
 
-			ui.showModal(_('Log'), [
-				E('p', { 'class': 'spinning' }, [ _('Fetching log...') ])
-			]);
-			return fs.exec('sshpass', [
-				'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
-				'ssh',
-				'-q',
-				'-o', 'StrictHostKeyChecking=no',
-				'-p', row['port'],
-				row['username'] + '@' + row['ipaddr'],
-				'logread', '-l', '100'
-			]).then(function(res) {
-				ui.showModal(_('Log from') + ' ' + row['name'] + ' (' + row['ipaddr'] + ')', [
-					res.stdout ? E('textarea', {
+			return callAPControllerScripts().then(function(res) {
+				res.scripts.sort((a, b) => a.file.localeCompare(b.file));
+				let options = [];
+				res.scripts.forEach(s => {
+					options.push(E('option', { 'data-warn': s.warn, 'value': s.file }, [ s.description ]));
+				});
+				ui.showModal(_('Execute script'), [
+					E('div', { 'style': 'display:flex; gap:8px; align-items:center;' }, [
+						E('select', { 'id': 'actionexecscript', 'style': 'width:100%' }, options),
+						E('div', { 'class': 'right' }, [
+							E('button', {
+								'class': 'cbi-button cbi-button-primary',
+								'click': ui.createHandlerFn(this, async function() {
+									document.querySelector('#actionexecstdout').value = '';
+									document.querySelector('#actionexecstderr').value = '';
+									const e = document.querySelector('#actionexecscript');
+									const selectedOption = e.options[e.selectedIndex];
+									const script = selectedOption.value;
+									const description = selectedOption.text;
+									const warn = selectedOption.getAttribute('data-warn');
+									if (warn == '1') {
+										if (!confirm(_('Are you sure you want to execute the "%s" script?').format(description)))
+											return;
+									}
+									return fs.exec('sshpass', [
+										'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
+										'scp',
+										'-o', 'StrictHostKeyChecking=no',
+										'-P', row['port'],
+										'/usr/share/apcontroller/scripts/' + script,
+										row['username'] + '@' + row['ipaddr'] + ':/tmp'
+									]).then(function(res) {
+										return fs.exec('sshpass', [
+											'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
+											'ssh',
+											'-q',
+											'-o', 'StrictHostKeyChecking=no',
+											'-p', row['port'],
+											row['username'] + '@' + row['ipaddr'],
+											'sh',
+											'/tmp/' + script
+										]).then(function(res) {
+											if (res.stdout) document.querySelector('#actionexecstdout').value = res.stdout;
+											if (res.stderr) {
+												res.stderr = res.stderr.replace(/ssh: Caution, skipping hostkey check for [\d\.]+\n\n/, "");
+												if (res.stderr) document.querySelector('#actionexecstderr').value = res.stderr;
+											}
+										}).catch(function(err) {
+											document.querySelector('#actionexecstderr').value = err;
+										});
+									}).catch(function(err) {
+										document.querySelector('#actionexecstderr').value = err;
+									});
+								})
+							}, [ _('Execute') ])
+						])
+					]),
+					E('span', _('Result')),
+					E('textarea', {
+						'id': 'actionexecstdout',
 						'spellcheck': 'false',
 						'wrap': 'off',
-						'rows': 40,
-						'style': 'white-space: nowrap',
-					}, [ res.stdout ]) : '',
+						'rows': 25,
+						'style': 'white-space: nowrap'
+					}, [ ]),
+					E('span', _('Errors')),
+					E('textarea', {
+						'id': 'actionexecstderr',
+						'spellcheck': 'false',
+						'wrap': 'off',
+						'rows': 10,
+						'style': 'white-space: nowrap'
+					}, [ ]),
 					E('div', { 'class': 'right' }, [
 						E('button', {
 							'class': 'cbi-button cbi-button-primary',
 							'click': ui.hideModal
 						}, [ _('Dismiss') ])
 					])
-				]);
-			}).catch(function(err) {
-				ui.hideModal();
-				ui.addNotification(null, [
-					E('p', [ _('Error') + ': ', err ])
-				]);
-			});
-		};
-
-		s.actionReboot = function(section_id) {
-			const row = this.cfgvalue(section_id);
-
-			if (!confirm(_('Are you sure you want to reboot ' + row['name'] + ' (' + row['ipaddr'] + ')' + '?'))) {
-				return;
-			}
-			ui.showModal(_('Reboot'), [
-				E('p', { 'class': 'spinning' }, [ _('Requesting reboot...') ])
-			]);
-			return fs.exec('sshpass', [
-				'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
-				'ssh',
-				'-q',
-				'-o', 'StrictHostKeyChecking=no',
-				'-p', row['port'],
-				row['username'] + '@' + row['ipaddr'],
-				'reboot'
-			]).then(function(res) {
-				ui.showModal(_('Reboot'), [
-					E('p', { }, [ _('Requesting reboot...') + ' ' + _('done') ]),
-					E('div', { 'class': 'right' }, [
-						E('button', {
-							'class': 'cbi-button cbi-button-primary',
-							'click': ui.hideModal
-						}, [ _('Dismiss') ])
-					])
-				]);
-			}).catch(function(err) {
-				ui.hideModal();
-				ui.addNotification(null, [
-					E('p', [ _('Error') + ': ', err ])
 				]);
 			});
 		};

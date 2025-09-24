@@ -10,7 +10,7 @@ Aplikacja umożliwia:
 - dodawanie i definiowania urządzeń (pracujących pod kontrolą OpenWrt) oraz wprowadzenie danych dostępnych (takich jak adres IP, port, login i hasło użytkownika, adres URL do GUI)
 - włączenie/wyłączenie monitorowania urządzeń oraz prezentacja parametrów ich pracy
 - lista klientów bezprzewodowych połączonych do monitorowanych urządzeń z Wi-Fi
-- pobieranie logów z urządzenia, możliwość rebootu i pingowania urządzenia
+- pobieranie logów z urządzenia, możliwość rebootu i pingowania urządzenia oraz wykonywanie skryptów tworzonych przez użytkownika
 - definiowanie sieci Wi-Fi
 - definiowanie grup AP przez powiązanie sieci Wi-Fi oraz urządzeń
 - wysyłanie konfiguracji Wi-Fi do urządzeń w grupach
@@ -66,3 +66,7 @@ Pozwala to użytkownikowi na samodzielnie budowanie konfiguracji sieci przewodow
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup.png">
  
+## Skrypty definiowane przez użytkownika
+Menu urządzenia pozwala na wykonywanie akcji zawiązanych z konkretnym urządzeniem, które są definiowane jako skrypty powłoki. Domyślna konfiguracja zawiera dwa skrypty - "Log" oraz "Reboot"; użytkownik może tworzyć samodzielnie dowolny skrypt który zostanie wykonany na wskazanym routerze/AP. Skrypty należy umieścić w katalogu /usr/share/apcontroller/scripts.
+
+Komentarz #desc: oznacza nazwę skryptu wyświetlaną na liście dostępnych skryptów. Umieszczenie #warn oznacza że przed wykonaniem skryptu zostanie zadane pytanie czy na pewno chcemy go wykonać.

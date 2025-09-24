@@ -1,0 +1,7 @@
+#desc:Log
+
+logread -l 100
+
+rm -- "$0"
+exit 0
+

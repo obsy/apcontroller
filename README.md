@@ -10,7 +10,7 @@ The application provides the following features:
 - adding and defining devices (running on OpenWrt) and storing access credentials (such as IP address, port, username, and password, URL to the GUI)
 - enabling/disabling device monitoring and presenting device operation parameters
 - list of wireless clients connected to monitored devices with Wi-Fi
-- downloading logs from the device, the ability to reboot and ping the device
+- downloading logs from the device, the ability to reboot and ping the device, and executing user-created scripts
 - defining Wi-Fi networks
 - creating AP groups by linking Wi-Fi networks and devices
 - deploying Wi-Fi configurations to devices in groups
@@ -65,3 +65,7 @@ This allows users to independently configure wired networks, bridges, and create
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup.png">
  
+## User-Defined Scripts
+The device menu allows you to perform actions related to a specific device, which are defined as shell scripts. The default configuration includes two scripts – "Log" and "Reboot"; the user can create any script that will be executed on the specified router/AP. Scripts should be placed in the /usr/share/apcontroller/scripts directory.
+
+The #desc comment indicates the name of the script displayed in the list of available scripts. Including #warn means that before executing the script, you will be asked if you really want to execute it.

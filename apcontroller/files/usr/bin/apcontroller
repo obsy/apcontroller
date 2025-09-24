@@ -33,6 +33,7 @@ get_data_from_host() {
 	fi
 	# log only day/hour
 	NOW=$(date +%s -d "$(date -d @"$NOW" "+%Y-%m-%d %H:00")")
+	touch "${BASEPATH}/${ipaddr}.txt"
 	grep -q "$NOW $VAL" "${BASEPATH}/${ipaddr}.txt" || echo "$NOW $VAL" >> "${BASEPATH}/${ipaddr}.txt"
 }
 
