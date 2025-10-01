@@ -37,7 +37,9 @@ get_data_from_host() {
 	grep -q "$NOW $VAL" "${BASEPATH}/${ipaddr}.txt" || echo "$NOW $VAL" >> "${BASEPATH}/${ipaddr}.txt"
 }
 
-mkdir -p ${BASEPATH}
+T=$(uci -q get apcontroller.@global[0].path)
+[ -n "$T" ] && BASEPATH="$T"
+mkdir -p "$BASEPATH"
 config_load apcontroller
 config_foreach get_data_from_host host
 

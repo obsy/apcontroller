@@ -5,6 +5,9 @@
 #
 
 BASEPATH="/tmp/apcontroller"
+T=$(uci -q get apcontroller.@global[0].path)
+[ -n "$T" ] && BASEPATH="$T"
+mkdir -p "$BASEPATH"
 
 . /lib/functions.sh
 . /usr/share/libubox/jshn.sh
@@ -31,7 +34,7 @@ show_data_from_host() {
 	json_add_string "password" "$password"
 
 	LASTCONTACT=-1
-	if [ -s "${BASEPATH}/${ipaddr}-${cfg}" ]; then
+	if [ -s "${BASEPATH}/${ipaddr}-${cfg}" ] && [ "$enabled" = "1" ]; then
 		FILEMODTIME=$(date +%s -r $BASEPATH/${ipaddr}-${cfg})
 		NOW=$(date +%s)
 		LASTCONTACT=$((NOW - FILEMODTIME))
@@ -103,7 +106,7 @@ show_data_from_host() {
 	fi
 	json_add_int "lastcontact" "$LASTCONTACT"
 	json_add_array "activity"
-	if [ -s "${BASEPATH}/${ipaddr}.txt" ]; then
+	if [ -s "${BASEPATH}/${ipaddr}.txt" ] && [ "$enabled" = "1" ]; then
 		while read -r LINE; do
 			set -- $LINE
 			json_add_object

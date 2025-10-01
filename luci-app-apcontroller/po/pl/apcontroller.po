@@ -55,14 +55,20 @@ msgstr "Lista kolumn dla klientów"
 msgid "Connected"
 msgstr "Połączony"
 
-msgid "Connected clients"
-msgstr "Połączeni klienci"
+msgid "Connected Wireless Clients"
+msgstr "Połączeni klienci bezprzewodowi"
 
 msgid "Connected to"
 msgstr "Połączony do"
 
 msgid "Connected to SSID"
 msgstr "Połączony do SSID"
+
+msgid "Data directory"
+msgstr "Katalog danych"
+
+msgid "Data storage directory"
+msgstr "Katalog przechowywania danych"
 
 msgid "Default Wi-Fi state"
 msgstr "Domyślny stan Wi-Fi"

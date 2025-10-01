@@ -55,13 +55,19 @@ msgstr ""
 msgid "Connected"
 msgstr ""
 
-msgid "Connected clients"
+msgid "Connected Wireless Clients"
 msgstr ""
 
 msgid "Connected to"
 msgstr ""
 
 msgid "Connected to SSID"
+msgstr ""
+
+msgid "Data directory"
+msgstr ""
+
+msgid "Data storage directory"
 msgstr ""
 
 msgid "Default Wi-Fi state"

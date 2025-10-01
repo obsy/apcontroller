@@ -1,10 +1,21 @@
 
 config global
 	option interval '5'
+	option path '/tmp/apcontroller'
 	list column 'enabled'
 	list column 'name'
 	list column 'ipaddr'
 	list column 'lastcontact'
+	list clientcolumn 'ap'
+	list clientcolumn 'name'
+	list clientcolumn 'mac'
+	list clientcolumn 'ipaddr'
+	list clientcolumn 'band'
+	list clientcolumn 'wifi'
+	list clientcolumn 'signal'
+	list clientcolumn 'connected'
+	list clientcolumn 'rx'
+	list clientcolumn 'tx'
 
 config host 'host1'
 	option enabled '0'

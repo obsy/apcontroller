@@ -45,7 +45,7 @@ Autoryzacja w AP domyślnie odbywa się za pomocą pary nazwa użytkownika/hasł
 mkdir /root/.ssh
 dropbearkey  -f /root/.ssh/id_dropbear
 ssh root@192.168.1.2 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_dropbear.pub
-ssh root@192.168.1.5 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_dropbear.pub
+ssh root@192.168.1.3 "tee -a /etc/dropbear/authorized_keys" < /root/.ssh/id_dropbear.pub
 itd...
 ```
 ## Wysyłanie konfiguracji do urządzeń

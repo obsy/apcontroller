@@ -322,7 +322,7 @@ return view.extend({
 
 			cbi_update_table(table, rows);
 
-			return E('div', [ E('h3', _('Connected clients')), table ]);
+			return E('div', [ E('h3', _('Connected Wireless Clients')), table ]);
 		}
 
 		function refreshDeviceGrid() {
@@ -604,7 +604,7 @@ return view.extend({
 			const row = this.cfgvalue(section_id);
 
 			function formatDate(date) {
-				return date.toISOString().split('T')[0];
+				return date.getFullYear() + '-' + lz(date.getMonth() + 1) + '-' + lz(date.getDate());
 			}
 
 			const now = new Date();
@@ -655,7 +655,7 @@ return view.extend({
 
 					table.push(
 						E('div', { 'style': 'position: relative;width: 14px;background: var(--border-color-low);border-radius: 2px;box-shadow: 0 1px 2px #0001;box-sizing: border-box;' }, [
-							E('div', { 'style': css }, [ ' ' ])
+							E('div', { 'style': css, 'title': day + ': ' + h }, [ ' ' ])
 						])
 					);
 				}
@@ -1139,6 +1139,9 @@ return view.extend({
 				return nodes;
 			});
 		};
+
+		o = s.option(form.Value, 'path', _('Data directory'), _('Data storage directory'))
+		o.rmempty = false;
 
 		o = s.option(form.Value, 'interval', _('Device Reading Interval'), _('[minutes] The period in which devices will be periodically polled'));
 		o.datatype = 'and(uinteger,min(1),max(9999))';
