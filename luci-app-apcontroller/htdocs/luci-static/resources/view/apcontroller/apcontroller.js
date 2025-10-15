@@ -8,13 +8,20 @@
 'require ui';
 'require view';
 
-let callHostHints, callAPControllerScripts, callAPController;
+let callHostHints, callAPControllerActivity, callAPControllerScripts, callAPController;
 const additionalScriptFile = '/usr/share/apcontroller/apcontroller.user';
 let additionalScript = '';
 
 callHostHints = rpc.declare({
 	object: 'luci-rpc',
 	method: 'getHostHints',
+	expect: { '': {} }
+});
+
+callAPControllerActivity = rpc.declare({
+	object: 'apcontroller',
+	method: 'activity',
+	params: [ 'section' ],
 	expect: { '': {} }
 });
 
@@ -600,77 +607,76 @@ return view.extend({
 		};
 
 		s.actionActivity = function(section_id) {
-			const host = devicestatus.hosts.find(item => item.section === section_id);
-			const row = this.cfgvalue(section_id);
+			return L.resolveDefault(callAPControllerActivity(section_id), {}).then(function (res) {
+				function formatDate(date) {
+					return date.getFullYear() + '-' + lz(date.getMonth() + 1) + '-' + lz(date.getDate());
+				}
 
-			function formatDate(date) {
-				return date.getFullYear() + '-' + lz(date.getMonth() + 1) + '-' + lz(date.getDate());
-			}
+				const now = new Date();
+				const days = [];
+				for (let i = 0; i < 14; i++) {
+					let d = new Date(now);
+					d.setDate(now.getDate() - i);
+					days.push(formatDate(d));
+				}
 
-			const now = new Date();
-			const days = [];
-			for (let i = 0; i < 14; i++) {
-				let d = new Date(now);
-				d.setDate(now.getDate() - i);
-				days.push(formatDate(d));
-			}
+				const heatmap = {};
+				days.forEach(day => {
+					heatmap[day] = {};
+					for (let h = 0; h < 24; h++)
+						heatmap[day][h] = -1;
+				});
 
-			const heatmap = {};
-			days.forEach(day => {
-				heatmap[day] = {};
-				for (let h = 0; h < 24; h++)
-					heatmap[day][h] = -1;
-			});
+				res.activity.forEach(entry => {
+					const dt = new Date(entry.timestamp * 1000);
+					const day = formatDate(dt);
+					const hour = dt.getHours();
 
-			host.activity.forEach(entry => {
-				const dt = new Date(entry.timestamp * 1000);
-				const day = formatDate(dt);
-				const hour = dt.getHours();
-
-				if (heatmap[day] !== undefined) {
-					if (entry.value === 0) {
-						heatmap[day][hour] = 0;
-					} else if (entry.value === 1) {
-						if (heatmap[day][hour] !== 0) {
-							heatmap[day][hour] = 1;
+					if (heatmap[day] !== undefined) {
+						if (entry.value === 0) {
+							heatmap[day][hour] = 0;
+						} else if (entry.value === 1) {
+							if (heatmap[day][hour] !== 0) {
+								heatmap[day][hour] = 1;
+							}
 						}
 					}
-				}
-			});
+				});
 
-			let table = [];
+				let table = [];
 
-			table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ '' ]));
-			for (let h = 0; h < 24; h++)
-				table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ h ]));
+				table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ '' ]));
+				for (let h = 0; h < 24; h++)
+					table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ h ]));
 
-			days.forEach(day => {
-				table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ day ]));
-				for (let h = 0; h < 24; h++) {
+				days.forEach(day => {
+					table.push(E('div', { 'style': 'display:flex;align-items: center;justify-content: center;user-select: none;' }, [ day ]));
+					for (let h = 0; h < 24; h++) {
 
-					let css = 'position: absolute;top: 0; left: 0; right: 0; bottom: 0;display: flex;align-items: center;justify-content: center;color: var(--border-color-low);';
-					const val = heatmap[day][h];
-					if(val === 1) css += 'background-color: #4caf50;color: white;';
-					else if(val === 0) css += 'background-color: #e53935; color: white;';
+						let css = 'position: absolute;top: 0; left: 0; right: 0; bottom: 0;display: flex;align-items: center;justify-content: center;color: var(--border-color-low);';
+						const val = heatmap[day][h];
+						if(val === 1) css += 'background-color: #4caf50;color: white;';
+						else if(val === 0) css += 'background-color: #e53935; color: white;';
 
-					table.push(
-						E('div', { 'style': 'position: relative;width: 14px;background: var(--border-color-low);border-radius: 2px;box-shadow: 0 1px 2px #0001;box-sizing: border-box;' }, [
-							E('div', { 'style': css, 'title': day + ': ' + h }, [ ' ' ])
+						table.push(
+							E('div', { 'style': 'position: relative;width: 14px;background: var(--border-color-low);border-radius: 2px;box-shadow: 0 1px 2px #0001;box-sizing: border-box;' }, [
+								E('div', { 'style': css, 'title': day + ': ' + h }, [ ' ' ])
+							])
+						);
+					}
+				});
+
+				let child = [];
+				child.push(E('div', { 'style': 'display: grid;grid-template-columns: 100px repeat(24, 14px);grid-gap: 4px;margin: 10px;' }, table ));
+				child.push(E('div', { 'class': 'right' }, [
+							E('button', {
+								'class': 'cbi-button cbi-button-neutral',
+								'click': ui.hideModal
+							}, _('Dismiss'))
 						])
-					);
-				}
+				);
+				ui.showModal(_("Activity"), child);
 			});
-
-			let child = [];
-			child.push(E('div', { 'style': 'display: grid;grid-template-columns: 100px repeat(24, 14px);grid-gap: 4px;margin: 10px;' }, table ));
-			child.push(E('div', { 'class': 'right' }, [
-						E('button', {
-							'class': 'cbi-button cbi-button-neutral',
-							'click': ui.hideModal
-						}, _('Dismiss'))
-					])
-			);
-			ui.showModal(_("Activity"), child);
 		};
 
 		s.actionPing = function(section_id) {

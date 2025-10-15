@@ -105,19 +105,31 @@ show_data_from_host() {
 		[ -n "$channels6g" ] && json_add_string "channels6g" "$channels6g"
 	fi
 	json_add_int "lastcontact" "$LASTCONTACT"
+
+	json_close_object
+}
+
+show_activity() {
+	read input
+	json_load "$input"
+	json_get_var section section
+
+	json_init
+
+	ipaddr=$(uci_get "apcontroller" "$section" "ipaddr" "")
+	enabled=$(uci_get "apcontroller" "$section" "enabled" "0")
 	json_add_array "activity"
-	if [ -s "${BASEPATH}/${ipaddr}.txt" ] && [ "$enabled" = "1" ]; then
+	if [ -n "$ipaddr" ] && [ -s "${BASEPATH}/${ipaddr}.txt" ] && [ "$enabled" = "1" ]; then
 		while read -r LINE; do
 			set -- $LINE
 			json_add_object
 			json_add_int "timestamp" $1
 			json_add_int "value" $2
 			json_close_object
-		done < "${BASEPATH}/${ipaddr}.txt"
+		done < <(tail -n 672 "${BASEPATH}/${ipaddr}.txt")
 	fi
 	json_close_array
-
-	json_close_object
+	json_dump
 }
 
 show_scripts() {
@@ -150,6 +162,10 @@ case "$1" in
 	list)
 		json_init
 
+		json_add_object "activity"
+		json_add_string "section" ""
+		json_close_object
+
 		json_add_object "scripts"
 		json_close_object
 
@@ -160,6 +176,9 @@ case "$1" in
 		;;
 	call)
 		case "$2" in
+			activity)
+				show_activity
+				;;
 			scripts)
 				show_scripts
 				;;

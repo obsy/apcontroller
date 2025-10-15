@@ -7,7 +7,7 @@
 				"/usr/share/apcontroller/apcontroller.user": [ "read" ]
 			},
 			"ubus": {
-				"apcontroller": [ "scripts", "status" ],
+				"apcontroller": [ "activity", "scripts", "status" ],
 				"file": [ "read" ],
 				"luci-rpc": [ "getHostHints" ]
 			},
