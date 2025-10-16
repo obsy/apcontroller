@@ -103,6 +103,9 @@ msgstr "Lista kolumn dla urządzeń"
 msgid "Dismiss"
 msgstr "Zamknij"
 
+msgid "Do not show network name"
+msgstr "Nie pokazuj nazwy sieci"
+
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -126,6 +129,9 @@ msgstr "Wykonaj skrypt"
 
 msgid "GUI URL"
 msgstr "Adres URL GUI"
+
+msgid "Hide SSID"
+msgstr "Ukryj SSID"
 
 msgid "Host Address"
 msgstr "Adres urządzenia"
@@ -156,6 +162,9 @@ msgstr ""
 "<b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. Te zmienne "
 "zostaną zastąpione odpowiednimi wartościami z Wi-Fi. <b>Zweryfikuj skrypt "
 "przed zapisaniem i użyciem!</b>"
+
+msgid "Isolate Clients"
+msgstr "Izoluj klienty"
 
 msgid "Last Contact"
 msgstr "Ostatni kontakt"
@@ -216,6 +225,9 @@ msgstr "Proszę czekać..."
 
 msgid "Port"
 msgstr "Port"
+
+msgid "Prevents client-to-client communication"
+msgstr "Zapobiega komunikacji pomiędzy klientami"
 
 msgid "RX"
 msgstr "Pobrano"

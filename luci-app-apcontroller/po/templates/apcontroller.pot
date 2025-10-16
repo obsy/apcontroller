@@ -103,6 +103,9 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+msgid "Do not show network name"
+msgstr ""
+
 msgid "Edit"
 msgstr ""
 
@@ -127,6 +130,9 @@ msgstr ""
 msgid "GUI URL"
 msgstr ""
 
+msgid "Hide SSID"
+msgstr ""
+
 msgid "Host Address"
 msgstr ""
 
@@ -149,6 +155,9 @@ msgid ""
 "<b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. These "
 "variables will be replaced with the appropriate values from the Wi-Fi. "
 "<b>Verify script before saving and using!</b>"
+msgstr ""
+
+msgid "Isolate Clients"
 msgstr ""
 
 msgid "Last Contact"
@@ -209,6 +218,9 @@ msgid "Please wait..."
 msgstr ""
 
 msgid "Port"
+msgstr ""
+
+msgid "Prevents client-to-client communication"
 msgstr ""
 
 msgid "RX"

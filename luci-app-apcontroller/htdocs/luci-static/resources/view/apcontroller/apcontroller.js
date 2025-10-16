@@ -993,6 +993,16 @@ return view.extend({
 		o.datatype = 'wpakey';
 		o.password = true;
 
+		o = s.taboption('wifi', form.Flag, 'hidden', _('Hide SSID'), _('Do not show network name'));
+		o.modalonly = true;
+		o.rmempty = false;
+		o.default = '0';
+
+		o = s.taboption('wifi', form.Flag, 'isolate', _('Isolate Clients'), _('Prevents client-to-client communication'));
+		o.modalonly = true;
+		o.rmempty = false;
+		o.default = '0';
+
 		o = s.taboption('wifi', form.Value, 'network', _('Network'), _('The name of the network to which the Wi-Fi will belong'));
 		o.modalonly = true;
 		o.rmempty = false;

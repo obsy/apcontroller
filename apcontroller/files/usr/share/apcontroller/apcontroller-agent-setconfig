@@ -12,6 +12,8 @@ function wifi_add() {
 	local SSID=$4
 	local ENCRYPTION=$5
 	local KEY=$6
+	local HIDDEN=$7
+	local ISOLATE=$8
 
 	CNT=$(uci show wireless | awk '/\.device=/ {count++} END {print count + 1}')
 	while [ -n "$(uci -q get wireless.wifinet"$CNT")" ]; do
@@ -31,6 +33,8 @@ function wifi_add() {
 	uci set wireless."$SEC".ssid="$SSID"
 	uci set wireless."$SEC".encryption="$ENCRYPTION"
 	uci set wireless."$SEC".key="$KEY"
+	uci set wireless."$SEC".hidden="${HIDDEN:-0}"
+	uci set wireless."$SEC".isolate="${ISOLATE:-0}"
 }
 
 function wifi_update() {
@@ -40,6 +44,8 @@ function wifi_update() {
 	local SSID=$4
 	local ENCRYPTION=$5
 	local KEY=$6
+	local HIDDEN=$7
+	local ISOLATE=$8
 
 	uci -q del wireless."$RADIO".disabled
 	if [ "$ENABLED" -eq 0 ]; then
@@ -51,6 +57,8 @@ function wifi_update() {
 	uci set wireless."$SEC".ssid="$SSID"
 	uci set wireless."$SEC".encryption="$ENCRYPTION"
 	uci set wireless."$SEC".key="$KEY"
+	uci set wireless."$SEC".hidden="${HIDDEN:-0}"
+	uci set wireless."$SEC".isolate="${ISOLATE:-0}"
 }
 
 . /usr/share/libubox/jshn.sh
@@ -74,7 +82,7 @@ json_select "wifis"
 IDX=1
 while json_is_a $IDX object; do
 	json_select $IDX
-	json_get_vars enabled band network ssid encryption key
+	json_get_vars enabled band network ssid encryption key hidden isolate
 
 	if [ -e /tmp/apcontroller.user ]; then
 		sh /tmp/apcontroller-agent-as "$enabled" "$ssid" "$band" "$network"
@@ -110,7 +118,7 @@ while json_is_a $IDX object; do
 	SECTIONS=$(uci -q show wireless | awk -F. '/\.ssid='\'''"$ssid"''\''$/{print $2}')
 	if [ -z "$SECTIONS" ]; then
 		for RADIO in $RADIOS; do
-			wifi_add "$RADIO" "$network" "$enabled" "$ssid" "$encryption" "$key"
+			wifi_add "$RADIO" "$network" "$enabled" "$ssid" "$encryption" "$key" "$hidden" "$isolate"
 		done
 		NEEDCOMMIT=1
 	else
@@ -121,14 +129,14 @@ while json_is_a $IDX object; do
 				if [ "$T1" = "$RADIO" ]; then
 					T2=$(uci get wireless."$SECTION".network)
 					if [ "$T2" = "$network" ]; then
-						wifi_update "$SECTION" "$RADIO" "$enabled" "$ssid" "$encryption" "$key"
+						wifi_update "$SECTION" "$RADIO" "$enabled" "$ssid" "$encryption" "$key" "$hidden" "$isolate"
 						NEEDCOMMIT=1
 						FOUND=1
 					fi
 				fi
 			done
 			if [ $FOUND -eq 0 ]; then
-				wifi_add "$RADIO" "$network" "$enabled" "$ssid" "$encryption" "$key"
+				wifi_add "$RADIO" "$network" "$enabled" "$ssid" "$encryption" "$key" "$hidden" "$isolate"
 				NEEDCOMMIT=1
 			fi
 		done

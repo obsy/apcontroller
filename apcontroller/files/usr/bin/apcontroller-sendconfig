@@ -39,6 +39,8 @@ for WIFI in $WIFIS; do
 		json_add_string "ssid" "$(uci -q get apcontroller."$WIFI".ssid)"
 		json_add_string "encryption" "$(uci -q get apcontroller."$WIFI".encryption)"
 		json_add_string "key" "$(uci -q get apcontroller."$WIFI".key)"
+		json_add_int "hidden" "$(uci -q get apcontroller."$WIFI".hidden)"
+		json_add_int "isolate" "$(uci -q get apcontroller."$WIFI".isolate)"
 		json_add_string "network" "$(uci -q get apcontroller."$WIFI".network)"
 		json_close_object
 	done
