@@ -42,8 +42,11 @@ if [ -e /etc/config/wireless ]; then
 		if [ -n "${IFNAMES}" ]; then
 			json_add_array "clientslist${BAND}"
 			for IFNAME in $IFNAMES; do
-				SSID=""
-				eval $(jsonfilter -s "$WIRELESSSTATUS" -q -e 'SSID=@.*.interfaces[@.ifname="'${IFNAME}'"].config.ssid')
+				SSID=$(jsonfilter -s "$WIRELESSSTATUS" -q -e '@.*.interfaces[@.ifname="'${IFNAME}'"].config.ssid')
+				if [ -z "$SSID" ]; then
+					T=$(jsonfilter -s "$WIRELESSSTATUS" -q -e '@.*.interfaces[@.ifname="'${IFNAME}'"].config.mesh_id')
+					[ -n "$T" ] && SSID="MESHID: $T"
+				fi
 				for STATION in $(iw dev "$IFNAME" station dump 2>/dev/null | awk '{if($1 == "Station") {MAC=$2; station[MAC]=1} if($0 ~ /rx bytes:/) {rx[MAC]=$3} if($0 ~ /tx bytes:/) {tx[MAC]=$3} if($0 ~ /^\s*signal:/) {signal[MAC]=$2} if($0 ~ /connected time:/) {connected[MAC]=$3}} END {for (s in station) {printf "%s,%s,%s,%d,%d ", s, rx[s], tx[s], signal[s], connected[s]}}'); do
 					set -- $(echo "$STATION" | tr ',' ' ')
 					_MAC="$1"
