@@ -1187,7 +1187,7 @@ return view.extend({
 			return Promise.resolve(renderTask).then(function(nodes) {
 				const scripteditor = E('div', { 'class': 'cbi-section cbi-section-descr' }, [
 					E('p', _('If "Use additional script" is selected in the AP Group tab, the following content will be treated \
-						as a shell script and executed be executed before each defined Wi-Fi is created. \
+						as a shell script and executed before each defined Wi-Fi is created. \
 						You can use the following variables: <b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. \
 						These variables will be replaced with the appropriate values from the Wi-Fi. \
 						<b>Verify script before saving and using!</b>')),

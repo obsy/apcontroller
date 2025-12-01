@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-apcontroller
-PKG_VERSION:=20251029
+PKG_VERSION:=20251201
 PKG_RELEASE:=1
 LUCI_TITLE:=LuCI application for apcontroller
 LUCI_DEPENDS:=+apcontroller
