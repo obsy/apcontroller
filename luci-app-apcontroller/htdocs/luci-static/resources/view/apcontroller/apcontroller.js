@@ -739,27 +739,57 @@ return view.extend({
 										if (!confirm(_('Are you sure you want to execute the "%s" script?').format(description)))
 											return;
 									}
-									return fs.exec('sshpass', [
-										'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
-										'scp',
-										'-o', 'StrictHostKeyChecking=no',
-										'-P', row['port'],
-										'/usr/share/apcontroller/scripts/' + script,
-										row['username'] + '@' + row['ipaddr'] + ':/tmp'
-									]).then(function(res) {
-										return fs.exec('sshpass', [
-											'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
-											'ssh',
-											'-q',
-											'-o', 'StrictHostKeyChecking=no',
-											'-p', row['port'],
-											row['username'] + '@' + row['ipaddr'],
-											'sh',
-											'/tmp/' + script
-										]).then(function(res) {
+									let cmd = '';
+									let args = [];
+									if (row['usekeyfile'] && row['keyfile']) {
+											cmd = 'scp';
+											args = [
+												'-i', row['keyfile'],
+												'-o', 'StrictHostKeyChecking=no',
+												'-P', row['port'],
+												'/usr/share/apcontroller/scripts/' + script,
+												row['username'] + '@' + row['ipaddr'] + ':/tmp'
+											];
+									} else {
+											cmd = 'sshpass';
+											args = [
+												'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
+												'scp',
+												'-o', 'StrictHostKeyChecking=no',
+												'-P', row['port'],
+												'/usr/share/apcontroller/scripts/' + script,
+												row['username'] + '@' + row['ipaddr'] + ':/tmp'
+											];
+									}
+									return fs.exec(cmd, args).then(function(res) {
+										if (row['usekeyfile'] && row['keyfile']) {
+											cmd = 'ssh';
+											args = [
+												'-q',
+												'-i', row['keyfile'],
+												'-o', 'StrictHostKeyChecking=no',
+												'-p', row['port'],
+												row['username'] + '@' + row['ipaddr'],
+												'sh',
+												'/tmp/' + script
+											];
+										} else {
+											cmd = 'sshpass';
+											args = [
+												'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
+												'ssh',
+												'-q',
+												'-o', 'StrictHostKeyChecking=no',
+												'-p', row['port'],
+												row['username'] + '@' + row['ipaddr'],
+												'sh',
+												'/tmp/' + script
+											];
+										}
+										return fs.exec(cmd, args).then(function(res) {
 											if (res.stdout) document.querySelector('#actionexecstdout').value = res.stdout;
 											if (res.stderr) {
-												res.stderr = res.stderr.replace(/ssh: Caution, skipping hostkey check for [\d\.]+\n\n/, "");
+												res.stderr = res.stderr.replace(/^.*Caution, skipping hostkey check for [\d\.]+\n\n/, "");
 												if (res.stderr) document.querySelector('#actionexecstderr').value = res.stderr;
 											}
 										}).catch(function(err) {
@@ -852,9 +882,21 @@ return view.extend({
 		o.rmempty = false;
 		o.default = 'root';
 
+		o = s.taboption('host', form.Flag, 'usekeyfile', _('Use SSH key'), _('Use SSH key instead of password'));
+		o.modalonly = true;
+		o.rmempty = false;
+		o.default = 0;
+
+		o = s.taboption('host', form.Value, 'keyfile', _('SSH Key file'), _('SSH Key file'));
+		o.modalonly = true;
+		o.rmempty = false;
+		o.default = '/root/.ssh/id_dropbear';
+		o.depends('usekeyfile', '1');
+
 		o = s.taboption('host', form.Value, 'password', _('Password'), _('Device Password'));
 		o.modalonly = true;
 		o.password = true;
+		o.depends('usekeyfile', '0');
 
 		Object.entries(devicesmorecolumns).forEach(([key, value]) => {
 			if (selectedcolumns.includes(key) || key == 'status') {

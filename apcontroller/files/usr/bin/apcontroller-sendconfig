@@ -63,14 +63,28 @@ for HOST in $HOSTS; do
 	[ -z "$username" ] && continue
 	password=$(uci -q get apcontroller."$HOST".password)
 
-	if [ "x$USEAS" = "x1" ]; then
-		sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller.user ${username}@${ipaddr}:/tmp 2>/dev/null
-		sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-as ${username}@${ipaddr}:/tmp 2>/dev/null
+	usekeyfile=$(uci -q get apcontroller."$HOST".usekeyfile)
+	keyfile=$(uci -q get apcontroller."$HOST".keyfile)
+
+	if [ "x$usekeyfile" = "x1" ] && [ -e "$keyfile" ]; then
+		if [ "x$USEAS" = "x1" ]; then
+			scp -i ${keyfile} -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller.user ${username}@${ipaddr}:/tmp 2>/dev/null
+			scp -i ${keyfile} -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-as ${username}@${ipaddr}:/tmp 2>/dev/null
+		fi
+		scp -i ${keyfile} -o StrictHostKeyChecking=no -P ${port} ${BASEPATH}/cmds-${SEC} ${username}@${ipaddr}:/tmp 2>/dev/null
+		[ $? -eq 0 ] && scp -i ${keyfile} -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-setconfig ${username}@${ipaddr}:/tmp 2>/dev/null
+		[ $? -eq 0 ] && ssh -q -i ${keyfile} -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent-setconfig /tmp/cmds-${SEC}" >/dev/null 2>&1
+		T=$?
+	else
+		if [ "x$USEAS" = "x1" ]; then
+			sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller.user ${username}@${ipaddr}:/tmp 2>/dev/null
+			sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-as ${username}@${ipaddr}:/tmp 2>/dev/null
+		fi
+		sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} ${BASEPATH}/cmds-${SEC} ${username}@${ipaddr}:/tmp 2>/dev/null
+		[ $? -eq 0 ] && sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-setconfig ${username}@${ipaddr}:/tmp 2>/dev/null
+		[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent-setconfig /tmp/cmds-${SEC}" >/dev/null 2>&1
+		T=$?
 	fi
-	sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} ${BASEPATH}/cmds-${SEC} ${username}@${ipaddr}:/tmp 2>/dev/null
-	[ $? -eq 0 ] && sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent-setconfig ${username}@${ipaddr}:/tmp 2>/dev/null
-	[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent-setconfig /tmp/cmds-${SEC}" >/dev/null 2>&1
-	T=$?
 	if [ -n "$VERBOSE" ]; then
 		if [ "$T" -eq 0 ]; then
 			RET="OK"

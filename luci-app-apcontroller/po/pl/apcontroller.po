@@ -156,12 +156,12 @@ msgid ""
 "replaced with the appropriate values from the Wi-Fi. <b>Verify script before "
 "saving and using!</b>"
 msgstr ""
-"Jeżeli zaznaczone jest \"Używaj dodatkowego skryptu\" w zakładce Grupa "
-"AP, to poniższa zawartość będzie traktowana jako skrypt powłoki i "
-"wykonywana przed utworzeniem każdej sieci Wi-Fi. Można używać "
-"następujących zmiennych: <b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, "
-"<b>$_NETWORK</b>. Te zmienne zostaną zastąpione odpowiednimi wartościami "
-"z Wi-Fi. <b>Zweryfikuj skrypt przed zapisaniem i użyciem!</b>"
+"Jeżeli zaznaczone jest \"Używaj dodatkowego skryptu\" w zakładce Grupa AP, "
+"to poniższa zawartość będzie traktowana jako skrypt powłoki i wykonywana "
+"przed utworzeniem każdej sieci Wi-Fi. Można używać następujących zmiennych: "
+"<b>$_ENABLED</b>, <b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. Te zmienne "
+"zostaną zastąpione odpowiednimi wartościami z Wi-Fi. <b>Zweryfikuj skrypt "
+"przed zapisaniem i użyciem!</b>"
 
 msgid "Isolate Clients"
 msgstr "Izoluj klienty"
@@ -241,6 +241,9 @@ msgstr "Wynik"
 msgid "Router and AP Management"
 msgstr "Zarządzanie routerami i AP"
 
+msgid "SSH Key file"
+msgstr "Plik klucza SSH"
+
 msgid "SSH Port"
 msgstr "Port SSH"
 
@@ -303,6 +306,12 @@ msgstr "Nieznany"
 
 msgid "Uptime"
 msgstr "Czas pracy"
+
+msgid "Use SSH key"
+msgstr "Używaj klucza SSH"
+
+msgid "Use SSH key instead of password"
+msgstr "Używaj klucza SSH zamiast hasła"
 
 msgid "Use additional script"
 msgstr "Używaj dodatkowego skryptu"

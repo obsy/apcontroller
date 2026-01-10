@@ -22,8 +22,16 @@ get_data_from_host() {
 	config_get password "$cfg" password
 	config_get port "$cfg" port 22
 
-	sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent ${username}@${ipaddr}:/tmp 2>/dev/null
-	[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent" > ${BASEPATH}/${ipaddr}-${cfg} 2>/dev/null
+	config_get usekeyfile "$cfg" usekeyfile 0
+	config_get keyfile "$cfg" keyfile "/root/.ssh/id_dropbear"
+
+	if [ "$usekeyfile" -eq 1 ] && [ -e "$keyfile" ]; then
+		scp -i ${keyfile} -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent ${username}@${ipaddr}:/tmp 2>/dev/null
+		[ $? -eq 0 ] && ssh -q -i ${keyfile} -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent" > ${BASEPATH}/${ipaddr}-${cfg} 2>/dev/null
+	else
+		sshpass -p "${password}" scp -o StrictHostKeyChecking=no -P ${port} /usr/share/apcontroller/apcontroller-agent ${username}@${ipaddr}:/tmp 2>/dev/null
+		[ $? -eq 0 ] && sshpass -p "${password}" ssh -q -o StrictHostKeyChecking=no -p ${port} ${username}@${ipaddr} "/tmp/apcontroller-agent" > ${BASEPATH}/${ipaddr}-${cfg} 2>/dev/null
+	fi
 	NOW=$(date "+%s")
 	VAL=0
 	if [ -s "${BASEPATH}/${ipaddr}-${cfg}" ]; then

@@ -235,6 +235,9 @@ msgstr ""
 msgid "Router and AP Management"
 msgstr ""
 
+msgid "SSH Key file"
+msgstr ""
+
 msgid "SSH Port"
 msgstr ""
 
@@ -296,6 +299,12 @@ msgid "Unknown"
 msgstr ""
 
 msgid "Uptime"
+msgstr ""
+
+msgid "Use SSH key"
+msgstr ""
+
+msgid "Use SSH key instead of password"
 msgstr ""
 
 msgid "Use additional script"
