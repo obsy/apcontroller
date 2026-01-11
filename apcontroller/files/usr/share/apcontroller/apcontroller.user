@@ -1,4 +1,4 @@
-logger -t apcontroller "-- executing an additional script --"
+logger -t apcontroller "### executing an additional script ###"
 
 logger -t apcontroller "enabled: $_ENABLED"
 logger -t apcontroller "   ssid: $_SSID"

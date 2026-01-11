@@ -84,11 +84,7 @@ while json_is_a $IDX object; do
 	json_select $IDX
 	json_get_vars enabled band network ssid encryption key hidden isolate
 
-	if [ -e /tmp/apcontroller.user ]; then
-		sh /tmp/apcontroller-agent-as "$enabled" "$ssid" "$band" "$network"
-		rm /tmp/apcontroller.user
-		rm /tmp/apcontroller-agent-as
-	fi
+	[ -e /tmp/apcontroller.user ] && sh /tmp/apcontroller-agent-as "$enabled" "$ssid" "$band" "$network"
 
 	T=$(uci -q get network."$network")
 	if [ -z "$T" ]; then
@@ -152,5 +148,7 @@ if [ $NEEDCOMMIT -eq 1 ]; then
 fi
 
 rm "$FILE"
+[ -e /tmp/apcontroller.user ] && rm /tmp/apcontroller.user
+[ -e /tmp/apcontroller-agent-as ] && rm /tmp/apcontroller-agent-as
 
 exit 0

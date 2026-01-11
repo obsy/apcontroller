@@ -39,7 +39,7 @@ The system offers a simplified but centralized management solution for OpenWrt-b
 
 ## Using key-based authentication
 
-Authorization in the AP is by default performed using a username/password pair. If you are using key-based authentication, leave the "Password" field blank. Keys can be generated with the following command (on a router with apcontroller installed):
+Authorization in the AP is by default performed using a username/password pair. If you are using key-based authentication, select the "Use SSH Key" option and, if necessary, specify the key file. Keys can be generated with the following command (on a router with apcontroller installed):
 ```
 mkdir /root/.ssh
 dropbearkey -f /root/.ssh/id_dropbear
@@ -55,7 +55,7 @@ The system does not read the current configuration from devices. It only allows 
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup-edit.png">
  
-The "Delete all" option allows you to completely delete existing Wi-Fi networks before making changes to the device. Only the configuration sections for the wireless interfaces are deleted. 
+The "Delete all" option allows you to completely delete existing Wi-Fi networks before making changes to the device. Only the configuration sections for the wireless interfaces are deleted.
 The "Use additional script" option allows you to use a custom script that will be executed before attempting to set up or modify any defined Wi-Fi network on any band.
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-additionalscript.png">

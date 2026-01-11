@@ -40,7 +40,7 @@ System zapewnia uproszczone ale centralne zarządzanie punktami dostępowymi pra
 
 ## Użycie kluczy autoryzacyjnych
 
-Autoryzacja w AP domyślnie odbywa się za pomocą pary nazwa użytkownika/hasło. Jeżeli używana jest autoryzacja z wykorzystaniem kluczy to należy nie uzupełniać pola "Hasło" (zostawić je puste). Klucze można wygenerować poleceniem (na routerze że jest zainstalowany apcontroller):
+Autoryzacja w AP domyślnie odbywa się za pomocą pary nazwa użytkownika/hasło. Jeżeli używana jest autoryzacja z wykorzystaniem kluczy SSH to należy wybrać opcję "Use SSH Key" i ew. wskazać plik z kluczami. Klucze można wygenerować poleceniem (na routerze gdzie jest zainstalowany apcontroller):
 ```
 mkdir /root/.ssh
 dropbearkey  -f /root/.ssh/id_dropbear
@@ -57,11 +57,11 @@ System nie odczytuje bieżącej konfiguracji z urządzeń. Pozwala tylko na zdef
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup-edit.png">
  
 Opcja "Delete all" pozwala na całkowite usunięcie istniejących sieci Wi-Fi przez wykonywaniem zmian na urządzeniu. Usuwane są tylko sekcje konfiguracyjne z interfejsów bezprzewodowych.
-Opcja "Use additional script" pozwala na używanie własnego skryptu który będzie wykonywany przed próbą założenia lub modyfikacji każdej zdefiniowanej sieci Wi-Fi na każdym paśmie
+Opcja "Use additional script" pozwala na używanie własnego skryptu który będzie wykonywany przed próbą założenia lub modyfikacji każdej zdefiniowanej sieci Wi-Fi na każdym paśmie.
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-additionalscript.png">
  
-Pozwala to użytkownikowi na samodzielnie budowanie konfiguracji sieci przewodowej, bridge czy tworzenie własnych VLANów. Skrypt musi być prawidłowym skryptem powłoki. W skrypcie można posługiwać się kilkoma zmiennymi ("$_ENABLED", "$_SSID", "$_BAND", "$_NETWORK") które będą zawierać odpowiednie parametry przekazywanej sieci Wi-Fi
+Pozwala to użytkownikowi na samodzielnie budowanie konfiguracji sieci przewodowej, bridge czy tworzenie własnych VLANów. Skrypt musi być prawidłowym skryptem powłoki. W skrypcie można posługiwać się kilkoma zmiennymi ("$_ENABLED", "$_SSID", "$_BAND", "$_NETWORK") które będą zawierać odpowiednie parametry przekazywanej sieci Wi-Fi.
 - po zapisaniu zmian należy wybrać przycisk "Send" co spowoduje wysłanie i wykonanie konfiguracji na wszystkich włączonych urządzeniach zdefiniowanych w tej grupie
  
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup.png">
