@@ -1,0 +1,393 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "2.4 GHz Channel(s)"
+msgstr "2.4 GHz 信道"
+
+msgid "2.4 GHz Clients"
+msgstr "2.4 GHz 客户端"
+
+msgid "5 GHz Channel(s)"
+msgstr "5 GHz 信道"
+
+msgid "5 GHz Clients"
+msgstr "5 GHz 客户端"
+
+msgid "6 GHz Channel(s)"
+msgstr "6 GHz 信道"
+
+msgid "6 GHz Clients"
+msgstr "6 GHz 客户端"
+
+msgid "AP Controller"
+msgstr "AP 控制器"
+
+msgid "AP Group"
+msgstr "AP 组"
+
+msgid "Activity"
+msgstr "活动"
+
+msgid "Add new Wi-Fi"
+msgstr "添加新 Wi-Fi"
+
+msgid "Add new device"
+msgstr "添加新设备"
+
+msgid "Add new group"
+msgstr "添加新组"
+
+msgid "Additional script"
+msgstr "附加脚本"
+
+msgid "All"
+msgstr "全部"
+
+msgid "Are you sure you want to execute the \"%s\" script?"
+msgstr "确定要执行脚本 \"%s\" 吗？"
+
+msgid "Band"
+msgstr "频段"
+
+msgid "Clients List Columns"
+msgstr "客户端列表列"
+
+msgid "Connected"
+msgstr "已连接"
+
+msgid "Connected Wireless Clients"
+msgstr "已连接的无线客户端"
+
+msgid "Connected to"
+msgstr "连接到"
+
+msgid "Connected to SSID"
+msgstr "连接的 SSID"
+
+msgid "Data directory"
+msgstr "数据目录"
+
+msgid "Data storage directory"
+msgstr "数据存储目录"
+
+msgid "Default Wi-Fi state"
+msgstr "默认 Wi-Fi 状态"
+
+msgid "Default: 22"
+msgstr "默认值：22"
+
+msgid "Delete all"
+msgstr "删除所有"
+
+msgid "Delete all Wi-Fi before setting up new ones"
+msgstr "设置新 Wi-Fi 前删除所有现有 Wi-Fi"
+
+msgid "Device"
+msgstr "设备"
+
+msgid "Device Login"
+msgstr "设备登录名"
+
+msgid "Device Password"
+msgstr "设备密码"
+
+msgid "Device Reading Interval"
+msgstr "设备读取间隔"
+
+msgid "Devices"
+msgstr "设备"
+
+msgid "Devices List Columns"
+msgstr "设备列表列"
+
+msgid "Dismiss"
+msgstr "忽略"
+
+msgid "Do not show network name"
+msgstr "不显示网络名称"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Enabled"
+msgstr "启用"
+
+msgid "Encryption"
+msgstr "加密"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Errors"
+msgstr "错误"
+
+msgid "Execute"
+msgstr "执行"
+
+msgid "Execute script"
+msgstr "执行脚本"
+
+msgid "GUI URL"
+msgstr "GUI URL"
+
+msgid "Hide SSID"
+msgstr "隐藏 SSID"
+
+msgid "Host Address"
+msgstr "主机地址"
+
+msgid "Hostname"
+msgstr "主机名"
+
+msgid "Hostname or IP Address"
+msgstr "主机名或 IP 地址"
+
+msgid "IP Address"
+msgstr "IP 地址"
+
+msgid "IPv4"
+msgstr "IPv4"
+
+msgid ""
+"If \"Use additional script\" is selected in the AP Group tab, the following "
+"content will be treated as a shell script and executed before each defined "
+"Wi-Fi is created. You can use the following variables: <b>$_ENABLED</b>, "
+"<b>$_SSID</b>, <b>$_BAND</b>, <b>$_NETWORK</b>. These variables will be "
+"replaced with the appropriate values from the Wi-Fi. <b>Verify script before "
+"saving and using!</b>"
+msgstr ""
+"如果在 AP 组选项卡中选择了“使用附加脚本”，则以下内容将被视为 shell 脚本，"
+"并在创建每个定义的 Wi-Fi 之前执行。您可以使用以下变量：<b>$_ENABLED</b>、"
+"<b>$_SSID</b>、<b>$_BAND</b>、<b>$_NETWORK</b>。这些变量将被替换为 Wi-Fi 的"
+"相应值。<b>在保存和使用前请验证脚本！</b>"
+
+msgid "Isolate Clients"
+msgstr "隔离客户端"
+
+msgid "Last Contact"
+msgstr "最后联系"
+
+msgid "Link to device GUI address"
+msgstr "设备 GUI 地址链接"
+
+msgid "List of columns to display in the clients list"
+msgstr "要在客户端列表中显示的列"
+
+msgid "List of columns to display in the devices list"
+msgstr "要在设备列表中显示的列"
+
+msgid "Load Average"
+msgstr "负载平均值"
+
+msgid "MAC Address"
+msgstr "MAC 地址"
+
+msgid "Model"
+msgstr "型号"
+
+msgid "More"
+msgstr "更多"
+
+msgid "More Information"
+msgstr "更多信息"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "Network"
+msgstr "网络"
+
+msgid "No"
+msgstr "否"
+
+msgid "No wireless clients connected"
+msgstr "没有连接的无线客户端"
+
+msgid "Offline"
+msgstr "离线"
+
+msgid "Online"
+msgstr "在线"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Ping"
+msgstr "Ping"
+
+msgid "Pinging device..."
+msgstr "正在 Ping 设备……"
+
+msgid "Please wait..."
+msgstr "请稍候……"
+
+msgid "Port"
+msgstr "端口"
+
+msgid "Prevents client-to-client communication"
+msgstr "阻止客户端之间的通信"
+
+msgid "RX"
+msgstr "RX"
+
+msgid "Refresh"
+msgstr "刷新"
+
+msgid "Result"
+msgstr "结果"
+
+msgid "Router and AP Management"
+msgstr "路由器和 AP 管理"
+
+msgid "SSH Key file"
+msgstr "SSH 密钥文件"
+
+msgid "SSH Port"
+msgstr "SSH 端口"
+
+msgid "SSID"
+msgstr "SSID"
+
+msgid "Selected Devices"
+msgstr "已选设备"
+
+msgid "Selected Wi-Fi"
+msgstr "已选 Wi-Fi"
+
+msgid "Send"
+msgstr "发送"
+
+msgid "Send config to devices"
+msgstr "发送配置到设备"
+
+msgid "Sending commands"
+msgstr "发送命令"
+
+msgid "Sending commands to devices..."
+msgstr "正在向设备发送命令……"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Signal"
+msgstr "信号"
+
+msgid "Software"
+msgstr "软件"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Std"
+msgstr "标准"
+
+msgid "TX"
+msgstr "TX"
+
+msgid "The interface name is too long"
+msgstr "接口名称过长"
+
+msgid "The name of the network to which the Wi-Fi will belong"
+msgstr "Wi-Fi 所属网络的名称"
+
+msgid "The name that the APs are to advertise"
+msgstr "AP 要广播的名称"
+
+msgid "URL format error, format: http:// or https://"
+msgstr "URL 格式错误，格式应为 http:// 或 https://"
+
+msgid "Unable to save additional script"
+msgstr "无法保存附加脚本"
+
+msgid "Unknown"
+msgstr "未知"
+
+msgid "Uptime"
+msgstr "运行时间"
+
+msgid "Use SSH key"
+msgstr "使用 SSH 密钥"
+
+msgid "Use SSH key instead of password"
+msgstr "使用 SSH 密钥代替密码"
+
+msgid "Use additional script"
+msgstr "使用附加脚本"
+
+msgid "Use additional script before setting up a Wi-Fi"
+msgstr "在设置 Wi-Fi 前使用附加脚本"
+
+msgid "User-readable description"
+msgstr "用户可读的描述"
+
+msgid "Username"
+msgstr "用户名"
+
+msgid "WPA Pers."
+msgstr "WPA 个人"
+
+msgid "WPA Pers. (CCMP)"
+msgstr "WPA 个人 (CCMP)"
+
+msgid "WPA Pers. (TKIP)"
+msgstr "WPA 个人 (TKIP)"
+
+msgid "WPA/WPA2 Pers. (CCMP)"
+msgstr "WPA/WPA2 个人 (CCMP)"
+
+msgid "WPA/WPA2 Pers. (TKIP)"
+msgstr "WPA/WPA2 个人 (TKIP)"
+
+msgid "WPA2 Pers."
+msgstr "WPA2 个人"
+
+msgid "WPA2 Pers. (CCMP)"
+msgstr "WPA2 个人 (CCMP)"
+
+msgid "WPA2 Pers. (TKIP)"
+msgstr "WPA2 个人 (TKIP)"
+
+msgid "WPA2/WPA3 Pers. (CCMP)"
+msgstr "WPA2/WPA3 个人 (CCMP)"
+
+msgid "WPA3 OWE (CCMP)"
+msgstr "WPA3 OWE (CCMP)"
+
+msgid "WPA3 Pers. (SAE)"
+msgstr "WPA3 个人 (SAE)"
+
+msgid "When enabled, the device will be polled periodically"
+msgstr "启用后，将定期轮询设备"
+
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
+msgid "Wi-Fi Band"
+msgstr "Wi-Fi 频段"
+
+msgid "Yes"
+msgstr "是"
+
+msgid "[minutes] The period in which devices will be periodically polled"
+msgstr "[分钟] 定期轮询设备的时间间隔"
+
+msgid "days ago"
+msgstr "天前"
+
+msgid "h ago"
+msgstr "小时前"
+
+msgid "m ago"
+msgstr "分钟前"
+
+msgid "no Wi-Fi found"
+msgstr "未找到 Wi-Fi"
+
+msgid "no devices found"
+msgstr "未找到设备"
+
+msgid "none"
+msgstr "无"
+
+msgid "s ago"
+msgstr "秒前"
