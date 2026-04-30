@@ -1056,6 +1056,20 @@ return view.extend({
 		};
 		o.default = 'lan';
 
+		o = s.taboption('wifi', form.ListValue, 'macfilter', _('MAC Address Filter'));
+                o.modalonly = true;
+                o.rmempty = false;
+                o.default = 'disable';
+                o.value('disable', _('Disabled'));
+                o.value('allow', _('Allow listed only'));
+                o.value('deny', _('Deny listed'));
+        
+                o = s.taboption('wifi', form.DynamicList, 'maclist', _('MAC Address List'));
+                o.modalonly = true;
+                o.rmempty = true;
+                o.datatype = 'macaddr';
+                o.depends('macfilter', 'allow');
+                o.depends('macfilter', 'deny');
 
 		// AP Group tab
 		s = m.section(form.GridSection, 'group', _('AP Group'));
