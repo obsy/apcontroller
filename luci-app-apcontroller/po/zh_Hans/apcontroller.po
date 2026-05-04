@@ -1,5 +1,5 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
 
 msgid "2.4 GHz Channel(s)"
 msgstr "2.4 GHz 信道"
@@ -42,6 +42,12 @@ msgstr "附加脚本"
 
 msgid "All"
 msgstr "全部"
+
+msgid "Allow all except listed"
+msgstr ""
+
+msgid "Allow listed only"
+msgstr ""
 
 msgid "Are you sure you want to execute the \"%s\" script?"
 msgstr "确定要执行脚本 \"%s\" 吗？"
@@ -100,6 +106,9 @@ msgstr "设备"
 msgid "Devices List Columns"
 msgstr "设备列表列"
 
+msgid "Disabled"
+msgstr ""
+
 msgid "Dismiss"
 msgstr "忽略"
 
@@ -156,10 +165,10 @@ msgid ""
 "replaced with the appropriate values from the Wi-Fi. <b>Verify script before "
 "saving and using!</b>"
 msgstr ""
-"如果在 AP 组选项卡中选择了“使用附加脚本”，则以下内容将被视为 shell 脚本，"
-"并在创建每个定义的 Wi-Fi 之前执行。您可以使用以下变量：<b>$_ENABLED</b>、"
-"<b>$_SSID</b>、<b>$_BAND</b>、<b>$_NETWORK</b>。这些变量将被替换为 Wi-Fi 的"
-"相应值。<b>在保存和使用前请验证脚本！</b>"
+"如果在 AP 组选项卡中选择了“使用附加脚本”，则以下内容将被视为 shell 脚本，并在"
+"创建每个定义的 Wi-Fi 之前执行。您可以使用以下变量：<b>$_ENABLED</b>、"
+"<b>$_SSID</b>、<b>$_BAND</b>、<b>$_NETWORK</b>。这些变量将被替换为 Wi-Fi 的相"
+"应值。<b>在保存和使用前请验证脚本！</b>"
 
 msgid "Isolate Clients"
 msgstr "隔离客户端"
@@ -181,6 +190,12 @@ msgstr "负载平均值"
 
 msgid "MAC Address"
 msgstr "MAC 地址"
+
+msgid "MAC Address Filter"
+msgstr ""
+
+msgid "MAC Address List"
+msgstr ""
 
 msgid "Model"
 msgstr "型号"

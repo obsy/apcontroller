@@ -43,6 +43,12 @@ msgstr ""
 msgid "All"
 msgstr ""
 
+msgid "Allow all except listed"
+msgstr ""
+
+msgid "Allow listed only"
+msgstr ""
+
 msgid "Are you sure you want to execute the \"%s\" script?"
 msgstr ""
 
@@ -98,6 +104,9 @@ msgid "Devices"
 msgstr ""
 
 msgid "Devices List Columns"
+msgstr ""
+
+msgid "Disabled"
 msgstr ""
 
 msgid "Dismiss"
@@ -176,6 +185,12 @@ msgid "Load Average"
 msgstr ""
 
 msgid "MAC Address"
+msgstr ""
+
+msgid "MAC Address Filter"
+msgstr ""
+
+msgid "MAC Address List"
 msgstr ""
 
 msgid "Model"

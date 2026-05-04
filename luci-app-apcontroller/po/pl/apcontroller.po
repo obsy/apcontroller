@@ -43,6 +43,12 @@ msgstr "Dodatkowy skrypt"
 msgid "All"
 msgstr "Wszystkich"
 
+msgid "Allow all except listed"
+msgstr "Zezwól wszystkim oprócz wymienionych"
+
+msgid "Allow listed only"
+msgstr "Akceptuj tylko wymienione"
+
 msgid "Are you sure you want to execute the \"%s\" script?"
 msgstr "Jesteś pewien że chcesz wykonać skrypt \"%s\"?"
 
@@ -99,6 +105,9 @@ msgstr "Urządzenia"
 
 msgid "Devices List Columns"
 msgstr "Lista kolumn dla urządzeń"
+
+msgid "Disabled"
+msgstr "Wyłączony"
 
 msgid "Dismiss"
 msgstr "Zamknij"
@@ -183,6 +192,12 @@ msgstr "Średnie obciążenie"
 
 msgid "MAC Address"
 msgstr "Adres MAC"
+
+msgid "MAC Address Filter"
+msgstr "Filtr adresów MAC"
+
+msgid "MAC Address List"
+msgstr "Lista adresów MAC"
 
 msgid "Model"
 msgstr "Model"

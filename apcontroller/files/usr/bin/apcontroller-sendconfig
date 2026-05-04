@@ -32,6 +32,9 @@ DELETE=$(uci -q get apcontroller."$SEC".delete)
 json_add_array "wifis"
 for WIFI in $WIFIS; do
 	BANDS="$(uci -q get apcontroller."$WIFI".band)"
+	MACFILTER="$(uci -q get apcontroller."$WIFI".macfilter)"
+	[ -z "$MACFILTER" ] && MACFILTER="disable"
+	MACLIST="$(uci -q get apcontroller."$WIFI".maclist)"
 	for BAND in $BANDS; do
 		json_add_object
 		json_add_int "enabled" "$(uci -q get apcontroller."$WIFI".enabled)"
@@ -42,6 +45,13 @@ for WIFI in $WIFIS; do
 		json_add_int "hidden" "$(uci -q get apcontroller."$WIFI".hidden)"
 		json_add_int "isolate" "$(uci -q get apcontroller."$WIFI".isolate)"
 		json_add_string "network" "$(uci -q get apcontroller."$WIFI".network)"
+		json_add_string "macfilter" "$MACFILTER"
+		json_add_array "maclist"
+		for MAC in $MACLIST; do
+			MAC="$(echo "$MAC" | tr '[:lower:]' '[:upper:]')"
+			json_add_string "" "$MAC"
+		done
+		json_close_array
 		json_close_object
 	done
 done
