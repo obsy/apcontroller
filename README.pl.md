@@ -67,6 +67,11 @@ Pozwala to użytkownikowi na samodzielnie budowanie konfiguracji sieci przewodow
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup.png">
  
 ## Skrypty definiowane przez użytkownika
-Menu urządzenia pozwala na wykonywanie akcji zawiązanych z konkretnym urządzeniem, które są definiowane jako skrypty powłoki. Domyślna konfiguracja zawiera dwa skrypty - "Log" oraz "Reboot"; użytkownik może tworzyć samodzielnie dowolny skrypt który zostanie wykonany na wskazanym routerze/AP. Skrypty należy umieścić w katalogu /usr/share/apcontroller/scripts.
+Menu urządzenia pozwala na wykonywanie akcji zawiązanych z konkretnym urządzeniem, które są definiowane jako skrypty powłoki. Domyślna konfiguracja zawiera dwa skrypty - "Log" oraz "Reboot"; użytkownik może tworzyć samodzielnie dowolny skrypt który zostanie wykonany na wskazanym routerze/AP. Skrypty należy umieścić w katalogu `/usr/share/apcontroller/scripts`.
 
-Komentarz #desc: oznacza nazwę skryptu wyświetlaną na liście dostępnych skryptów. Umieszczenie #warn oznacza że przed wykonaniem skryptu zostanie zadane pytanie czy na pewno chcemy go wykonać.
+Komentarz `#desc:` oznacza nazwę skryptu wyświetlaną na liście dostępnych skryptów. Umieszczenie `#warn` oznacza że przed wykonaniem skryptu zostanie zadane pytanie czy na pewno chcemy go wykonać.
+
+## Atak man-in-the-middle
+W pliku `/root/.ssh/known_hosts` przechowywane są odciski kluczy publicznych (tzw. fingerprinty) usługi SSH z AP, z którymi wcześniej nawiązano połączenie. Mechanizm ten służy do weryfikacji tożsamości hosta i ochrony przed atakami typu man-in-the-middle.
+
+W przypadku zmiany klucza AP (np. po reinstalacji systemu lub przywróceniu ustawień fabrycznych) jego odcisk również ulegnie zmianie. W takiej sytuacji klient SSH zgłosi ostrzeżenie o niezgodności klucza. Aby przywrócić możliwość połączenia, należy ręcznie usunąć lub zaktualizować odpowiedni wpis w pliku `/root/.ssh/known_hosts`, a następnie ponownie zaakceptować nowy klucz hosta podczas łączenia.

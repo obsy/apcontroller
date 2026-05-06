@@ -66,6 +66,12 @@ This allows users to independently configure wired networks, bridges, and create
 <img src="https://raw.githubusercontent.com/obsy/apcontroller/refs/heads/main/img/tab-apgroup.png">
  
 ## User-Defined Scripts
-The device menu allows you to perform actions related to a specific device, which are defined as shell scripts. The default configuration includes two scripts – "Log" and "Reboot"; the user can create any script that will be executed on the specified router/AP. Scripts should be placed in the /usr/share/apcontroller/scripts directory.
+The device menu allows you to perform actions related to a specific device, which are defined as shell scripts. The default configuration includes two scripts – "Log" and "Reboot"; the user can create any script that will be executed on the specified router/AP. Scripts should be placed in the `/usr/share/apcontroller/scripts` directory.
 
-The #desc comment indicates the name of the script displayed in the list of available scripts. Including #warn means that before executing the script, you will be asked if you really want to execute it.
+The `#desc:` comment indicates the name of the script displayed in the list of available scripts. Including `#warn:` means that before executing the script, you will be asked if you really want to execute it.
+
+## Man-in-the-middle attack
+The file `/root/.ssh/known_hosts` stores public key fingerprints of SSH services on access points (APs) that have been previously connected to. This mechanism is used to verify the identity of the host and to protect against man-in-the-middle attacks.
+
+If the AP’s key changes (for example, after a system reinstallation or a factory reset), its fingerprint will also change. In such a case, the SSH client will display a warning about a key mismatch. To restore the connection, the appropriate entry in the `/root/.ssh/known_hosts` file must be manually removed or updated, and the new host key must then be accepted when reconnecting.
+

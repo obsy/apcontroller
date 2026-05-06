@@ -745,7 +745,7 @@ return view.extend({
 											cmd = 'scp';
 											args = [
 												'-i', row['keyfile'],
-												'-o', 'StrictHostKeyChecking=no',
+												'-o', 'StrictHostKeyChecking=accept-new',
 												'-P', row['port'],
 												'/usr/share/apcontroller/scripts/' + script,
 												row['username'] + '@' + row['ipaddr'] + ':/tmp'
@@ -755,7 +755,7 @@ return view.extend({
 											args = [
 												'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
 												'scp',
-												'-o', 'StrictHostKeyChecking=no',
+												'-o', 'StrictHostKeyChecking=accept-new',
 												'-P', row['port'],
 												'/usr/share/apcontroller/scripts/' + script,
 												row['username'] + '@' + row['ipaddr'] + ':/tmp'
@@ -767,7 +767,7 @@ return view.extend({
 											args = [
 												'-q',
 												'-i', row['keyfile'],
-												'-o', 'StrictHostKeyChecking=no',
+												'-o', 'StrictHostKeyChecking=accept-new',
 												'-p', row['port'],
 												row['username'] + '@' + row['ipaddr'],
 												'sh',
@@ -779,7 +779,7 @@ return view.extend({
 												'-p', typeof row['password'] !== 'undefined' ? row['password']: '""',
 												'ssh',
 												'-q',
-												'-o', 'StrictHostKeyChecking=no',
+												'-o', 'StrictHostKeyChecking=accept-new',
 												'-p', row['port'],
 												row['username'] + '@' + row['ipaddr'],
 												'sh',
